@@ -1,0 +1,3 @@
+enum SharedPrefsKey {
+  accessToken, lang
+}
