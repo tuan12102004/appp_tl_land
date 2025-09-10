@@ -1,7 +1,6 @@
-import 'dart:math';
 
+import 'package:app_tl_land_3212/feature/noti/presentation/widgets/notification_widgtet.dart';
 import 'package:flutter/material.dart';
-import 'package:learn/widgets/notification_widgtet.dart';
 
 class NotificationPage extends StatefulWidget {
   const NotificationPage({super.key});
