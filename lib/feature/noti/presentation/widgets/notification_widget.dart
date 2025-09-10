@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../pages/notification_detail.dart';
 
@@ -39,7 +40,7 @@ class _NotificationWidgetState extends State<NotificationWidget> {
                   color: iconRandom == Icons.notifications_active
                       ? Color(0xffE1F1FD)
                       : Colors.white,
-                  border: Border(bottom: BorderSide(color: Colors.grey, width: 1)),
+                  border: Border(bottom: BorderSide(color: Colors.grey, width: 1.w)),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -49,34 +50,40 @@ class _NotificationWidgetState extends State<NotificationWidget> {
                     children: [
                       Row(
                         children: [
-                          Icon(iconRandom, color: Color(0xff179BE0)),
-                          SizedBox(width: 10),
+                          Icon(iconRandom, color: Color(0xff179BE0), size: 24.sp,),
+                          SizedBox(width: 3.w),
                           Text(
-                            "${timeData.hour}:${timeData.minute}",
+                            "${timeData.hour}:${timeData.minute},",
                             style: TextStyle(
                               color: Color(0xff000000).withOpacity(0.5),
                               fontStyle: FontStyle.italic,
+                              fontSize: 13.sp,
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
-                          SizedBox(width: 10),
+                          SizedBox(width: 2.25.w),
                           Text(
                             "${timeData.day}/${timeData.month}/${timeData.year}",
                             style: TextStyle(
                               color: Color(0xff000000).withOpacity(0.5),
-                              fontStyle: FontStyle.italic,
+                              fontStyle: FontStyle.italic, fontSize: 13.sp,
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
                         ],
                       ),
+                      SizedBox(height: 5.h),
                       Text("Bạn đã đăng ký tài khoản thành công",style: TextStyle(
                         color: Color(0xff000000),
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.w600,
                       ),),
+                      SizedBox(height: 2.h),
                       Text("Bạn đã đăng ký tài khoản thành công, hãy sử dụng những tính năng mới. Lorem ipsum dolor sit amet consectetur. Erat ornare massa tincidunt vitae viverra",
                           style: TextStyle(
                             color: Color(0xff000000).withOpacity(0.5),
-                            fontSize: 13,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
                           ))
                     ],
                   ),
