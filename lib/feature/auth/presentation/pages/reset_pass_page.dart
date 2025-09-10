@@ -24,7 +24,7 @@ class _ResetPassPageState extends State<ResetPassPage> {
   Widget build(BuildContext context) {
     return UnfocusWidget(
       child: Scaffold(
-        appBar: CustomAuthAppbar(),
+          appBar: CustomAuthAppbar(),
           body: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -39,11 +39,12 @@ class _ResetPassPageState extends State<ResetPassPage> {
                   height: 24.h,
                 ),
                 ResetPassForm(
-                    formKey: _formKey,
-                    passCon: _passCon,
-                    confirmPassCon: _confirmPassCon,
-                    passNode: _passNode,
-                    confirmPassNode: _confirmPassNode),
+                  formKey: _formKey,
+                  passCon: _passCon,
+                  confirmPassCon: _confirmPassCon,
+                  passNode: _passNode,
+                  confirmPassNode: _confirmPassNode,
+                ),
               ],
             ),
           )),

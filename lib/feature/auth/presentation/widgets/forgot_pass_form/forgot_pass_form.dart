@@ -35,7 +35,7 @@ class ForgotPassForm extends StatelessWidget {
         extra: {
           'email': formatHiddenEmail(_emailCon.text.trim()),
           'onCompleted': (BuildContext context) {
-            context.go('/auth/reset-pass');
+            context.replace('/auth/reset-pass');
           },
         },
       );
