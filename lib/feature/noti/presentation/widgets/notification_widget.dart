@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import '../notification_detail.dart';
+import '../pages/notification_detail.dart';
 
 class NotificationWidget extends StatefulWidget {
   const NotificationWidget({super.key});

@@ -1,4 +1,5 @@
 import 'package:app_tl_land_3212/common/blocs/select/select_bloc.dart';
+import 'package:app_tl_land_3212/feature/noti/presentation/pages/notification.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app_tl_land_3212/core/di/service_locator.dart';
@@ -18,8 +19,7 @@ class _NavigationPageState extends State<NavigationPage> {
   final listPages = [
     Container(),
     Container(),
-    Container(),
-    Container(),
+    NotificationPage(),
     Container(),
   ];
 
@@ -54,7 +54,8 @@ class _NavigationPageState extends State<NavigationPage> {
               itemBuilder: (context, index) => listPages[index],
               physics: NeverScrollableScrollPhysics(),
             ),
-            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
             bottomNavigationBar: BottomNav(),
           );
         },

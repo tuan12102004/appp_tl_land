@@ -1,5 +1,5 @@
 
-import 'package:app_tl_land_3212/feature/noti/presentation/widgets/notification_widgtet.dart';
+import 'package:app_tl_land_3212/feature/noti/presentation/widgets/notification_widget.dart';
 import 'package:flutter/material.dart';
 
 class NotificationPage extends StatefulWidget {

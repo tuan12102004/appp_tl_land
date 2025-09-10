@@ -97,7 +97,10 @@ class _LoginPageState extends State<LoginPage> {
                             usernameNode: _usernameNode,
                             passwordNode: _passwordNode,
                             passwordCon: _passwordCon,
-                            onLogin: () {},
+                            onLogin: () {
+                              // TODO
+                              context.pushReplacement('/');
+                            },
                             onFogotThePass: () => _onForgot(context),
                           ),
                           // BlocConsumer<AuthBloc, AuthState>(
