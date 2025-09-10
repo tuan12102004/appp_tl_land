@@ -1,4 +1,4 @@
-import 'package:app_tl_land_3212/core/core_constants_module.dart';
+import 'package:app_tl_land_3212/core/core_module.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 

@@ -1,7 +1,6 @@
 import 'package:app_tl_land_3212/common/enums/dialog_type.dart';
 import 'package:app_tl_land_3212/common/enums/server_exception_type.dart';
-import 'package:app_tl_land_3212/core/core_util_module.dart';
-import 'package:app_tl_land_3212/core/errors/failure.dart';
+import 'package:app_tl_land_3212/core/core_module.dart';
 import 'package:flutter/material.dart';
 
 void displayErrorDialog(BuildContext context, {required Failure failure}) {
@@ -53,6 +52,22 @@ void displayErrorDialog(BuildContext context, {required Failure failure}) {
         context,
         title: "Thông báo",
         content: "Đã xảy ra lỗi không xác định.",
+        type: DialogType.ok,
+      );
+      break;
+    case ServerExceptionType.accountBlocked:
+      showAppDialog(
+        context,
+        title: "Thông báo",
+        content: "Tài khoản đã bị khóa",
+        type: DialogType.ok,
+      );
+      break;
+    case ServerExceptionType.invalidCredentials:
+      showAppDialog(
+        context,
+        title: "Thông báo",
+        content: "Email hoặc mật khẩu không chính xác. Vui lòng thử lại.",
         type: DialogType.ok,
       );
       break;

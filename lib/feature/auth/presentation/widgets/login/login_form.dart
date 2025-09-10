@@ -1,76 +1,61 @@
-import 'package:app_tl_land_3212/common/common_widgets_module.dart';
-import 'package:app_tl_land_3212/core/constants/app_colors.dart';
-import 'package:app_tl_land_3212/core/core_util_module.dart';
+import 'package:app_tl_land_3212/common/common_module.dart';
+import 'package:app_tl_land_3212/core/core_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LoginForm extends StatelessWidget {
-  final GlobalKey<FormState> _formKey;
-  final TextEditingController _usernameCon;
-  final FocusNode _usernameNode;
-  final FocusNode _passwordNode;
-  final TextEditingController _passwordCon;
+  final GlobalKey<FormState> formKey;
+  final TextEditingController usernameCon;
+  final FocusNode usernameNode;
+  final FocusNode passwordNode;
+  final TextEditingController passwordCon;
   final VoidCallback onLogin;
-  final VoidCallback onFogotThePass;
+  final VoidCallback onForgotThePass;
 
   const LoginForm({
     super.key,
-    required GlobalKey<FormState> formKey,
-    required TextEditingController usernameCon,
-    required FocusNode usernameNode,
-    required FocusNode passwordNode,
-    required TextEditingController passwordCon,
+    required this.formKey,
+    required this.usernameCon,
+    required this.usernameNode,
+    required this.passwordNode,
+    required this.passwordCon,
     required this.onLogin,
-    required this.onFogotThePass,
-  })  : _formKey = formKey,
-        _usernameCon = usernameCon,
-        _usernameNode = usernameNode,
-        _passwordNode = passwordNode,
-        _passwordCon = passwordCon;
-
+    required this.onForgotThePass,
+  });
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: _formKey,
+      key: formKey,
       child: Column(
-        spacing: 16.h,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // User name field
           CustomInputField(
             hintText: "Email của bạn",
-            controller: _usernameCon,
-            focusNode: _usernameNode,
+            controller: usernameCon,
+            focusNode: usernameNode,
             textInputAction: TextInputAction.next,
             onEditingComplete: () =>
-                FocusScope.of(context).requestFocus(_passwordNode),
+                FocusScope.of(context).requestFocus(passwordNode),
             keyboardType: TextInputType.emailAddress,
             validator: InputValidators.validateEmail,
           ),
-
-          // Password field
+          SizedBox(height: 16.h),
           CustomPassField(
             hintText: "Mật khẩu",
-            controller: _passwordCon,
-            focusNode: _passwordNode,
+            controller: passwordCon,
+            focusNode: passwordNode,
             validator: InputValidators.validatePassword,
+            onEditingComplete: onLogin,
           ),
-
-          // Login button
+          SizedBox(height: 16.h),
           CustomAdaptiveButton(
-            onPressed: () {
-              if (_formKey.currentState?.validate() == true) {
-                onLogin();
-              }
-            },
-            text: "Đăng nhập",
+            onPressed: onLogin,
+            text: 'Đăng nhập',
           ),
-
-          // Forgot the password
+          SizedBox(height: 8.h),
           CustomAdaptiveButton(
             backgroundColor: Colors.transparent,
             textColor: TextColors.textButtonPlain,
-            onPressed: () => onFogotThePass(),
+            onPressed: onForgotThePass,
             text: "Quên mật khẩu?",
           ),
         ],

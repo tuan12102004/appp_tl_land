@@ -1,5 +1,5 @@
-import 'package:app_tl_land_3212/common/common_widgets_module.dart';
-import 'package:app_tl_land_3212/core/core_constants_module.dart';
+import 'package:app_tl_land_3212/common/common_module.dart';
+import 'package:app_tl_land_3212/core/core_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

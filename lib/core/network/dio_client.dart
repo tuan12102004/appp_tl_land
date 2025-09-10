@@ -16,24 +16,34 @@ class DioClient {
   late final PersistCookieJar _cookieJar;
 
   DioClient()
-    : _dio = Dio(
+      : _dio = Dio(
           BaseOptions(
             baseUrl: dotenv.get('API_DOMAIN_URL'),
             headers: {"X-TOKEN-ACCESS": dotenv.get('API_KEY')},
             responseType: ResponseType.json,
-            sendTimeout: const Duration(seconds: 8),
-            receiveTimeout: const Duration(seconds: 8),
+            sendTimeout: const Duration(seconds: 10),
+            receiveTimeout: const Duration(seconds: 10),
           ),
-        )
-        ..interceptors.addAll([
-          LogInterceptor(
-            request: true,
-            requestBody: true,
-            requestHeader: true,
-            logPrint: print,
-          ),
-          AppInterceptor(),
-        ]);
+        )..interceptors.addAll([
+            LogInterceptor(
+              request: true,
+              requestBody: true,
+              requestHeader: true,
+              responseBody: true,
+              logPrint: print,
+            ),
+            AppInterceptor(),
+          ]);
+
+  void setBearerToken(String token) {
+    _dio.options.headers.remove("X-TOKEN-ACCESS");
+    _dio.options.headers["Authorization"] = "Bearer $token";
+  }
+
+  void resetToApiKey() {
+    _dio.options.headers.remove("Authorization");
+    _dio.options.headers["X-TOKEN-ACCESS"] = dotenv.get('API_KEY');
+  }
 
   // Initialize session
   Future<void> initSession() async {
@@ -66,28 +76,57 @@ class DioClient {
           );
       }
     } on DioException catch (e) {
+      // 🔥 In log tại đây để debug chi tiết lỗi
+      print('${dotenv.get('API_DOMAIN_URL')}$endpoint');
+      print('❌ DioClient ERROR:');
+      print('❌ URL: $endpoint');
+      print('❌ METHOD: $method');
+      print('❌ STATUS: ${e.response?.statusCode}');
+      print('❌ RESPONSE DATA: ${e.response?.data}');
+      print('❌ MESSAGE: ${e.message}');
+      print('❌ TYPE: ${e.type}');
+      print('❌ ERROR: ${e.error}');
+
       final errType = e.type;
 
-      if (errType == DioExceptionType.expiredToken) {
+      if (errType == DioExceptionType.badResponse &&
+          e.response?.statusCode == 403) {
         // If token is expired
-        throw ServerException(err: "", type: ServerExceptionType.expiredToken);
+        throw ServerException(
+          err: "Phiên đăng nhập hết hạn, vui lòng đăng nhập lại",
+          type: ServerExceptionType.expiredToken,
+        );
       } else if (errType == DioExceptionType.connectionError) {
         // If no internet connection
         throw ServerException(
-          err: "",
+          err: "Kiểm tra lại kết nối mạng",
           type: ServerExceptionType.noInternetConnection,
         );
       } else if (errType == DioExceptionType.receiveTimeout) {
         // If no receive timeout
         throw ServerException(
-          err: "",
+          err: "Mạng chậm, thử lại sau ít phút",
           type: ServerExceptionType.noInternetConnection,
+        );
+      } else if (errType == DioExceptionType.unknown) {
+        throw ServerException(
+          err: "Không thể kết nối đến máy chủ, vui lòng thử lại",
+          type: ServerExceptionType.unknown,
         );
       } else {
         // Else
-        throw ServerException(
-          err: _getErrorTexts(e.response?.data as Map<String, dynamic>),
-        );
+        final data = e.response?.data;
+        if (data is Map<String, dynamic>) {
+          throw ServerException(
+            err: getErrorTexts(data),
+            type: ServerExceptionType.api,
+          );
+        } else {
+          throw ServerException(
+            err: 'Đã xảy ra lỗi không xác định',
+            type: ServerExceptionType.unknown,
+          );
+        }
       }
     } catch (e) {
       throw ServerException(err: e.toString());
@@ -95,7 +134,7 @@ class DioClient {
   }
 
   // Get error texts
-  String _getErrorTexts(Map<String, dynamic> validateMessages) {
+  static String getErrorTexts(Map<String, dynamic> validateMessages) {
     if (validateMessages.containsKey('message_validate')) {
       final errMessages =
           validateMessages['message_validate'] as Map<String, dynamic>;
@@ -107,7 +146,7 @@ class DioClient {
       }
     }
     return validateMessages.containsKey("message")
-        ? validateMessages["message"]
-        : '';
+        ? validateMessages["message"].toString()
+        : 'Đã xảy ra lỗi không xác định';
   }
 }

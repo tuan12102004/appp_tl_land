@@ -1,11 +1,9 @@
-import 'package:app_tl_land_3212/core/core_constants_module.dart';
-import 'package:app_tl_land_3212/core/core_util_module.dart';
+import 'core/core_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'bootstrap.dart';
-import 'core/di/service_locator.dart';
 
 void main() async {
   // Khởi tạo ràng buộc Flutter – đảm bảo bạn có thể sử dụng async/await trong main() trước khi runApp.

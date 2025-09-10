@@ -1,9 +1,7 @@
-import 'package:app_tl_land_3212/common/blocs/dialog_observer/dialog_observer_bloc.dart';
-import 'package:app_tl_land_3212/common/widgets/custom_rive_animation.dart';
+import 'package:app_tl_land_3212/common/common_module.dart';
+import 'package:app_tl_land_3212/core/core_module.dart';
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
-
-import '../di/service_locator.dart';
 
 void showAppLoading(
   BuildContext context, {

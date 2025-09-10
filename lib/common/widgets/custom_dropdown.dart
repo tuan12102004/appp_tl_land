@@ -1,6 +1,5 @@
-import 'package:app_tl_land_3212/common/blocs/select/select_bloc.dart';
-import 'package:app_tl_land_3212/core/core_constants_module.dart';
-import 'package:app_tl_land_3212/core/di/service_locator.dart';
+import 'package:app_tl_land_3212/common/common_module.dart';
+import 'package:app_tl_land_3212/core/core_module.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

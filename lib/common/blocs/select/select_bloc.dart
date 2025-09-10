@@ -6,7 +6,7 @@ part 'select_state.dart';
 part 'select_bloc.freezed.dart';
 
 class SelectBloc<T> extends Bloc<SelectEvent<T>, SelectState<T>> {
-  SelectBloc() : super(Initial<T>()) {
+  SelectBloc() : super(InitialSelect<T>()) {
     on<_Select<T>>(_onSelect);
   }
 

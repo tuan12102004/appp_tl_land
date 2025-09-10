@@ -1,3 +1,1 @@
-enum SharedPrefsKey {
-  accessToken, lang
-}
+enum SharedPrefsKey { accessToken, isLoggedIn, user, lang, tokenIssuedAt }

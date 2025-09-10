@@ -14,6 +14,7 @@ Future<void> _common() async {
     ..registerLazySingleton(() => Dio())
     ..registerLazySingleton(() => DioClient())
     ..registerLazySingleton(() => SharedPrefsService(prefs: sharedPrefs))
+    ..registerLazySingleton(() => MultiLoadingStateService())
     ..registerLazySingleton(() => RiveLoadingService())
     ..registerFactory(() => SelectBloc<bool>())
     ..registerFactory(() => SelectBloc<double>())
@@ -41,7 +42,26 @@ Future<void> _common() async {
 
 // Auth
 void _auth() {
-  
+  sl
+    ..registerFactory<AuthRemoteDatasource>(
+        () => AuthRemoteDatasourceImpl(dioClient: sl()))
+    ..registerFactory<AuthRepo>(() => AuthRepoImpl(authRemoteDatasource: sl()))
+    ..registerFactory(() => LoginUsecase(authRepo: sl()))
+    ..registerFactory(() => SignupUsecase(authRepo: sl()))
+    ..registerFactory(() => UpdatePassUsecase(authRepo: sl()))
+    ..registerFactory(() => LogoutUsecase(authRepo: sl()))
+    ..registerFactory(() => ProfileUsecase(authRepo: sl()))
+    ..registerFactory(() => ResendOtpUsecase(authRepo: sl()))
+    ..registerFactory(() => VerificationOtpUsecase(authRepo: sl()))
+    ..registerLazySingleton(() => AuthBloc(
+          login: sl<LoginUsecase>(),
+          signup: sl<SignupUsecase>(),
+          updatePass: sl<UpdatePassUsecase>(),
+          logout: sl<LogoutUsecase>(),
+          profile: sl<ProfileUsecase>(),
+          resendOtp: sl<ResendOtpUsecase>(),
+          verificationOtp: sl<VerificationOtpUsecase>(),
+        ));
 }
 
 // Notification

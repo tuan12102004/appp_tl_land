@@ -1,5 +1,5 @@
-import 'package:app_tl_land_3212/common/enums/snackbar_type.dart';
-import 'package:app_tl_land_3212/core/core_util_module.dart';
+import 'package:app_tl_land_3212/common/common_module.dart';
+import 'package:app_tl_land_3212/core/core_module.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 

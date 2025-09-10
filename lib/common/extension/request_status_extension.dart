@@ -1,5 +1,5 @@
-import 'package:app_tl_land_3212/common/enums/request_status.dart';
-import 'package:app_tl_land_3212/core/core_constants_module.dart';
+import 'package:app_tl_land_3212/common/common_module.dart';
+import 'package:app_tl_land_3212/core/core_module.dart';
 import 'package:flutter/material.dart';
 
 extension RequestStatusX on RequestStatus {

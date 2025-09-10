@@ -1,6 +1,4 @@
-import 'package:app_tl_land_3212/common/blocs/dialog_observer/dialog_observer_bloc.dart';
-import 'package:app_tl_land_3212/common/common_widgets_module.dart';
-import 'package:app_tl_land_3212/common/enums/dialog_type.dart';
+import 'package:app_tl_land_3212/common/common_module.dart';
 import 'package:flutter/material.dart';
 
 import '../di/service_locator.dart';

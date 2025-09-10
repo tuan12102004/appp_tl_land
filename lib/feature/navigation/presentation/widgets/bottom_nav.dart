@@ -1,9 +1,8 @@
-import 'package:app_tl_land_3212/common/blocs/select/select_bloc.dart';
-import 'package:app_tl_land_3212/core/core_constants_module.dart';
+import 'package:app_tl_land_3212/common/common_module.dart';
+import 'package:app_tl_land_3212/core/core_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:app_tl_land_3212/core/di/service_locator.dart';
 
 import 'bottom_nav_button.dart';
 
@@ -17,109 +16,87 @@ class BottomNav extends StatelessWidget {
     final List<Map<String, dynamic>> buttonItems = [
       {'icon': Icons.home, 'label': 'Trang chủ'},
       {'icon': Icons.search, 'label': 'Tìm kiếm'},
-      {'icon': Icons.notifications, 'label': 'Thông báo'},
+      {'icon': Icons.notifications_outlined, 'label': 'Thông báo'},
       {'icon': Icons.account_circle, 'label': 'Tài khoản'},
     ];
 
     final selectedPageIndex = context.select((SelectBloc<int> bloc) =>
         bloc.state.when(initial: () => 0, selected: (value) => value));
 
-    return Container(
+    return SizedBox(
       width: double.infinity,
-      decoration: BoxDecoration(
-        color: BackgroundColors.backgroundNavigationBarDefaultSolid,
-        border: Border(
-          top: BorderSide(
-            color: BorderColors.borderDefaultDefault,
-            width: 0.3.w,
+      height: kBottomNavigationBarHeight,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          // home (index 0)
+          BottomNavButton(
+            onPressed: () =>
+                selectedPageIndex != 0 ? onNavItemPressed(context, 0) : null,
+            isPressed: selectedPageIndex == 0,
+            icon: buttonItems[0]['icon'],
+            label: buttonItems[0]['label'],
           ),
-        ),
-      ),
-      child: SafeArea(
-        minimum: EdgeInsets.symmetric(horizontal: 16.w, vertical: 7.h),
-        child: SizedBox(
-          width: double.infinity,
-          height: kBottomNavigationBarHeight,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: List<Widget>.generate(buttonItems.length, (index) {
-              return index != 3
-                  ? BottomNavButton(
-                      onPressed: () => index != selectedPageIndex
-                          ? onNavItemPressed(context, index)
-                          : {},
-                      isPressed: index == selectedPageIndex,
-                      icon: buttonItems[index]['icon'],
-                      label: buttonItems[index]['label'],
-                    )
-                  : Stack(
-                      alignment: Alignment.topRight,
-                      children: [
-                        BottomNavButton(
-                          onPressed: () => index != selectedPageIndex
-                              ? onNavItemPressed(context, index)
-                              : {},
-                          isPressed: index == selectedPageIndex,
-                          icon: buttonItems[index]['icon'],
-                          label: buttonItems[index]['label'],
+          // search (index 1)
+          BottomNavButton(
+            onPressed: () =>
+                selectedPageIndex != 1 ? onNavItemPressed(context, 1) : null,
+            isPressed: selectedPageIndex == 1,
+            icon: buttonItems[1]['icon'],
+            label: buttonItems[1]['label'],
+          ),
+          // Khoảng trống cho FloatingActionButton
+          const SizedBox(width: 10),
+          // noti (index 3)
+          Stack(
+            clipBehavior: Clip.none,
+            alignment: Alignment.topRight,
+            children: [
+              BottomNavButton(
+                onPressed: () => selectedPageIndex != 3
+                    ? onNavItemPressed(context, 3)
+                    : null,
+                isPressed: selectedPageIndex == 3,
+                icon: buttonItems[2]['icon'],
+                label: buttonItems[2]['label'],
+              ),
+              // Transform.translate(
+              //   offset: Offset(-6, 13),
+              Positioned(
+                top: 7,
+                right: 5.5,
+                child: Container(
+                  height: 15.sp,
+                  width: 20.sp,
+                  padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100.sp),
+                      color: BackgroundColors.backgroundBadgeDefault),
+                  child: Text(
+                    "5+",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                          color: TextColors.textBadgeDefault,
+                          fontSize: 11.sp,
+                          fontWeight: FontWeight.w600,
+                          height: 13.sp / 11.sp,
+                          letterSpacing: 0.06.sp,
                         ),
-                        Transform.translate(
-                          offset: Offset(-8, 3),
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 2.w, vertical: 1.h),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(100.sp),
-                                color: BackgroundColors.backgroundBadgeDefault),
-                            child: Text(
-                              "9+",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelSmall!
-                                  .copyWith(
-                                    color: TextColors.textTabBarUnselected,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                            ),
-                          ),
-                        )
-                        // BlocBuilder<NotificationBloc, NotificationState>(
-                        //   builder: (context, state){
-                        //     if(state.isSuccess){
-                        //       final unreadCount = state.notifications
-                        //       .where((noti) => noti.status == "Chưa đọc")
-                        //       .length;
-                        //       if(unreadCount == 0) return SizedBox();
-                        //       return Transform.translate(
-                        //         offset: Offset(-8, 3),
-                        //         child: Container(
-                        //           padding: EdgeInsets.symmetric(
-                        //               horizontal: 2.w, vertical: 1.h),
-                        //           decoration: BoxDecoration(
-                        //               borderRadius: BorderRadius.circular(100.sp),
-                        //               color: BackgroundColors.backgroundBadgeDefault),
-                        //           child: Text(
-                        //              "${unreadCount < 9 ? unreadCount : 9}+",
-                        //             style: Theme.of(context)
-                        //             .textTheme.labelSmall!.copyWith(
-                        //               color: TextColors.textBadgeDefault,
-                        //               fontSize: 11.sp,
-                        //               fontWeight: FontWeight.w600,
-                        //               height: 13.sp / 11.sp,
-                        //               letterSpacing: 0.06.sp,
-                        //             ),
-                        //           ),
-                        //         ),
-                        //       );
-                        //     }
-                        //     return SizedBox();
-                        //   }
-                        // )
-                      ],
-                    );
-            }),
+                  ),
+                ),
+              )
+            ],
           ),
-        ),
+          // account (index 4)
+          BottomNavButton(
+            onPressed: () =>
+                selectedPageIndex != 4 ? onNavItemPressed(context, 4) : null,
+            isPressed: selectedPageIndex == 4,
+            icon: buttonItems[3]['icon'],
+            label: buttonItems[3]['label'],
+          ),
+        ],
       ),
     );
   }

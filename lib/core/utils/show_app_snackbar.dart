@@ -1,5 +1,4 @@
-import 'package:app_tl_land_3212/common/enums/snackbar_type.dart';
-import 'package:app_tl_land_3212/common/extension/snackbar_type_extension.dart';
+import 'package:app_tl_land_3212/common/common_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

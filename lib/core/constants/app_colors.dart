@@ -47,7 +47,7 @@ class BasicColors {
   static const Color gray300 = Color(0xFFB7B8C2);
   static const Color gray400 = Color(0xFF9093A0);
   static const Color gray500 = Color(0xFF737684);
-  static const Color gray600 = Color(0xFF575966);
+  static const Color gray600 = Color(0xFF837F7F);
   static const Color gray700 = Color(0xFF4C4E58);
   static const Color gray800 = Color(0xFF41434B);
   static const Color gray900 = Color(0xFF393A41);
@@ -72,7 +72,7 @@ class BasicColors {
   static const Color red200 = Color(0xFFFECACA);
   static const Color red300 = Color(0xFFFCA5A5);
   static const Color red400 = Color(0xFFF87171);
-  static const Color red500 = Color(0xFFEF4444);
+  static const Color red500 = Color(0xFFFF3B30);
   static const Color red600 = Color(0xFFDC2626);
   static const Color red700 = Color(0xFFB91C1C);
   static const Color red800 = Color(0xFF991B1B);
@@ -156,7 +156,6 @@ class BasicColors {
   static const Color purple800 = Color(0xFF6B21A8);
   static const Color purple900 = Color(0xFF581C87);
   static const Color purple950 = Color(0xFF3B0764);
-
 }
 
 class BackgroundColors {
@@ -186,7 +185,8 @@ class BackgroundColors {
 
   // Dialog & Navigation
   static const Color backgroundDialogAlertDefault = backgroundDefaultPrimary;
-  static const Color backgroundNavigationBarDefaultSolid = backgroundDefaultPrimary;
+  static const Color backgroundNavigationBarDefaultSolid =
+      backgroundDefaultPrimary;
   static const Color backgroundBottomSheetDefault = backgroundDefaultPrimary;
 
   // Buttons
@@ -200,13 +200,17 @@ class BackgroundColors {
   static const Color backgroundInputFieldDisabled = BasicColors.gray50;
 
   // Segmented Control
-  static const Color backgroundSegmentedControlColoringSelectedDefault = backgroundBrandPrimary;
-  static const Color backgroundSegmentedControlBasicSelectedLight = BasicColors.white1000;
-  static const Color backgroundSegmentedControlBasicSelectedDark = BasicColors.gray800;
+  static const Color backgroundSegmentedControlColoringSelectedDefault =
+      backgroundBrandPrimary;
+  static const Color backgroundSegmentedControlBasicSelectedLight =
+      BasicColors.white1000;
+  static const Color backgroundSegmentedControlBasicSelectedDark =
+      BasicColors.gray800;
 
   // Tab Bar & Combo Box
   static const Color backgroundTabBarDefaultSolid = backgroundDefaultPrimary;
-  static const Color backgroundComboBoxMenuItemOnselected = backgroundBrandPrimary;
+  static const Color backgroundComboBoxMenuItemOnselected =
+      backgroundBrandPrimary;
   static const Color backgroundComboBoxDefault = BasicColors.white1000;
   static const Color backgroundComboBoxDisabled = BasicColors.gray50;
 
@@ -223,7 +227,6 @@ class BackgroundColors {
   static const Color backgroundEventWorkUnfinished = backgroundWarningPrimary;
   static const Color backgroundEventPublicHoliday = backgroundErrorPrimary;
   static const Color backgroundEventPrivateHoliday = backgroundBrandPrimary;
-
 }
 
 class ElementColors {
@@ -284,7 +287,8 @@ class TextColors {
   // Segmented Control Text
   static const Color textSegmentedControlDefault = textDefaultPrimary;
   static const Color textSegmentedControlColoringSelected = textBrandOnbrand;
-  static const Color textSegmentedControlBasicSelected = textSegmentedControlDefault;
+  static const Color textSegmentedControlBasicSelected =
+      textSegmentedControlDefault;
 
   // Combo Box Text
   static const Color textComboBoxMenuItemDefault = textDefaultPrimary;
@@ -302,7 +306,6 @@ class TextColors {
   // Tab Bar Text
   static const Color textTabBarSelected = textBrandPrimary;
   static const Color textTabBarUnselected = BasicColors.gray600;
-
 }
 
 class IconColors {
@@ -361,7 +364,7 @@ class IconColors {
 }
 
 class BorderColors {
-   // Default Borders
+  // Default Borders
   static const Color borderDefaultDefault = BasicColors.black300;
   static const Color borderDefaultStrong = BasicColors.black800;
 
@@ -419,36 +422,49 @@ class AppColors {
   AppColors._();
 
   // Border
-  static const Color borderInputFieldDefault = BorderColors.borderInputFieldDefault;
-  static const Color borderInputFieldCorrect = BorderColors.borderInputFieldCorrect;
-  static const Color borderInputFieldFocused = BorderColors.borderInputFieldFocused;
+  static const Color borderInputFieldDefault =
+      BorderColors.borderInputFieldDefault;
+  static const Color borderInputFieldCorrect =
+      BorderColors.borderInputFieldCorrect;
+  static const Color borderInputFieldFocused =
+      BorderColors.borderInputFieldFocused;
   static const Color borderInputFieldWeak = BorderColors.borderInputFieldWeak;
   static const Color borderInputFieldWrong = BorderColors.borderInputFieldWrong;
 
   // Background
-  static const Color backgroundInputFieldDefault =BackgroundColors.backgroundInputFieldDefault;
-  static const Color backgroundInputFieldDisabled =BackgroundColors.backgroundInputFieldDisabled;
-  static const Color backgroundButtonPrimary =BackgroundColors.backgroundButtonPrimary;
-  static const Color backgroundDefaultSecondary =BackgroundColors.backgroundDefaultSecondary;
-  static const Color backgroundDefaultPrimary =BackgroundColors.backgroundDefaultPrimary;
+  static const Color backgroundInputFieldDefault =
+      BackgroundColors.backgroundInputFieldDefault;
+  static const Color backgroundInputFieldDisabled =
+      BackgroundColors.backgroundInputFieldDisabled;
+  static const Color backgroundButtonPrimary =
+      BackgroundColors.backgroundButtonPrimary;
+  static const Color backgroundDefaultSecondary =
+      BackgroundColors.backgroundDefaultSecondary;
+  static const Color backgroundDefaultPrimary =
+      BackgroundColors.backgroundDefaultPrimary;
 
   // Text
   static const Color textDefaultTertiary = TextColors.textDefaultTertiary;
   static const Color textErrorPrimary = TextColors.textErrorPrimary;
   static const Color textDefaultPrimary = TextColors.textDefaultPrimary;
-  static const Color textNavigationBarEnabled = TextColors.textNavigationBarEnabled;
+  static const Color textNavigationBarEnabled =
+      TextColors.textNavigationBarEnabled;
   static const Color textNavigationBarWhite = TextColors.textNavigationBarWhite;
   static const Color textButtonPrimary = TextColors.textButtonPrimary;
   static const Color textButtonPlain = TextColors.textButtonPlain;
-  static const Color textNavigationBarDefault = TextColors.textNavigationBarDefault;
+  static const Color textNavigationBarDefault =
+      TextColors.textNavigationBarDefault;
 
   // Icon
   static const Color iconDefaultTertiary = IconColors.iconDefaultTertiary;
-  static const Color iconNavigationBarDefault = IconColors.iconNavigationBarDefault;
+  static const Color iconNavigationBarDefault =
+      IconColors.iconNavigationBarDefault;
   static const Color iconDefaultSecondary = IconColors.iconDefaultSecondary;
-  static const Color iconNavigationBarEnabled = IconColors.iconNavigationBarEnabled;
+  static const Color iconNavigationBarEnabled =
+      IconColors.iconNavigationBarEnabled;
   static const Color iconNavigationBarWhite = IconColors.iconNavigationBarWhite;
-  static const Color iconInputFieldLeadingIcon = IconColors.iconInputFieldLeadingIcon;
+  static const Color iconInputFieldLeadingIcon =
+      IconColors.iconInputFieldLeadingIcon;
   static const Color iconTabBarSelected = IconColors.iconTabBarSelected;
   static const Color iconTabBarUnselected = IconColors.iconTabBarUnselected;
 
@@ -457,7 +473,8 @@ class AppColors {
 
   // Separator
   static const Color borderSeparatorOpaque = BorderColors.borderSeparatorOpaque;
-  static const Color borderSeparatorNonOpaque = BorderColors.borderSeparatorNonOpaque;
+  static const Color borderSeparatorNonOpaque =
+      BorderColors.borderSeparatorNonOpaque;
 
   // State
   static const Color stateColorsError = StateColors.stateColorsError;
@@ -467,5 +484,4 @@ class AppColors {
 
   static const Color elementDefaultTertiary = BasicColors.black100;
   static const Color elementDefaultSecondary = BasicColors.black200;
-
 }

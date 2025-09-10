@@ -330,13 +330,13 @@ extension SelectStatePatterns<T> on SelectState<T> {
 
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(Initial<T> value)? initial,
+    TResult Function(InitialSelect<T> value)? initial,
     TResult Function(Selected<T> value)? selected,
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
-      case Initial() when initial != null:
+      case InitialSelect() when initial != null:
         return initial(_that);
       case Selected() when selected != null:
         return selected(_that);
@@ -360,12 +360,12 @@ extension SelectStatePatterns<T> on SelectState<T> {
 
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(Initial<T> value) initial,
+    required TResult Function(InitialSelect<T> value) initial,
     required TResult Function(Selected<T> value) selected,
   }) {
     final _that = this;
     switch (_that) {
-      case Initial():
+      case InitialSelect():
         return initial(_that);
       case Selected():
         return selected(_that);
@@ -388,12 +388,12 @@ extension SelectStatePatterns<T> on SelectState<T> {
 
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Initial<T> value)? initial,
+    TResult? Function(InitialSelect<T> value)? initial,
     TResult? Function(Selected<T> value)? selected,
   }) {
     final _that = this;
     switch (_that) {
-      case Initial() when initial != null:
+      case InitialSelect() when initial != null:
         return initial(_that);
       case Selected() when selected != null:
         return selected(_that);
@@ -422,7 +422,7 @@ extension SelectStatePatterns<T> on SelectState<T> {
   }) {
     final _that = this;
     switch (_that) {
-      case Initial() when initial != null:
+      case InitialSelect() when initial != null:
         return initial();
       case Selected() when selected != null:
         return selected(_that.value);
@@ -451,7 +451,7 @@ extension SelectStatePatterns<T> on SelectState<T> {
   }) {
     final _that = this;
     switch (_that) {
-      case Initial():
+      case InitialSelect():
         return initial();
       case Selected():
         return selected(_that.value);
@@ -479,7 +479,7 @@ extension SelectStatePatterns<T> on SelectState<T> {
   }) {
     final _that = this;
     switch (_that) {
-      case Initial() when initial != null:
+      case InitialSelect() when initial != null:
         return initial();
       case Selected() when selected != null:
         return selected(_that.value);
@@ -491,13 +491,13 @@ extension SelectStatePatterns<T> on SelectState<T> {
 
 /// @nodoc
 
-class Initial<T> implements SelectState<T> {
-  const Initial();
+class InitialSelect<T> implements SelectState<T> {
+  const InitialSelect();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is Initial<T>);
+        (other.runtimeType == runtimeType && other is InitialSelect<T>);
   }
 
   @override

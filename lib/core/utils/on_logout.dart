@@ -1,6 +1,5 @@
-import 'package:app_tl_land_3212/common/common_enum_module.dart';
-import 'package:app_tl_land_3212/core/core_service_module.dart';
-import 'package:app_tl_land_3212/core/di/service_locator.dart';
+import 'package:app_tl_land_3212/common/common_module.dart';
+import 'package:app_tl_land_3212/core/core_module.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
