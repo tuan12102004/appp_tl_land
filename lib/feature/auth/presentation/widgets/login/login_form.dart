@@ -48,11 +48,14 @@ class LoginForm extends StatelessWidget {
           ),
           SizedBox(height: 16.h),
           CustomAdaptiveButton(
+            width: double.infinity,
+            height: 50.h,
             onPressed: onLogin,
             text: 'Đăng nhập',
           ),
           SizedBox(height: 8.h),
           CustomAdaptiveButton(
+            width: double.infinity,
             backgroundColor: Colors.transparent,
             textColor: TextColors.textButtonPlain,
             onPressed: onForgotThePass,

@@ -33,7 +33,7 @@ class ResetPassForm extends StatelessWidget {
           CustomPassField(
             onEditingComplete: () =>
                 FocusScope.of(context).requestFocus(_confirmPassNode),
-            hintText: 'Nhập mật khẩu',
+            hintText: 'Mật khẩu mới',
             validator: (value) => InputValidators.validatePassword(value),
             controller: _passCon,
             focusNode: _passNode,
@@ -43,18 +43,18 @@ class ResetPassForm extends StatelessWidget {
             focusNode: _confirmPassNode,
             controller: _confirmPassCon,
             onEditingComplete: () => FocusScope.of(context).unfocus(),
-            hintText: 'Nhập lại mật khẩu',
+            hintText: 'Nhập lại mật khẩu mới',
             validator: (value) => InputValidators.validateConfirmPassword(
-              value,
               _passCon.text,
+              value,
             ),
           ),
           SizedBox(height: 16.h),
           // Button reset
           CustomAdaptiveButton(
-            height: 60.h,
+            width: double.infinity,
             onPressed: () => _onConfirmPass(context),
-            text: 'Cập nhập',
+            text: 'Cập nhật',
           ),
         ],
       ),
@@ -63,7 +63,6 @@ class ResetPassForm extends StatelessWidget {
 
   void _onConfirmPass(BuildContext context) {
     if (_formKey.currentState?.validate() ?? false) {
-      // Gọi event cập nhật mật khẩu
       context.go('/auth/login');
     }
   }

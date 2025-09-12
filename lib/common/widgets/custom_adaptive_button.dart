@@ -40,8 +40,8 @@ class CustomAdaptiveButton extends StatelessWidget {
     // If current platform is iOS
     if (isIOS) {
       return Container(
-        width: width ?? double.infinity,
-        height: height ?? 50.h,
+        width: width,
+        height: height,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(radius ?? 12.r),
           border: Border.all(width: borderWidth ?? 1.w, color: borderColor),
@@ -75,8 +75,8 @@ class CustomAdaptiveButton extends StatelessWidget {
 
     // If current platform is android
     return SizedBox(
-      width: width ?? double.infinity,
-      height: height ?? 50.h,
+      width: width,
+      height: height,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           alignment: alignment,

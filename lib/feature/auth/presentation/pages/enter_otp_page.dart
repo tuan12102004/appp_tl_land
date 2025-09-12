@@ -21,23 +21,53 @@ class EnterOtpPage extends StatefulWidget {
 
 class _EnterOtpPageState extends State<EnterOtpPage> {
   late final CountDownBloc _countDownBloc;
+  final _otpCodeCon = TextEditingController();
+  final _otpCodeNode = FocusNode();
+  String? _errorText;
 
   @override
   void initState() {
     super.initState();
     _countDownBloc = CountDownBloc();
     _countDownBloc.add(const CountDownEvent.startCountdown(second: 59));
+
+    // Yêu cầu focus khi trang được xây dựng
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      FocusScope.of(context).requestFocus(_otpCodeNode);
+    });
   }
 
   @override
   void dispose() {
     _countDownBloc.close();
+    _otpCodeCon.dispose();
+    _otpCodeNode.dispose();
     super.dispose();
   }
 
+  void _onEnterOtp(String otpCode) {
+    FocusScope.of(context).unfocus();
+
+    if (otpCode.trim() != "1111") {
+      setState(() {
+        _errorText = 'Mã chưa chính xác, xin vui lòng thử lại!';
+      });
+      _otpCodeCon.clear();
+      _countDownBloc
+          .add(const CountDownEvent.cancelCountdown()); // Dừng đếm ngược
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _otpCodeNode.requestFocus();
+      });
+    } else {
+      setState(() {
+        _errorText = null;
+      });
+      widget.onCompleted(context);
+    }
+  }
+
   void _resendOtp() {
-    // Tại đây, bạn có thể thêm logic gọi API để gửi lại mã OTP
-    // Sau đó, bắt đầu lại bộ đếm ngược
+    // Logic gửi lại OTP
     _countDownBloc.add(const CountDownEvent.startCountdown(second: 59));
   }
 
@@ -57,9 +87,7 @@ class _EnterOtpPageState extends State<EnterOtpPage> {
                         fontWeight: FontWeight.w700,
                       ),
                 ),
-                SizedBox(
-                  height: 8.h,
-                ),
+                SizedBox(height: 8.h),
                 Text(
                   'Một mã xác thực đã được gửi đến email ${widget.email}, vui lòng kiểm tra tin nhắn của bạn. ',
                   textAlign: TextAlign.center,
@@ -67,12 +95,10 @@ class _EnterOtpPageState extends State<EnterOtpPage> {
                 ),
                 SizedBox(height: 16.h),
                 EnterOtpForm(
-                  email: widget.email,
-                  onCompleted: widget.onCompleted,
-                  onError: () {
-                    // Khi nhập sai OTP, dừng bộ đếm ngược
-                    _countDownBloc.add(const CountDownEvent.cancelCountdown());
-                  },
+                  controller: _otpCodeCon,
+                  focusNode: _otpCodeNode,
+                  errorText: _errorText,
+                  onCompleted: _onEnterOtp,
                 ),
                 SizedBox(height: 24.h),
                 BlocBuilder<CountDownBloc, CountDownState>(
@@ -104,7 +130,9 @@ class _EnterOtpPageState extends State<EnterOtpPage> {
                           );
                         } else {
                           return CustomAdaptiveButton(
-                            onPressed: () => _resendOtp(),
+                            width: double.infinity,
+                            height: 50.h,
+                            onPressed: _resendOtp,
                             text: 'Gửi lại mã mới',
                           );
                         }
