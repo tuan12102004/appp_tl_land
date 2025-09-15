@@ -131,7 +131,6 @@ class _EnterOtpPageState extends State<EnterOtpPage> {
                         } else {
                           return CustomAdaptiveButton(
                             width: double.infinity,
-                            height: 50.h,
                             onPressed: _resendOtp,
                             text: 'Gửi lại mã mới',
                           );

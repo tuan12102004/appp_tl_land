@@ -35,7 +35,6 @@ class ForgotPassForm extends StatelessWidget {
           SizedBox(height: 16.h),
           CustomAdaptiveButton(
             width: double.infinity,
-            height: 50.h,
             onPressed: onEnterEmail,
             text: 'Tiếp tục',
           ),
