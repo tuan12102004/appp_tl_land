@@ -41,6 +41,7 @@ String? selectedWard;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const CustomAppBar(title: "Hồ sơ của bạn"),
       backgroundColor: Colors.white,
       body: SafeArea(
         child: ListView(
@@ -53,13 +54,13 @@ String? selectedWard;
                 SizedBox(height: 16.h,),
                 CustomInputField(
                   label: "Họ và tên",
-                  hintText: "tên của bạn",
+                  hintText: "Đinh Trọng Phúc",
                   controller: _nameController,
                   keyboardType: TextInputType.name,
                 ),
                 CustomInputField(
                   label: "Email",
-                  hintText: "abcdz@gmail.com",
+                  hintText: "trongphuc19@gmail.com",
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                 ),
@@ -81,100 +82,121 @@ String? selectedWard;
     );
   }
   Widget _buildCityDropdown() {
-    return  Padding(
-      padding:  EdgeInsets.only(left: 16.0.w),
+    return Padding(
+      padding: EdgeInsets.only(left: 16.0.w, right: 16.0.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Thành phố",style: TextStyle(
-              fontSize: 17.sp ,fontWeight: FontWeight.w400
-          )),
-          Container(
-            width: 361.w,
-            height: 44.h,
-            margin: EdgeInsets.only(top: 8.h),
-            decoration: BoxDecoration(
-              border: Border.all(color: Color(0xff000000).withOpacity(0.2)),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child:  Padding(
-              padding:  EdgeInsets.only(left: 16.w, right: 16.w),
-              child: DropdownButtonFormField<String>(
-                isExpanded: true,
-                icon: Icon(Icons.expand_more),
-                value: selectedCity,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  isDense: true,
+          Text(
+            "Thành phố",
+            style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w400),
+          ),
+          SizedBox(height: 8.h),
+          DropdownButtonFormField<String>(
+            isExpanded: true,
+            icon: Icon(Icons.expand_more),
+            value: _cityList.contains(selectedCity) ? selectedCity : null,
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide(
+                  color: Colors.black.withValues(alpha: 0.2),
+                  width: 1,
                 ),
-                hint: Text("Hồ chí minh",style: TextStyle(
-                    fontSize: 17.sp,
-                    fontWeight: FontWeight.w400
-                ),),
-                items: _cityList.map((e) {
-                  return DropdownMenuItem<String>(
-                      value: e,
-                      child: Text(e,style: TextStyle(
-                          fontSize: 17.sp,
-                          fontWeight: FontWeight.w400
-                      ),));
-                },).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedCity = value;
-                  });
-                },),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide(
+                  color: Colors.black.withValues(alpha: 0.2),
+                  width: 1,
+                ),
+              ),
             ),
-          )
+            hint: Text(
+              "Hồ Chí Minh",
+              style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w400, color: Color(0xff000000)),
+            ),
+            items: _cityList.map((e) {
+              return DropdownMenuItem<String>(
+                value: e,
+                child: Text(
+                  e,
+                  style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w400),
+                ),
+              );
+            }).toList(),
+            onChanged: (value) {
+              setState(() {
+                selectedCity = value;
+              });
+            },
+          ),
         ],
       ),
     );
   }
   Widget _buildWardDropdown() {
-    return  Padding(
-      padding:  EdgeInsets.only(left: 16.0.w),
+    return Padding(
+      padding: EdgeInsets.only(left: 16.0.w, right: 16.0.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Phường",style: TextStyle(
-              fontSize: 17.sp ,fontWeight: FontWeight.w400
-          )),
-          Container(
-            width: 361.w,
-            height: 44.h,
-            margin: EdgeInsets.only(top: 8.h),
-            decoration: BoxDecoration(
-              border: Border.all(color: Color(0xff000000).withOpacity(0.2)),
-              borderRadius: BorderRadius.circular(8),
+          Text(
+            "Phường",
+            style: TextStyle(
+              fontSize: 17.sp,
+              fontWeight: FontWeight.w400,
             ),
-            child:  Padding(
-              padding:  EdgeInsets.only(left: 16.w, right: 16.w),
-              child: DropdownButtonFormField<String>(
-                value: selectedWard,
-                icon: Icon(Icons.expand_more),
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  isDense: true,
+          ),
+          SizedBox(height: 8.h),
+          DropdownButtonFormField<String>(
+            isExpanded: true,
+            icon: Icon(Icons.expand_more),
+            value: _wardList.contains(selectedWard) ? selectedWard : null,
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide(
+                  color: Colors.black.withValues(alpha: 0.2),
+                  width: 1,
                 ),
-                hint: Text("Quận 1",style: TextStyle(
-                    fontSize: 17.sp,
-                    fontWeight: FontWeight.w400
-                ),),
-                items: _wardList.map((e) {
-                  return DropdownMenuItem<String>(
-                      value: e,
-                      child: Text(e,style: TextStyle(
-                          fontSize: 17.sp,
-                          fontWeight: FontWeight.w400
-                      ),));
-                },).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedWard = value;
-                  });
-                },),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide(
+                  color: Colors.black.withValues(alpha: 0.2),
+                  width: 1,
+                ),
+              ),
             ),
-          )
+            hint: Text(
+              "Quận 1",
+              style: TextStyle(
+                fontSize: 17.sp,
+                fontWeight: FontWeight.w400,
+                color: Color(0xff000000),
+              ),
+            ),
+            items: _wardList.map((e) {
+              return DropdownMenuItem<String>(
+                value: e,
+                child: Text(
+                  e,
+                  style: TextStyle(
+                    fontSize: 17.sp,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              );
+            }).toList(),
+            onChanged: (value) {
+              setState(() {
+                selectedWard = value;
+              });
+            },
+          ),
         ],
       ),
     );
@@ -216,13 +238,13 @@ class ProfileImagePicker extends StatelessWidget {
       child: Container(
         width: 90.w,
         height: 90.h,
-        margin: EdgeInsets.only(top: 89.h),
+        margin: EdgeInsets.only(top: 55.h),
         child: Stack(
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(45.sp),
               child: Image.asset(
-                "assets/images/default_avatar.png",
+                "assets/anime.png",
                 fit: BoxFit.cover,
                 height: 80.h,
                 width: 80.w,
@@ -274,29 +296,28 @@ class CustomInputField extends StatelessWidget {
         children: [
           Text(
             label,
-            style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w400),
+            style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w400, color: Color(0xff000000)),
           ),
           Container(
             width: 361.w,
             height: 44.h,
             margin: EdgeInsets.only(top: 8.h),
             decoration: BoxDecoration(
-              border: Border.all(color: Color(0xff000000).withOpacity(0.2)),
+              border: Border.all(color: Color(0xff000000).withValues(alpha: 0.2)),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(12.w, 11.h, 16.w, 11.h),
-              child: TextField(
-                keyboardType: keyboardType,
-                controller: controller,
-                decoration: InputDecoration(
-                  hintText: hintText,
-                  border: InputBorder.none,
-                  hintStyle: TextStyle(
-                    fontSize: 17.sp,
-                    fontWeight: FontWeight.w400,
-                  ),
+            child: TextField(
+              keyboardType: keyboardType,
+              controller: controller,
+              decoration: InputDecoration(
+                hintText: hintText,
+                border: InputBorder.none,
+                hintStyle: TextStyle(
+                  fontSize: 17.sp,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xff000000)
                 ),
+                contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 11.h), // canh chuẩn
               ),
             ),
           ),
@@ -305,3 +326,40 @@ class CustomInputField extends StatelessWidget {
     );
   }
 }
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String title;
+  const CustomAppBar({super.key, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      backgroundColor: Colors.white,
+      elevation: 0,
+      automaticallyImplyLeading: false,
+      title: Row(
+        children: [
+          GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Icon(
+             Icons.arrow_back_ios, color: Color(0xff179BE0),size:24.sp
+            ),
+          ),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 17.sp,
+              fontWeight: FontWeight.w400,
+              color: const Color(0xff179BE0),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+}
+

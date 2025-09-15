@@ -15,18 +15,7 @@ class _RequestSubmissionHistoryState extends State<RequestSubmissionHistory> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xffF8F8F8),
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text("Bất động sản của tôi",style: TextStyle(
-            fontSize: 17.sp,
-            fontWeight: FontWeight.w400,
-            color: Color(0xff179BE0)
-        ),),
-        leading: IconButton(onPressed: () {
-          Navigator.pop(context);
-        }, icon: Icon(Icons.arrow_back_ios,color: Color(0xff179BE0),size: 24,)),
-        centerTitle: true,
-      ),
+      appBar: const CustomAppBar(title: "Bất động sản của tôi"),
       body: ListView(
         children: [
           _requestStatusTabs(),
@@ -184,5 +173,41 @@ class CustomListCard extends StatelessWidget {
       ),
     );
   }
+}
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String title;
+  const CustomAppBar({super.key, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      backgroundColor: Colors.white,
+      elevation: 0,
+      automaticallyImplyLeading: false,
+      title: Row(
+        children: [
+          GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Icon(
+                Icons.arrow_back_ios, color: Color(0xff179BE0),size: 24.sp,
+            ),
+          ),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 17.sp,
+              fontWeight: FontWeight.w400,
+              color: const Color(0xff179BE0),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }
 
