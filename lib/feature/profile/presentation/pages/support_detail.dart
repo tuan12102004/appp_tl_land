@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:movie/pages/widget/support_detail_content.dart';
+
+import 'widget/support_detail_content.dart';
 
 class SupportDetail extends StatefulWidget {
   const SupportDetail({super.key});

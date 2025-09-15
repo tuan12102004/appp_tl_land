@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:movie/pages/widget/policy_content.dart';
+
+import 'widget/policy_content.dart';
 
 class Policy extends StatefulWidget {
   const Policy({super.key});

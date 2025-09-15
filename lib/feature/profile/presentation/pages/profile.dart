@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:movie/pages/about_us.dart';
-import 'package:movie/pages/change_imformation.dart';
-import 'package:movie/pages/change_password.dart';
-import 'package:movie/pages/contact_support.dart';
-import 'package:movie/pages/policy.dart';
-import 'package:movie/pages/request_submission_history.dart';
+
+import 'about_us.dart';
+import 'change_imformation.dart' show ChangeImformation;
+import 'change_password.dart';
+import 'contact_support.dart';
+import 'policy.dart';
+import 'request_submission_history.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -20,62 +21,131 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       backgroundColor: Color(0xffF8F8F8),
       body: SafeArea(
-          child: Column(
-        children: [
-          Container(
-            width: 392.w,
-            height: 80.h,
-            color: Colors.white,
-            padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 12.h,),
-            child: Row(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(30.sp),
-                  child: Image.asset("assets/anime.png",height: 55.h, width:  55.w,fit: BoxFit.cover,),
-                ),
-                SizedBox(width: 12.w,),
-                Text("Đinh Trọng Phúc",style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w600
-                ),)
-              ],
-            ),
+          child: Column(children: [
+        Container(
+          width: 392.w,
+          height: 80.h,
+          color: Colors.white,
+          padding: EdgeInsets.fromLTRB(
+            16.w,
+            12.h,
+            16.w,
+            12.h,
           ),
-          SizedBox(height: 6.h,),
-          ProfileMenuItem(onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => ChangeImformation(),));},icon: Icons.person,title: "Hồ sơ của tôi", iconArrow: Icons.arrow_forward_ios_rounded,),
-          ProfileMenuItem(onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePassword()));},icon: Icons.lock,title: "Đổi mật khẩu", iconArrow: Icons.arrow_forward_ios_rounded,),
-          ProfileMenuItem(onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => RequestSubmissionHistory()));},icon: Icons.house,title: "Bất động sản của tôi", iconArrow: Icons.arrow_forward_ios_rounded,),
-          ProfileMenuItem(onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => AboutUs()));},icon: Icons.business,title: "Về chúng tôi", iconArrow: Icons.arrow_forward_ios_rounded,),
-          ProfileMenuItem(onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => ContactSupport()));},icon: Icons.phone,title: "Liên hệ và hỗ trợ", iconArrow: Icons.arrow_forward_ios_rounded,),
-          ProfileMenuItem(onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => Policy()));},icon: Icons.bookmark_border,title: "Điều khoản và chính sách", iconArrow: Icons.arrow_forward_ios_rounded,),
-          GestureDetector(
-            onTap: (){},
-            child: Container(
-              width: 321.w,
-              height:  66.h,
-              margin: EdgeInsets.all(16.sp),
-              child: Center(
-                child: Text("Đăng xuất",style: TextStyle(
-                    fontSize: 17.sp,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xffFF3B30)
+          child: Row(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(30.sp),
+                child: Image.asset(
+                  "assets/anime.png",
+                  height: 55.h,
+                  width: 55.w,
+                  fit: BoxFit.cover,
                 ),
-                )
               ),
-            ),
-          )
-        ]
-      )),
+              SizedBox(
+                width: 12.w,
+              ),
+              Text(
+                "Đinh Trọng Phúc",
+                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+              )
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 6.h,
+        ),
+        ProfileMenuItem(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChangeImformation(),
+                ));
+          },
+          icon: Icons.person,
+          title: "Hồ sơ của tôi",
+          iconArrow: Icons.arrow_forward_ios_rounded,
+        ),
+        ProfileMenuItem(
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ChangePassword()));
+          },
+          icon: Icons.lock,
+          title: "Đổi mật khẩu",
+          iconArrow: Icons.arrow_forward_ios_rounded,
+        ),
+        ProfileMenuItem(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => RequestSubmissionHistory()));
+          },
+          icon: Icons.house,
+          title: "Bất động sản của tôi",
+          iconArrow: Icons.arrow_forward_ios_rounded,
+        ),
+        ProfileMenuItem(
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => AboutUs()));
+          },
+          icon: Icons.business,
+          title: "Về chúng tôi",
+          iconArrow: Icons.arrow_forward_ios_rounded,
+        ),
+        ProfileMenuItem(
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ContactSupport()));
+          },
+          icon: Icons.phone,
+          title: "Liên hệ và hỗ trợ",
+          iconArrow: Icons.arrow_forward_ios_rounded,
+        ),
+        ProfileMenuItem(
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Policy()));
+          },
+          icon: Icons.bookmark_border,
+          title: "Điều khoản và chính sách",
+          iconArrow: Icons.arrow_forward_ios_rounded,
+        ),
+        GestureDetector(
+          onTap: () {},
+          child: Container(
+            width: 321.w,
+            height: 66.h,
+            margin: EdgeInsets.all(16.sp),
+            child: Center(
+                child: Text(
+              "Đăng xuất",
+              style: TextStyle(
+                  fontSize: 17.sp,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xffFF3B30)),
+            )),
+          ),
+        )
+      ])),
     );
   }
 }
 
 class ProfileMenuItem extends StatelessWidget {
   const ProfileMenuItem({
-    super.key, required this.icon, required this.title, required this.iconArrow, required this.onTap,
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.iconArrow,
+    required this.onTap,
   });
-final IconData icon;
-final IconData iconArrow;
+  final IconData icon;
+  final IconData iconArrow;
   final String title;
   final VoidCallback onTap;
   @override
@@ -83,29 +153,39 @@ final IconData iconArrow;
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height:  56.h,
+        height: 56.h,
         decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border(
-            bottom: BorderSide(color: Colors.grey,width: 0.1.w)
-          )
-        ),
-        child: Row(
-          children: [
-            SizedBox(width: 16.w,),
-            Icon(icon,color: Colors.grey,size: 24.sp,),
-            SizedBox(width: 16.w,),
-            SizedBox(
-              width: 296.w,
-              child: Text(title,style: TextStyle(
-                  fontSize: 15.sp,
-                  fontWeight: FontWeight.w600
-              ),),
+            color: Colors.white,
+            border:
+                Border(bottom: BorderSide(color: Colors.grey, width: 0.1.w))),
+        child: Row(children: [
+          SizedBox(
+            width: 16.w,
+          ),
+          Icon(
+            icon,
+            color: Colors.grey,
+            size: 24.sp,
+          ),
+          SizedBox(
+            width: 16.w,
+          ),
+          SizedBox(
+            width: 296.w,
+            child: Text(
+              title,
+              style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600),
             ),
-            SizedBox(width: 8.w,),
-            Icon(iconArrow,size: 24.sp,color: Color(0xff000000).withOpacity(0.5),)
-          ]
-        ),
+          ),
+          SizedBox(
+            width: 8.w,
+          ),
+          Icon(
+            iconArrow,
+            size: 24.sp,
+            color: Color(0xff000000).withOpacity(0.5),
+          )
+        ]),
       ),
     );
   }

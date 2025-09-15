@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:movie/pages/support_detail.dart';
+
+import 'support_detail.dart';
 
 class ContactSupport extends StatefulWidget {
   const ContactSupport({super.key});
