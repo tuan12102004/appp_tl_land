@@ -8,14 +8,14 @@ import 'contact_support.dart';
 import 'policy.dart';
 import 'request_submission_history.dart';
 
-class Profile extends StatefulWidget {
-  const Profile({super.key});
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
 
   @override
-  State<Profile> createState() => _ProfileState();
+  State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfileState extends State<Profile> {
+class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +37,7 @@ class _ProfileState extends State<Profile> {
               ClipRRect(
                 borderRadius: BorderRadius.circular(30.sp),
                 child: Image.asset(
-                  "assets/anime.png",
+                  "assets/images/default_avatar.png",
                   height: 55.h,
                   width: 55.w,
                   fit: BoxFit.cover,
@@ -56,7 +56,7 @@ class _ProfileState extends State<Profile> {
         SizedBox(
           height: 6.h,
         ),
-        ProfileMenuItem(
+        ProfilePageMenuItem(
           onTap: () {
             Navigator.push(
                 context,
@@ -68,7 +68,7 @@ class _ProfileState extends State<Profile> {
           title: "Hồ sơ của tôi",
           iconArrow: Icons.arrow_forward_ios_rounded,
         ),
-        ProfileMenuItem(
+        ProfilePageMenuItem(
           onTap: () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => ChangePassword()));
@@ -77,7 +77,7 @@ class _ProfileState extends State<Profile> {
           title: "Đổi mật khẩu",
           iconArrow: Icons.arrow_forward_ios_rounded,
         ),
-        ProfileMenuItem(
+        ProfilePageMenuItem(
           onTap: () {
             Navigator.push(
                 context,
@@ -88,7 +88,7 @@ class _ProfileState extends State<Profile> {
           title: "Bất động sản của tôi",
           iconArrow: Icons.arrow_forward_ios_rounded,
         ),
-        ProfileMenuItem(
+        ProfilePageMenuItem(
           onTap: () {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => AboutUs()));
@@ -97,7 +97,7 @@ class _ProfileState extends State<Profile> {
           title: "Về chúng tôi",
           iconArrow: Icons.arrow_forward_ios_rounded,
         ),
-        ProfileMenuItem(
+        ProfilePageMenuItem(
           onTap: () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => ContactSupport()));
@@ -106,7 +106,7 @@ class _ProfileState extends State<Profile> {
           title: "Liên hệ và hỗ trợ",
           iconArrow: Icons.arrow_forward_ios_rounded,
         ),
-        ProfileMenuItem(
+        ProfilePageMenuItem(
           onTap: () {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => Policy()));
@@ -136,8 +136,8 @@ class _ProfileState extends State<Profile> {
   }
 }
 
-class ProfileMenuItem extends StatelessWidget {
-  const ProfileMenuItem({
+class ProfilePageMenuItem extends StatelessWidget {
+  const ProfilePageMenuItem({
     super.key,
     required this.icon,
     required this.title,

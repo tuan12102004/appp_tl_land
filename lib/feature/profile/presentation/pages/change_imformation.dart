@@ -222,7 +222,7 @@ class ProfileImagePicker extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(45.sp),
               child: Image.asset(
-                "assets/anime.png",
+                "assets/images/default_avatar.png",
                 fit: BoxFit.cover,
                 height: 80.h,
                 width: 80.w,
