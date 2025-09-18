@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:movie/pages/support_detail.dart';
+import 'package:learn/pages/support_detail.dart';
+import 'package:learn/pages/widget/custom_appbar.dart';
 
 class ContactSupport extends StatefulWidget {
   const ContactSupport({super.key});
@@ -8,6 +9,7 @@ class ContactSupport extends StatefulWidget {
   @override
   State<ContactSupport> createState() => _ContactSupportState();
 }
+
 class _ContactSupportState extends State<ContactSupport> {
   @override
   Widget build(BuildContext context) {
@@ -18,39 +20,54 @@ class _ContactSupportState extends State<ContactSupport> {
           ContactCard(),
           SupportHeader(),
           ...List.generate(10, (index) {
-            return Container(
-              height: 50.h,
-              width: 392.w,
-              padding: EdgeInsets.fromLTRB( 16.w, 16.h, 16.w, 16.h),
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(color: Colors.grey,width: 0.1.w)
+            return OptionTile();
+          }),
+        ],
+      ),
+    );
+  }
+}
+
+class OptionTile extends StatelessWidget {
+  const OptionTile({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 50.h,
+      width: 392.w,
+      padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: Colors.grey, width: 0.1.w),
+        ),
+        color: Colors.white,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SupportDetail()),
+              );
+            },
+            child: Container(
+              height: 18.h,
+              width: 332.w,
+              margin: EdgeInsets.only(right: 10.w),
+              child: Text(
+                "Làm thế nào để đổi mật khẩu",
+                style: TextStyle(
+                  fontSize: 13.sp,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
                 ),
-                color: Colors.white
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => SupportDetail()));
-                    },
-                    child: Container(
-                      height: 18.h,
-                      width: 332.w,
-                      margin: EdgeInsets.only(right: 10.w,),
-                      child: Text("Làm thế nào để đổi mật khẩu",style: TextStyle(
-                        fontSize: 13.sp,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black
-                      ),)
-                    ),
-                  ),
-                  Icon(Icons.arrow_forward_ios,size: 18.sp,color: Color(0xff615358),)
-                ]
-              )
-            );
-          },)
+            ),
+          ),
+          Icon(Icons.arrow_forward_ios, size: 18.sp, color: Color(0xff615358)),
         ],
       ),
     );
@@ -58,9 +75,7 @@ class _ContactSupportState extends State<ContactSupport> {
 }
 
 class SupportHeader extends StatelessWidget {
-  const SupportHeader({
-    super.key,
-  });
+  const SupportHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -76,10 +91,10 @@ class SupportHeader extends StatelessWidget {
             height: 25.h,
             width: 313.w,
             child: Center(
-              child: Text("Chúng tôi có thể giúp gì cho bạn ?",style: TextStyle(
-                fontSize: 20.sp,
-                fontWeight: FontWeight.w600,
-              ),),
+              child: Text(
+                "Chúng tôi có thể giúp gì cho bạn ?",
+                style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w600),
+              ),
             ),
           ),
           Container(
@@ -87,11 +102,14 @@ class SupportHeader extends StatelessWidget {
             width: 392.w,
             margin: EdgeInsets.only(top: 6.h),
             child: Center(
-              child: Text("Chúng tôi luôn sẵn sàng phục vụ và hỗ trợ bạn",style: TextStyle(
+              child: Text(
+                "Chúng tôi luôn sẵn sàng phục vụ và hỗ trợ bạn",
+                style: TextStyle(
                   fontSize: 17.sp,
                   fontWeight: FontWeight.w400,
-                  color: Color(0xff000000).withValues(alpha: 0.5)
-              ),),
+                  color: Color(0xff000000).withValues(alpha: 0.5),
+                ),
+              ),
             ),
           ),
         ],
@@ -101,19 +119,15 @@ class SupportHeader extends StatelessWidget {
 }
 
 class ContactCard extends StatelessWidget {
-  const ContactCard({
-    super.key,
-  });
+  const ContactCard({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 240,
+      height: 224,
       width: 392,
       padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
-      decoration: BoxDecoration(
-        color: Colors.white,
-      ),
+      decoration: BoxDecoration(color: Colors.white),
       child: Column(
         children: [
           Center(
@@ -125,85 +139,47 @@ class ContactCard extends StatelessWidget {
             ),
           ),
           Center(
-            child: Text('Liên hệ với chúng tôi',style: TextStyle(
+            child: Text(
+              'Liên hệ với chúng tôi',
+              style: TextStyle(
                 fontSize: 17.sp,
                 fontWeight: FontWeight.w600,
-                color: Colors.black
-            ),),
+                color: Colors.black,
+              ),
+            ),
           ),
-          SizedBox(height: 24.h,),
+          SizedBox(height: 24.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                height: 42.h,
-                width: 42.w,
-                margin: EdgeInsets.only(right: 16.w, left: 16.w),
-                child: Image.asset("assets/zalo.png",height: 42.h, width: 42.w,),
-              ),
-              Container(
-                height: 42.h,
-                width: 42.w,
-                margin: EdgeInsets.only(right: 16.w),
-                child: Image.asset("assets/facebook.png",height: 42.h, width: 42.w,),
-              ),
-              Container(
-                height: 42.h,
-                width: 42.w,
-                margin: EdgeInsets.only(right: 16.w),
-                child: Image.asset("assets/phone.png",height: 42.h, width: 42.w,),
-              ),
-              Container(
-                height: 42.h,
-                width: 42.w,
-                decoration: BoxDecoration(
-                    color: Color(0xff179BE0),
-                    borderRadius: BorderRadius.circular(21.sp)
-                ),
-                margin: EdgeInsets.only(right: 16.w),
-                child: Image.asset("assets/email.png",height: 42.h, width: 42.w,),
-              ),
+              ImageSupport(text: "assets/images/logo.png"),
+              ImageSupport(text: "assets/images/logo.png"),
+              ImageSupport(text: "assets/images/logo.png"),
+              ImageSupport(text: "assets/images/logo.png"),
             ],
-          ),
-        ]
-      )
-    );
-  }
-}
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String title;
-  const CustomAppBar({super.key, required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      backgroundColor: Colors.white,
-      elevation: 0,
-      automaticallyImplyLeading: false,
-      title: Row(
-        children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Icon(
-                Icons.arrow_back_ios, color: Color(0xff179BE0),size: 24.sp,
-            ),
-          ),
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 17.sp,
-              fontWeight: FontWeight.w400,
-              color: const Color(0xff179BE0),
-            ),
           ),
         ],
       ),
     );
   }
-
-  @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }
 
+class ImageSupport extends StatelessWidget {
+  const ImageSupport({super.key, required this.text});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 42.h,
+      width: 42.w,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey, width: 0.1.w),
+        borderRadius: BorderRadius.circular(21.sp),
+      ),
+      margin: EdgeInsets.only(right: 3.59.w, left: 16.w),
+      child: Image.asset(text, height: 42.h, width: 42.w),
+    );
+  }
+}
