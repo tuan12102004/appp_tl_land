@@ -29,12 +29,10 @@ class DioClient {
               request: true,
               requestBody: true,
               requestHeader: true,
-              responseBody: true,
               logPrint: print,
             ),
             AppInterceptor(),
           ]);
-
   void setBearerToken(String token) {
     _dio.options.headers.remove("X-TOKEN-ACCESS");
     _dio.options.headers["Authorization"] = "Bearer $token";
@@ -90,12 +88,9 @@ class DioClient {
       final errType = e.type;
 
       if (errType == DioExceptionType.badResponse &&
-          e.response?.statusCode == 403) {
-        // If token is expired
-        throw ServerException(
-          err: "Phiên đăng nhập hết hạn, vui lòng đăng nhập lại",
-          type: ServerExceptionType.expiredToken,
-        );
+ e.response?.statusCode == 401) {
+        //! If token is expired (HTTP 401 Unauthorized)
+        throw ServerException(err: "", type: ServerExceptionType.expiredToken);
       } else if (errType == DioExceptionType.connectionError) {
         // If no internet connection
         throw ServerException(

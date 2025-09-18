@@ -1,4 +1,5 @@
 import 'package:app_tl_land_3212/config/config_router_module.dart';
+import 'package:app_tl_land_3212/config/router/search_routers.dart';
 import 'package:app_tl_land_3212/core/constants/app_globals.dart';
 import 'package:app_tl_land_3212/core/navigation/app_navigations.dart';
 import 'package:app_tl_land_3212/feature/navigation/presentation/pages/navigation_page.dart';
@@ -10,9 +11,9 @@ class AppRouters {
     navigatorKey: navigatorKey,
 
     // Khi app khởi động, nó sẽ mở màn hình có đường dẫn /intro/splash đầu tiên.
-    initialLocation: '/intro/splash',
-    // Dành cho đi thẳng vô home 
-    // initialLocation: '/',
+    // initialLocation: '/intro/splash',
+    // Dành cho đi thẳng vô home
+    initialLocation: '/',
     // danh sách các route
     routes: [
       // Router của intro
@@ -21,18 +22,18 @@ class AppRouters {
       AuthRouters.routers,
       // Router vào trang chủ
       GoRoute(
-        path: '/',
-        pageBuilder: (context, state) => buildPageWithSlideTransition(NavigationPage(), state)
-      ),
+          path: '/',
+          pageBuilder: (context, state) =>
+              buildPageWithSlideTransition(NavigationPage(), state)),
 
       // Router vào trang chủ
       HomeRouters.routers,
-      
       // Router vào trang thông báo
       NotificationRouters.routers,
-
       // Router vào trang cá nhân
       ProfileRouters.routers,
+      // Router vào trang tìm kiếm
+      SearchRouters.routers,
     ],
   );
 }

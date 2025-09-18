@@ -9,6 +9,9 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   final Color? backgroundColor;
   final bool visibleBottom;
   final Widget? leading;
+  final PreferredSizeWidget? bottom;
+
+  final double? leadingWidth;
 
   const CustomAppbar({
     super.key,
@@ -18,6 +21,8 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
     this.backgroundColor,
     this.visibleBottom = false,
     this.leading,
+    this.bottom,
+    this.leadingWidth,
   });
 
   @override
@@ -30,6 +35,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
       actions: actions,
       leading: leading,
       bottom: _getAppbarBottom(),
+      leadingWidth: leadingWidth,
     );
   }
 

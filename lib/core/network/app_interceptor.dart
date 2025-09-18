@@ -42,7 +42,7 @@ class AppInterceptor extends Interceptor {
         return handler.reject(
           DioException(
             requestOptions: options,
-            type: DioExceptionType.expiredToken,
+            type: DioExceptionType.badResponse, //!
           ),
         );
       } else {

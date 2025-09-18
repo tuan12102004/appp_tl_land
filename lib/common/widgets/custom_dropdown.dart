@@ -42,9 +42,9 @@ class CustomDropdown<T> extends StatefulWidget {
     this.prefixIcon,
     this.trailingWidgets = const [],
   }) : assert(
-         value == null || items.containsKey(value),
-         'Items are not contains value !',
-       );
+          value == null || items.containsKey(value),
+          'Items are not contains value !',
+        );
 
   @override
   State<CustomDropdown<T>> createState() => _CustomizeDropdownState<T>();
@@ -75,9 +75,8 @@ class _CustomizeDropdownState<T> extends State<CustomDropdown<T>> {
     final RenderBox renderBox = context.findRenderObject() as RenderBox;
     final Size size = renderBox.size;
 
-    final List<MapEntry<T, String>> convertItems = widget.items.entries
-        .map((el) => MapEntry(el.key, el.value))
-        .toList();
+    final List<MapEntry<T, String>> convertItems =
+        widget.items.entries.map((el) => MapEntry(el.key, el.value)).toList();
 
     _overlayEntry = OverlayEntry(
       builder: (_) => GestureDetector(
@@ -95,8 +94,7 @@ class _CustomizeDropdownState<T> extends State<CustomDropdown<T>> {
                   duration: Duration(milliseconds: 400),
                   height: widget.maxHeightDropdown,
                   decoration: BoxDecoration(
-                    borderRadius:
-                        widget.borderRadiusButton ??
+                    borderRadius: widget.borderRadiusButton ??
                         BorderRadius.circular(12.r),
                     border: Border.all(
                       width: 1.w,
@@ -107,8 +105,7 @@ class _CustomizeDropdownState<T> extends State<CustomDropdown<T>> {
                     ],
                   ),
                   child: ClipRRect(
-                    borderRadius:
-                        widget.borderRadiusButton ??
+                    borderRadius: widget.borderRadiusButton ??
                         BorderRadius.circular(12.r),
                     child: Scrollbar(
                       child: ListView.separated(
@@ -124,12 +121,11 @@ class _CustomizeDropdownState<T> extends State<CustomDropdown<T>> {
                               convertItems[index].key == widget.value;
                           return CupertinoButton(
                             color: isSelected
-                                ? AppColors.primary
+                                ? BasicColors.blueZodiac500
                                 : AppColors.textButtonPrimary,
                             minSize: 0,
                             borderRadius: BorderRadius.zero,
-                            padding:
-                                widget.paddingDropdownItems ??
+                            padding: widget.paddingDropdownItems ??
                                 EdgeInsets.symmetric(
                                   horizontal: 16.w,
                                   vertical: 11.h,
@@ -164,7 +160,7 @@ class _CustomizeDropdownState<T> extends State<CustomDropdown<T>> {
                                           color: isSelected
                                               ? Colors.white
                                               : TextColors
-                                                    .textComboBoxMenuItemDefault,
+                                                  .textComboBoxMenuItemDefault,
                                         ),
                                   ),
                                 ),
@@ -209,10 +205,10 @@ class _CustomizeDropdownState<T> extends State<CustomDropdown<T>> {
   String _getHintOrValue() {
     return widget.value != null
         ? widget.items.entries
-                  .where((el) => el.key == widget.value)
-                  .firstOrNull
-                  ?.value ??
-              widget.hintText
+                .where((el) => el.key == widget.value)
+                .firstOrNull
+                ?.value ??
+            widget.hintText
         : widget.hintText;
   }
 
@@ -231,21 +227,18 @@ class _CustomizeDropdownState<T> extends State<CustomDropdown<T>> {
               child: AnimatedContainer(
                 duration: Duration(milliseconds: 400),
                 alignment: Alignment.center,
-                padding:
-                    widget.paddingButton ??
+                padding: widget.paddingButton ??
                     EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
                 decoration: BoxDecoration(
                   borderRadius:
                       widget.borderRadiusButton ?? BorderRadius.circular(12.r),
-                  color:
-                      widget.backgroundColorButton ??
+                  color: widget.backgroundColorButton ??
                       AppColors.backgroundDefaultPrimary,
-                  border:
-                      widget.borderButton ??
+                  border: widget.borderButton ??
                       Border.all(
                         width: 1.w,
                         color: currentState == true
-                            ? AppColors.primary
+                            ? BasicColors.blueZodiac500
                             : AppColors.borderSeparatorNonOpaque,
                       ),
                 ),
@@ -265,10 +258,10 @@ class _CustomizeDropdownState<T> extends State<CustomDropdown<T>> {
                       child: Text(
                         _getHintOrValue(),
                         style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          color: widget.value != null
-                              ? null
-                              : AppColors.textDefaultTertiary,
-                        ),
+                              color: widget.value != null
+                                  ? null
+                                  : AppColors.textDefaultTertiary,
+                            ),
                       ),
                     ),
                     SizedBox(width: 4.w),

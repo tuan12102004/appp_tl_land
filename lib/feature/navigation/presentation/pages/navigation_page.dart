@@ -22,7 +22,7 @@ class NavigationPage extends StatefulWidget {
 
 class _NavigationPageState extends State<NavigationPage> {
   final listPages = [
-    HomePage(),
+HomePage(),
     SearchPage(),
     FloatingAddPage(),
     NotificationPage(),
@@ -96,6 +96,12 @@ class _NavigationPageState extends State<NavigationPage> {
                 child: const BottomNav(),
               ),
             ),
+<<<<<<< HEAD
+=======
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            bottomNavigationBar: BottomNav(),
+>>>>>>> 7daecc0 (ui search)
           );
         },
       ),

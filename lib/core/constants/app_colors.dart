@@ -161,8 +161,8 @@ class BasicColors {
 class BackgroundColors {
   // Default Backgrounds
   static const Color backgroundDefaultPrimary = BasicColors.white1000;
-  static const Color backgroundDefaultSecondary = BasicColors.gray50;
-  static const Color backgroundDefaultTertiary = BasicColors.gray100;
+  static const Color backgroundDefaultSecondary = Color(0xFF82CDF7);
+  static const Color backgroundDefaultTertiary = Color(0xFFE1F1FD);
 
   // Brand Backgrounds
   static const Color backgroundBrandPrimary = BasicColors.blueZodiac500;
@@ -442,6 +442,8 @@ class AppColors {
       BackgroundColors.backgroundDefaultSecondary;
   static const Color backgroundDefaultPrimary =
       BackgroundColors.backgroundDefaultPrimary;
+  static const Color backgroundBrandTertiary =
+      BackgroundColors.backgroundBrandTertiary;
 
   // Text
   static const Color textDefaultTertiary = TextColors.textDefaultTertiary;
