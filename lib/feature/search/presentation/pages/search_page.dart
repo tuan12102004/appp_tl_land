@@ -97,7 +97,10 @@ class _SearchPageState extends State<SearchPage> {
                 ],
               ),
               Expanded(
-                child: ListView.builder(
+                child: ListView.separated(
+                  separatorBuilder: (_, __) => SizedBox(
+                    height: 16.h,
+                  ),
                   itemCount: datas.length,
                   padding: EdgeInsets.symmetric(vertical: 8.h),
                   itemBuilder: (context, index) {

@@ -17,57 +17,38 @@ class BottomActionBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      top: false,
-      bottom: false,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            padding: EdgeInsets.only(
-              left: 16.w,
-              right: 16.w,
-              top: 16.h,
-              bottom: 40.h,
+    return DecoratedBox(
+      decoration: BoxDecoration(
+          color: BackgroundColors.backgroundDefaultPrimary,
+          border: Border(
+            top: BorderSide(
+              width: 0.6.w,
+              color: BorderColors.borderDefaultDefault,
             ),
-            decoration: BoxDecoration(
-                color: BackgroundColors.backgroundDefaultPrimary,
-                border: Border(
-                  top: BorderSide(
-                    width: 0.6.w,
-                    color: BorderColors.borderDefaultDefault,
-                  ),
-                )),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: CustomAdaptiveButton(
-                        borderWidth: 12.r,
-                        backgroundColor: const Color(0xFFF1F9FE),
-                        textColor: BasicColors.blueZodiac500,
-                        onPressed: onCancelPressed,
-                        text: 'Đặt lại',
-                      ),
-                    ),
-                    SizedBox(width: 10.w),
-                    Expanded(
-                      child: CustomAdaptiveButton(
-                        borderWidth: 12.r,
-                        backgroundColor: BasicColors.blueZodiac500,
-                        textColor: Colors.white,
-                        onPressed: onActionPressed,
-                        text: actionLabel,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+          )),
+      child: SafeArea(
+        minimum: EdgeInsets.all(16.w),
+        child: Row(
+          spacing: 10.w,
+          children: [
+            Expanded(
+              child: CustomAdaptiveButton(
+                padding: EdgeInsets.zero,
+                onPressed: () {},
+                text: 'Đăt lại',
+                backgroundColor: const Color(0xFFF1F9FE),
+                textColor: BasicColors.blueZodiac500,
+              ),
             ),
-          ),
-        ],
+            Expanded(
+              child: CustomAdaptiveButton(
+                padding: EdgeInsets.zero,
+                onPressed: onActionPressed,
+                text: actionLabel,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

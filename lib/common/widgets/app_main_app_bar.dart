@@ -53,92 +53,89 @@ class AppMainAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.amber,
-      child: CustomAppbar(
-        leadingWidth: 100.w,
-        title: Text(
-          title,
-          style: TextTheme.of(context).titleMedium!.copyWith(
-                color: TextColors.textNavigationBarDefault,
-                fontSize: 17.sp,
-                fontWeight: FontWeight.w600,
-                height: (22 / 17).sp,
-                letterSpacing: -0.43.sp,
-              ),
-        ),
-        automaticallyImplyLeading: automaticallyImplyLeading,
-        leading: Padding(
-          padding: EdgeInsets.symmetric(vertical: 11.h, horizontal: 8.w),
-          child: leading ??
-              (showCloseWithLabel
-                  ? GestureDetector(
-                      onTap: () => Navigator.of(context).pop(),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.close,
+    return CustomAppbar(
+      leadingWidth: 100.w,
+      title: Text(
+        title,
+        style: TextTheme.of(context).titleMedium!.copyWith(
+              color: TextColors.textNavigationBarDefault,
+              fontSize: 17.sp,
+              fontWeight: FontWeight.w600,
+              height: (22 / 17).sp,
+              letterSpacing: -0.43.sp,
+            ),
+      ),
+      automaticallyImplyLeading: automaticallyImplyLeading,
+      leading: Padding(
+        padding: EdgeInsets.symmetric(vertical: 11.h, horizontal: 8.w),
+        child: leading ??
+            (showCloseWithLabel
+                ? GestureDetector(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.close,
+                          color: BasicColors.blueZodiac500,
+                          size: 24.sp,
+                        ),
+                        SizedBox(width: 6.w),
+                        Text(
+                          closeLabel ?? "Đóng",
+                          style: TextStyle(
                             color: BasicColors.blueZodiac500,
-                            size: 24.sp,
+                            fontSize: 17.sp,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w400,
+                            height: 1.29.sp,
+                            letterSpacing: -0.43.sp,
                           ),
-                          SizedBox(width: 6.w),
-                          Text(
-                            closeLabel ?? "Đóng",
-                            style: TextStyle(
-                              color: BasicColors.blueZodiac500,
-                              fontSize: 17.sp,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w400,
-                              height: 1.29.sp,
-                              letterSpacing: -0.43.sp,
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  : const SizedBox.shrink()),
-        ),
-        actions: [],
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(
-            (showLargeTitle ? 48.h : 0) + (showBorder ? 0.3.h : 0),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Large Title
-              if (showLargeTitle && (largeTitle?.isNotEmpty ?? false)) ...[
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 20.w,
-                    vertical: 6.h,
-                  ),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      largeTitle!,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                            color: TextColors.textNavigationBarDefault,
-                            fontSize: 34.sp,
-                            fontWeight: FontWeight.w700,
-                            height: (41 / 34).sp,
-                            letterSpacing: 0.4.sp,
-                          ),
+                        ),
+                      ],
                     ),
+                  )
+                : const SizedBox.shrink()),
+      ),
+      actions: [],
+      bottom: PreferredSize(
+        preferredSize: Size.fromHeight(
+          (showLargeTitle ? 48.h : 0) + (showBorder ? 0.3.h : 0),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Large Title
+            if (showLargeTitle && (largeTitle?.isNotEmpty ?? false)) ...[
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 20.w,
+                  vertical: 6.h,
+                ),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    largeTitle!,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          color: TextColors.textNavigationBarDefault,
+                          fontSize: 34.sp,
+                          fontWeight: FontWeight.w700,
+                          height: (41 / 34).sp,
+                          letterSpacing: 0.4.sp,
+                        ),
                   ),
                 ),
-              ],
-
-              // Border bottom
-              if (showBorder)
-                Container(
-                  height: 0.3.h,
-                  color: borderColor ?? BorderColors.borderDefaultDefault,
-                ),
+              ),
             ],
-          ),
+
+            // Border bottom
+            if (showBorder)
+              Container(
+                height: 0.3.h,
+                color: borderColor ?? BorderColors.borderDefaultDefault,
+              ),
+          ],
         ),
       ),
     );

@@ -98,6 +98,7 @@ class SearchFilter extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 16.h,
                 children: [
                   LabelChildFilter(
                     label: 'Tìm khu vực',
