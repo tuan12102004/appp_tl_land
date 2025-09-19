@@ -33,7 +33,6 @@ class BottomActionBar extends StatelessWidget {
           children: [
             Expanded(
               child: CustomAdaptiveButton(
-                padding: EdgeInsets.zero,
                 onPressed: () {},
                 text: 'Đăt lại',
                 backgroundColor: const Color(0xFFF1F9FE),
@@ -42,7 +41,6 @@ class BottomActionBar extends StatelessWidget {
             ),
             Expanded(
               child: CustomAdaptiveButton(
-                padding: EdgeInsets.zero,
                 onPressed: onActionPressed,
                 text: actionLabel,
               ),

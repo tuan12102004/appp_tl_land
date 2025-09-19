@@ -1,4 +1,4 @@
-import 'package:app_tl_land_3212/core/core_constants_module.dart';
+import 'package:app_tl_land_3212/core/constants/app_colors.dart';
 import 'package:app_tl_land_3212/feature/search/presentation/widgets/image_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

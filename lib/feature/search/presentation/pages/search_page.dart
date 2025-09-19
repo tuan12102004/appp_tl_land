@@ -1,6 +1,6 @@
 import 'package:app_tl_land_3212/common/widgets/app_main_app_bar.dart';
 import 'package:app_tl_land_3212/common/widgets/custom_search_bar.dart';
-import 'package:app_tl_land_3212/core/core_constants_module.dart';
+import 'package:app_tl_land_3212/core/constants/app_colors.dart';
 import 'package:app_tl_land_3212/feature/search/presentation/widgets/custom_icon_button.dart';
 import 'package:app_tl_land_3212/feature/search/presentation/widgets/item_search.dart';
 import 'package:app_tl_land_3212/feature/search/presentation/widgets/unfocus_scaffold.dart';

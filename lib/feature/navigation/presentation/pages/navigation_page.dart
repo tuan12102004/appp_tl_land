@@ -1,5 +1,6 @@
 import 'package:app_tl_land_3212/common/blocs/select/select_bloc.dart';
-import 'package:app_tl_land_3212/core/core_module.dart';
+import 'package:app_tl_land_3212/core/constants/app_colors.dart';
+import 'package:app_tl_land_3212/core/di/service_locator.dart';
 import 'package:app_tl_land_3212/feature/floating_add/presentation/pages/floating_add_page.dart';
 import 'package:app_tl_land_3212/feature/home/presentation/pages/home_page.dart';
 import 'package:app_tl_land_3212/feature/noti/presentation/pages/notification.dart';
@@ -96,12 +97,6 @@ HomePage(),
                 child: const BottomNav(),
               ),
             ),
-<<<<<<< HEAD
-=======
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
-            bottomNavigationBar: BottomNav(),
->>>>>>> 7daecc0 (ui search)
           );
         },
       ),
