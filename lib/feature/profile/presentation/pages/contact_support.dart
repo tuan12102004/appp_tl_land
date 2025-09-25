@@ -1,7 +1,9 @@
+import 'package:app_tl_land_3212/common/widgets/custom_appbar.dart';
+import 'package:app_tl_land_3212/core/constants/app_images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:learn/pages/support_detail.dart';
-import 'package:learn/pages/widget/custom_appbar.dart';
+
+import 'support_detail.dart';
 
 class ContactSupport extends StatefulWidget {
   const ContactSupport({super.key});
@@ -14,15 +16,17 @@ class _ContactSupportState extends State<ContactSupport> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: "Liên hệ và hỗ trợ"),
-      body: ListView(
-        children: [
-          ContactCard(),
-          SupportHeader(),
-          ...List.generate(10, (index) {
-            return OptionTile();
-          }),
-        ],
+      appBar: const CustomAppbar(title: Text("Liên hệ và hỗ trợ")),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            ContactCard(),
+            SupportHeader(),
+            ...List.generate(10, (index) {
+              return OptionTile();
+            }),
+          ],
+        ),
       ),
     );
   }
@@ -123,19 +127,15 @@ class ContactCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 224,
-      width: 392,
-      padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
-      decoration: BoxDecoration(color: Colors.white),
+    return Padding(
+      padding: EdgeInsets.all(16.w),
       child: Column(
         children: [
           Center(
-            child: Container(
+            child: Image.asset(
+              AppImages.logo,
               width: 100.w,
               height: 100.h,
-              margin: EdgeInsets.only(bottom: 8.h),
-              child: Image.asset("assets/logoTL.png"),
             ),
           ),
           Center(
@@ -151,11 +151,12 @@ class ContactCard extends StatelessWidget {
           SizedBox(height: 24.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
+            spacing: 16.w,
             children: [
-              ImageSupport(text: "assets/images/logo.png"),
-              ImageSupport(text: "assets/images/logo.png"),
-              ImageSupport(text: "assets/images/logo.png"),
-              ImageSupport(text: "assets/images/logo.png"),
+              ImageSupport(text: AppImages.logo),
+              ImageSupport(text: AppImages.logo),
+              ImageSupport(text: AppImages.logo),
+              ImageSupport(text: AppImages.logo),
             ],
           ),
         ],
@@ -171,14 +172,11 @@ class ImageSupport extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 42.h,
-      width: 42.w,
+    return DecoratedBox(
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey, width: 0.1.w),
         borderRadius: BorderRadius.circular(21.sp),
       ),
-      margin: EdgeInsets.only(right: 3.59.w, left: 16.w),
       child: Image.asset(text, height: 42.h, width: 42.w),
     );
   }

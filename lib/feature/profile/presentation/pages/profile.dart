@@ -1,21 +1,22 @@
+import 'package:app_tl_land_3212/common/widgets/custom_adaptive_button.dart';
+import 'package:app_tl_land_3212/core/core_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:learn/pages/policy.dart';
-import 'package:learn/pages/request_submission_history.dart';
-import 'package:learn/pages/widget/custom_button.dart';
 import 'about_us.dart';
 import 'change_imformation.dart';
 import 'change_password.dart';
 import 'contact_support.dart';
+import 'policy.dart';
+import 'request_submission_history.dart';
 
-class Profile extends StatefulWidget {
-  const Profile({super.key});
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
 
   @override
-  State<Profile> createState() => _ProfileState();
+  State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfileState extends State<Profile> {
+class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +25,7 @@ class _ProfileState extends State<Profile> {
         child: Column(
           children: [
             UserTile(),
-            ProfileMenuItem(
+            ProfilePageMenuItem(
               onTap: () {
                 Navigator.push(
                   context,
@@ -35,7 +36,7 @@ class _ProfileState extends State<Profile> {
               title: "Hồ sơ của tôi",
               iconArrow: Icons.arrow_forward_ios_rounded,
             ),
-            ProfileMenuItem(
+            ProfilePageMenuItem(
               onTap: () {
                 Navigator.push(
                   context,
@@ -46,7 +47,7 @@ class _ProfileState extends State<Profile> {
               title: "Đổi mật khẩu",
               iconArrow: Icons.arrow_forward_ios_rounded,
             ),
-            ProfileMenuItem(
+            ProfilePageMenuItem(
               onTap: () {
                 Navigator.push(
                   context,
@@ -59,7 +60,7 @@ class _ProfileState extends State<Profile> {
               title: "Bất động sản của tôi",
               iconArrow: Icons.arrow_forward_ios_rounded,
             ),
-            ProfileMenuItem(
+            ProfilePageMenuItem(
               onTap: () {
                 Navigator.push(
                   context,
@@ -70,7 +71,7 @@ class _ProfileState extends State<Profile> {
               title: "Về chúng tôi",
               iconArrow: Icons.arrow_forward_ios_rounded,
             ),
-            ProfileMenuItem(
+            ProfilePageMenuItem(
               onTap: () {
                 Navigator.push(
                   context,
@@ -81,7 +82,7 @@ class _ProfileState extends State<Profile> {
               title: "Liên hệ và hỗ trợ",
               iconArrow: Icons.arrow_forward_ios_rounded,
             ),
-            ProfileMenuItem(
+            ProfilePageMenuItem(
               onTap: () {
                 Navigator.push(
                   context,
@@ -92,11 +93,12 @@ class _ProfileState extends State<Profile> {
               title: "Điều khoản và chính sách",
               iconArrow: Icons.arrow_forward_ios_rounded,
             ),
-            CustomButton(
-              color: Color(0xffFF3B30),
-              text: "Đăng xuất",
+            CustomAdaptiveButton(
+              width: double.infinity,
+              backgroundColor: Colors.transparent,
+              textColor: AppColors.textErrorPrimary,
+            text: "Đăng xuất",
               onPressed: () {},
-              background: Color(0xffF8F8F8),
             ),
           ],
         ),
@@ -143,8 +145,8 @@ class UserTile extends StatelessWidget {
   }
 }
 
-class ProfileMenuItem extends StatelessWidget {
-  const ProfileMenuItem({
+class ProfilePageMenuItem extends StatelessWidget {
+  const ProfilePageMenuItem({
     super.key,
     required this.icon,
     required this.title,

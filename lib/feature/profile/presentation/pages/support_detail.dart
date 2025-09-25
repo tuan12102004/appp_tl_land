@@ -1,7 +1,7 @@
+import 'package:app_tl_land_3212/common/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:learn/pages/widget/custom_appbar.dart';
-import 'package:learn/pages/widget/support_detail_content.dart';
+
+import '../widget/support_detail_content.dart';
 
 class SupportDetail extends StatefulWidget {
   const SupportDetail({super.key});
@@ -15,7 +15,7 @@ class _SupportDetailState extends State<SupportDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xffF8F8F8),
-      appBar: const CustomAppBar(title: "Làm thế nào để đổi mật khẩu"),
+      appBar: const CustomAppbar(title: Text("Làm thế nào để đổi mật khẩu")),
       body: ListView(children: [SupportDetailContent()]),
     );
   }

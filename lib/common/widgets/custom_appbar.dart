@@ -19,7 +19,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
     this.automaticallyImplyLeading = true,
     this.actions,
     this.backgroundColor,
-    this.visibleBottom = false,
+    this.visibleBottom = true,
     this.leading,
     this.bottom,
     this.leadingWidth,

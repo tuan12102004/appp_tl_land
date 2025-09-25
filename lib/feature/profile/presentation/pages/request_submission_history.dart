@@ -1,6 +1,6 @@
+import 'package:app_tl_land_3212/common/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:learn/pages/widget/custom_appbar.dart';
 
 class RequestSubmissionHistory extends StatefulWidget {
   const RequestSubmissionHistory({super.key});
@@ -18,7 +18,7 @@ class _RequestSubmissionHistoryState extends State<RequestSubmissionHistory> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xffF8F8F8),
-      appBar: const CustomAppBar(title: "Bất động sản của tôi"),
+      appBar: const CustomAppbar(title: Text("Bất động sản của tôi")),
       body: ListView(
         children: [
           _requestStatusTabs(),
@@ -66,9 +66,8 @@ class _RequestSubmissionHistoryState extends State<RequestSubmissionHistory> {
                   style: TextStyle(
                     fontSize: 15.sp,
                     fontWeight: FontWeight.w600,
-                    color: selectedIndex == 0
-                        ? Colors.white
-                        : Color(0xff34C759),
+                    color:
+                        selectedIndex == 0 ? Colors.white : Color(0xff34C759),
                   ),
                 ),
               ),
@@ -90,9 +89,8 @@ class _RequestSubmissionHistoryState extends State<RequestSubmissionHistory> {
                   style: TextStyle(
                     fontSize: 15.sp,
                     fontWeight: FontWeight.w600,
-                    color: selectedIndex == 1
-                        ? Colors.white
-                        : Color(0xff179BE0),
+                    color:
+                        selectedIndex == 1 ? Colors.white : Color(0xff179BE0),
                   ),
                 ),
               ),
@@ -114,9 +112,8 @@ class _RequestSubmissionHistoryState extends State<RequestSubmissionHistory> {
                   style: TextStyle(
                     fontSize: 15.sp,
                     fontWeight: FontWeight.w600,
-                    color: selectedIndex == 2
-                        ? Colors.white
-                        : Color(0xffFF3B30),
+                    color:
+                        selectedIndex == 2 ? Colors.white : Color(0xffFF3B30),
                   ),
                 ),
               ),

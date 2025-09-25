@@ -1,7 +1,7 @@
+import 'package:app_tl_land_3212/common/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:learn/pages/widget/custom_appbar.dart';
-import 'package:learn/pages/widget/policy_content.dart';
+
+import '../widget/policy_content.dart';
 
 class Policy extends StatefulWidget {
   const Policy({super.key});
@@ -15,7 +15,7 @@ class _PolicyState extends State<Policy> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xffF8F8F8),
-      appBar: const CustomAppBar(title: "Điều khoản và chính sách"),
+      appBar: const CustomAppbar(title: Text("Điều khoản và chính sách")),
       body: ListView(children: [PolicyContent()]),
     );
   }

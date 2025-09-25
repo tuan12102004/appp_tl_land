@@ -1,8 +1,9 @@
+import 'package:app_tl_land_3212/common/widgets/custom_adaptive_button.dart';
+import 'package:app_tl_land_3212/common/widgets/custom_appbar.dart';
+import 'package:app_tl_land_3212/common/widgets/custom_input_field.dart';
+import 'package:app_tl_land_3212/core/core_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:learn/pages/widget/custom_appbar.dart';
-import 'package:learn/pages/widget/custom_button.dart';
-import 'package:learn/pages/widget/custom_inputfield.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({super.key});
@@ -19,7 +20,6 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _passwordController.dispose();
     _newPasswordController.dispose();
     _confirmPasswordController.dispose();
@@ -30,52 +30,51 @@ class _ChangePasswordState extends State<ChangePassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xffF8F8F8),
-      appBar: const CustomAppBar(title: "Đổi mật khẩu"),
+      appBar: const CustomAppbar(title: Text('Đổi mật khẩu')),
       body: SafeArea(
-        child: ListView(
-          children: [
-            SizedBox(height: 12.h),
-            CustomInputField(
-              hintText: "Mật khẩu hiện tại",
-              controller: _passwordController,
-              keyboardType: TextInputType.name,
-              icon: Icons.remove_red_eye,
-              hintStyle: TextStyle(
-                fontSize: 17.sp,
-                fontWeight: FontWeight.w400,
-                color: Color(0xff000000).withValues(alpha: 0.3),
+        minimum: EdgeInsets.all(16.w),
+        child: SingleChildScrollView(
+          child: Column(
+            spacing: 16.h,
+            children: [
+              CustomInputField(
+                hintText: "Mật khẩu hiện tại",
+                controller: _passwordController,
+                keyboardType: TextInputType.name,
+                suffixIcon: Icon(
+                  Icons.remove_red_eye,
+                  size: 22.sp,
+                  color: AppColors.iconDefaultSecondary,
+                ),
               ),
-            ),
-            CustomInputField(
-              hintText: "Mật khẩu mới",
-              controller: _newPasswordController,
-              keyboardType: TextInputType.name,
-              icon: Icons.remove_red_eye,
-              hintStyle: TextStyle(
-                fontSize: 17.sp,
-                fontWeight: FontWeight.w400,
-                color: Color(0xff000000).withValues(alpha: 0.3),
+              CustomInputField(
+                hintText: "Mật khẩu mới",
+                controller: _newPasswordController,
+                keyboardType: TextInputType.name,
+                suffixIcon: Icon(
+                  Icons.remove_red_eye,
+                  size: 22.sp,
+                  color: AppColors.iconDefaultSecondary,
+                ),
               ),
-            ),
-            CustomInputField(
-              hintText: "Nhập lại mật khẩu mới",
-              controller: _confirmPasswordController,
-              keyboardType: TextInputType.name,
-              icon: Icons.remove_red_eye,
-              hintStyle: TextStyle(
-                fontSize: 17.sp,
-                fontWeight: FontWeight.w400,
-                color: Color(0xff000000).withValues(alpha: 0.3),
+              CustomInputField(
+                hintText: "Nhập lại mật khẩu mới",
+                controller: _confirmPasswordController,
+                keyboardType: TextInputType.name,
+                suffixIcon: Icon(
+                  Icons.remove_red_eye,
+                  size: 22.sp,
+                  color: AppColors.iconDefaultSecondary,
+                ),
               ),
-            ),
-            NoticeMessage(),
-            CustomButton(
-              color: Colors.white,
-              text: "Dổi mật khẩu",
-              onPressed: () {},
-              background: Color(0xff179BE0),
-            ),
-          ],
+              NoticeMessage(),
+              CustomAdaptiveButton(
+                text: "Dổi mật khẩu",
+                width: double.infinity,
+                onPressed: () {},
+              ),
+            ],
+          ),
         ),
       ),
     );
