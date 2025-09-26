@@ -10,8 +10,10 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   final bool visibleBottom;
   final Widget? leading;
   final PreferredSizeWidget? bottom;
-
+  final bool? isDivider;
   final double? leadingWidth;
+  final bool? centerTitle;
+  final double? titleSpacing;
 
   const CustomAppbar({
     super.key,
@@ -23,6 +25,9 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
     this.leading,
     this.bottom,
     this.leadingWidth,
+    this.isDivider = true,
+    this.centerTitle,
+    this.titleSpacing = 0
   });
 
   @override
@@ -33,9 +38,16 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
       surfaceTintColor: backgroundColor,
       forceMaterialTransparency: true,
       title: title,
+      centerTitle: centerTitle,
+      titleSpacing: titleSpacing,
       actions: actions,
       leading: leading,
-      bottom: _getAppbarBottom(),
+      bottom: isDivider == true 
+        ? PreferredSize(
+            preferredSize: const Size.fromHeight(1),
+            child: Divider(height: 1.h, color: BorderColors.borderDefaultDefault.withValues(alpha: 0.2)),
+          )
+        : _getAppbarBottom(),
       leadingWidth: leadingWidth,
     );
   }

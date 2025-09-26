@@ -23,7 +23,7 @@ class NavigationPage extends StatefulWidget {
 
 class _NavigationPageState extends State<NavigationPage> {
   final listPages = [
-HomePage(),
+    HomePage(),
     SearchPage(),
     FloatingAddPage(),
     NotificationPage(),
