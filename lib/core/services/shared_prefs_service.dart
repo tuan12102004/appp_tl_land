@@ -1,9 +1,8 @@
 import 'dart:convert';
 
 import 'package:app_tl_land_3212/common/common_module.dart';
-import 'package:app_tl_land_3212/feature/auth/domain/auth_domain_module.dart';
+import 'package:app_tl_land_3212/feature/auth/domain/entities/user_entity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 class SharedPrefsService {
   final SharedPreferences _prefs;
@@ -77,34 +76,12 @@ class SharedPrefsService {
   }
 
   Future<void> saveUserEntity(SharedPrefsKey key, UserEntity user) async {
-    final map = {
-      'id': user.id,
-      'fullName': user.fullName,
-      'email': user.email,
-      'phone': user.phone,
-      'address': user.address,
-      'avatar': user.avatar,
-      'birthday': user.birthday.toIso8601String(),
-      'gender': user.gender,
-    };
-    await saveJson(key, map);
+    await saveJson(key, user.toMap());
   }
 
   UserEntity? getUserEntity(SharedPrefsKey key) {
     final jsonMap = getJson(key);
     if (jsonMap == null) return null;
-
-    return UserEntity(
-      id: jsonMap['id'] as int,
-      fullName: jsonMap['fullName'] as String,
-      email: jsonMap['email'] as String,
-      phone: jsonMap['phone'] as String,
-      address: jsonMap['address'] as String?,
-      avatar: jsonMap['avatar'] as String?,
-      birthday: DateTime.parse(jsonMap['birthday'] as String),
-      gender: jsonMap['gender'] as int?,
-      status: (jsonMap['active'] != null),
-    );
+    return UserEntity.fromMap(jsonMap);
   }
-
 }

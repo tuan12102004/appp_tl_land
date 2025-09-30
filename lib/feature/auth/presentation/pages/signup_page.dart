@@ -1,6 +1,8 @@
 import 'package:app_tl_land_3212/common/common_module.dart';
-import 'package:app_tl_land_3212/core/constants/app_images.dart';
+import 'package:app_tl_land_3212/core/core_module.dart';
+import 'package:app_tl_land_3212/feature/auth/presentation/auth_module.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SignupPage extends StatefulWidget {
@@ -11,6 +13,12 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
+  @override
+  void initState() {
+    super.initState();
+    sl<AuthBloc>().add(const AuthEvent.signup());
+  }
+
   @override
   Widget build(BuildContext context) {
     return BackgroundWidget(
@@ -36,30 +44,25 @@ class _SignupPageState extends State<SignupPage> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 16.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CustomSocialIconButton(
-                  imagePath: AppImages.zalo,
-                  onTap: () => print("Zalo tapped!"),
-                ),
-                SizedBox(width: 12.w),
-                CustomSocialIconButton(
-                  imagePath: AppImages.fb,
-                  onTap: () => print("Facebook tapped!"),
-                ),
-                SizedBox(width: 12.w),
-                CustomSocialIconButton(
-                  iconData: Icons.phone,
-                  onTap: () => print("Phone tapped!"),
-                ),
-                SizedBox(width: 12.w),
-                CustomSocialIconButton(
-                  iconData: Icons.email,
-                  onTap: () => print("Email tapped!"),
-                ),
-              ],
-            )
+            BlocConsumer<AuthBloc, AuthState>(
+              bloc: sl<AuthBloc>(),
+              listener: (BuildContext context, AuthState state) {
+                if (state.failure != null) {
+                  DisplayError.handle(
+                    context: context,
+                    errerrType: state.failure!.type,
+                    apiMessage: state.failure!.err,
+                  );
+                }
+              },
+              builder: (context, state) {
+                if (state.isLoading ||
+                    state.contactToSignup.isEmpty && state.failure == null) {
+                  return const ContactSignupShimmer();
+                }
+                return ContactSignupList(contacts: state.contactToSignup);
+              },
+            ),
           ],
         ),
       ),

@@ -5,4 +5,7 @@ class ServerException implements Exception {
   final ServerExceptionType type;
 
   ServerException({required this.err, this.type = ServerExceptionType.api});
+
+  @override
+  String toString() => err;
 }

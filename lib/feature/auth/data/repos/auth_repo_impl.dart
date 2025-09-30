@@ -21,64 +21,6 @@ class AuthRepoImpl implements AuthRepo {
     }
   }
 
-  // Signup
-  @override
-  Future<Either<Failure, String>> signup({
-    required String fullname,
-    required String email,
-    required String phone,
-    required String pass,
-    required String confirmPass,
-    required DateTime birthday,
-  }) async {
-    try {
-      final mess = await _authRemoteDatasource.signup(
-          fullname: fullname,
-          email: email,
-          phone: phone,
-          pass: pass,
-          confirmPass: confirmPass,
-          birthday: birthday);
-      return Right(mess);
-    } on ServerException catch (e) {
-      return Left(Failure(err: e.err, type: e.type));
-    }
-  }
-
-  // Update pass
-  @override
-  Future<Either<Failure, String>> updatePass({
-    required String email,
-    required String pass,
-    required String confirmPass,
-  }) async {
-    // Gọi updatePass từ datasource
-    try {
-      final mess = await _authRemoteDatasource.updatePass(
-        email: email,
-        pass: pass, 
-        confirmPass: confirmPass
-      );
-    // Thành công trả về Right
-    return Right(mess);
-    } on ServerException catch(e){
-      return Left(Failure(err: e.err, type: e.type));
-    }
-  }
-
-  // Logout
-  @override
-  Future<Either<Failure, void>> logout() async {
-    // Gọi logout từ datasource
-    try {
-      await _authRemoteDatasource.logout();
-      // Thành công trả về Right()
-      return const Right(null); // trả về null nếu void
-    } on ServerException catch (e) {
-      return Left(Failure(err: e.err, type: e.type));
-    }
-  }
-
   // Profile
   @override
   Future<Either<Failure, UserEntity>> profile() async {
@@ -87,6 +29,49 @@ class AuthRepoImpl implements AuthRepo {
       final user = await _authRemoteDatasource.profile();
       final userEntity = user.toEntity();
       return Right(userEntity);
+    } on ServerException catch (e) {
+      return Left(Failure(err: e.err, type: e.type));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<ContactSignupEntity>>> signup() async {
+    try {
+      final contactToSignup = await _authRemoteDatasource.signup();
+      final contactToSignupEntities = List<ContactSignupEntity>.from(
+          contactToSignup.map((e) => e.toEntity()));
+
+      return Right(contactToSignupEntities);
+    } on ServerException catch (e) {
+      return Left(Failure(err: e.err, type: e.type));
+    }
+  }
+
+  // forgot pass
+  @override
+  Future<Either<Failure, String>> forgotPass({
+    required String email,
+    required String pass,
+    required String confirmPass,
+  }) async {
+    // Gọi updatePass từ datasource
+    try {
+      final mess = await _authRemoteDatasource.forgotPass(
+          email: email, pass: pass, confirmPass: confirmPass);
+      // Thành công trả về Right
+      return Right(mess);
+    } on ServerException catch (e) {
+      return Left(Failure(err: e.err, type: e.type));
+    }
+  }
+
+  // send OTP
+  @override
+  Future<Either<Failure, String>> sendOtp({required String email}) async {
+    // Gọi resend từ datasource
+    try {
+      final mess = await _authRemoteDatasource.sendOtp(email: email);
+      return Right(mess);
     } on ServerException catch (e) {
       return Left(Failure(err: e.err, type: e.type));
     }
@@ -114,6 +99,19 @@ class AuthRepoImpl implements AuthRepo {
       final mess =
           await _authRemoteDatasource.verificationOtp(email: email, otp: otp);
       return Right(mess);
+    } on ServerException catch (e) {
+      return Left(Failure(err: e.err, type: e.type));
+    }
+  }
+
+  // Logout
+  @override
+  Future<Either<Failure, void>> logout() async {
+    // Gọi logout từ datasource
+    try {
+      await _authRemoteDatasource.logout();
+      // Thành công trả về Right()
+      return const Right(null); // trả về null nếu void
     } on ServerException catch (e) {
       return Left(Failure(err: e.err, type: e.type));
     }

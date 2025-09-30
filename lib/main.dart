@@ -43,14 +43,6 @@ void main() async {
   // Xóa splash screen khi đã sẵn sàng
   FlutterNativeSplash.remove();
   runApp(
-    // MultiBlocProvider(
-    //   providers: [
-    //     BlocProvider<NotificationBloc>(
-    //       create: (_) => sl<NotificationBloc>()..add(NotificationEvent.getNotifications()),
-    //     ),
-    //   ],
-    //   child: MiCayApp(),
-    // ),
     const TLLandApp(),
   );
 }

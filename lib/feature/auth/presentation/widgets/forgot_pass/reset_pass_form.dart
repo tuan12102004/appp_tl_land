@@ -2,7 +2,6 @@ import 'package:app_tl_land_3212/common/common_module.dart';
 import 'package:app_tl_land_3212/core/core_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 
 class ResetPassForm extends StatelessWidget {
   final GlobalKey<FormState> _formKey;
@@ -10,6 +9,7 @@ class ResetPassForm extends StatelessWidget {
   final TextEditingController _confirmPassCon;
   final FocusNode _passNode;
   final FocusNode _confirmPassNode;
+  final VoidCallback onPressed;
 
   const ResetPassForm({
     super.key,
@@ -18,6 +18,7 @@ class ResetPassForm extends StatelessWidget {
     required TextEditingController confirmPassCon,
     required FocusNode passNode,
     required FocusNode confirmPassNode,
+    required this.onPressed,
   })  : _formKey = formKey,
         _passCon = passCon,
         _confirmPassCon = confirmPassCon,
@@ -53,17 +54,11 @@ class ResetPassForm extends StatelessWidget {
           // Button reset
           CustomAdaptiveButton(
             width: double.infinity,
-            onPressed: () => _onConfirmPass(context),
+            onPressed: onPressed,
             text: 'Cập nhật',
           ),
         ],
       ),
     );
-  }
-
-  void _onConfirmPass(BuildContext context) {
-    if (_formKey.currentState?.validate() ?? false) {
-      context.go('/auth/login');
-    }
   }
 }

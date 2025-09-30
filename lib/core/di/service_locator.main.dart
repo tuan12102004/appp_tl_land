@@ -22,7 +22,6 @@ Future<void> _common() async {
     ..registerFactory(() => CountDownBloc())
     ..registerLazySingleton(() => DialogObserverBloc());
 
-
   // Auth
   _auth();
 
@@ -37,7 +36,6 @@ Future<void> _common() async {
 
 // Profile
   _profile();
-  
 }
 
 // Auth
@@ -48,41 +46,35 @@ void _auth() {
     ..registerFactory<AuthRepo>(() => AuthRepoImpl(authRemoteDatasource: sl()))
     ..registerFactory(() => LoginUsecase(authRepo: sl()))
     ..registerFactory(() => SignupUsecase(authRepo: sl()))
-    ..registerFactory(() => UpdatePassUsecase(authRepo: sl()))
+    ..registerFactory(() => ForgotPassUsecase(authRepo: sl()))
     ..registerFactory(() => LogoutUsecase(authRepo: sl()))
     ..registerFactory(() => ProfileUsecase(authRepo: sl()))
     ..registerFactory(() => ResendOtpUsecase(authRepo: sl()))
+    ..registerFactory(() => SendOtpUsecase(authRepo: sl()))
     ..registerFactory(() => VerificationOtpUsecase(authRepo: sl()))
     ..registerLazySingleton(() => AuthBloc(
           login: sl<LoginUsecase>(),
           signup: sl<SignupUsecase>(),
-          updatePass: sl<UpdatePassUsecase>(),
+          forgotPass: sl<ForgotPassUsecase>(),
           logout: sl<LogoutUsecase>(),
           profile: sl<ProfileUsecase>(),
+          sendOtp: sl<SendOtpUsecase>(),
           resendOtp: sl<ResendOtpUsecase>(),
           verificationOtp: sl<VerificationOtpUsecase>(),
         ));
 }
 
 // Notification
-void _notification() {
-  
-}
+void _notification() {}
 
 // Work
-void _work() {
-  
-}
+void _work() {}
 
 // Numerology
-void _numerology() {
-  
-}
+void _numerology() {}
 
 // Profile
-void _profile() {
-  
-}
+void _profile() {}
 
 // Reset singleton
 Future<void> resetSl() async {

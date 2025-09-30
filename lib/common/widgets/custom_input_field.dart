@@ -79,7 +79,7 @@ class CustomInputField extends StatelessWidget {
         counter: counter,
         counterText: counterText,
         counterStyle: Theme.of(context).textTheme.titleMedium!.copyWith(
-          color: AppColors.textDefaultTertiary.withOpacity(0.3),
+          color: TextColors.textDefaultTertiary.withValues(alpha: 0.1),
         ),
         hintText: hintText,
         suffixIcon: suffixIcon,

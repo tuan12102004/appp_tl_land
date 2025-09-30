@@ -16,34 +16,38 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   final LoginUsecase _loginUsecase;
   final SignupUsecase _signupUsecase;
-  final UpdatePassUsecase _updatePassUsecase;
+  final ForgotPassUsecase _forgotPassUsecase;
   final LogoutUsecase _logoutUsecase;
   final ProfileUsecase _profileUsecase;
+  final SendOtpUsecase _sendOtpUsecase;
   final ResendOtpUsecase _resendOtpUsecase;
   final VerificationOtpUsecase _verificationOtpUsecase;
 
   AuthBloc({
     required LoginUsecase login,
     required SignupUsecase signup,
-    required UpdatePassUsecase updatePass,
+    required ForgotPassUsecase forgotPass,
     required LogoutUsecase logout,
     required ProfileUsecase profile,
+    required SendOtpUsecase sendOtp,
     required ResendOtpUsecase resendOtp,
     required VerificationOtpUsecase verificationOtp,
   })  : _loginUsecase = login,
         _signupUsecase = signup,
-        _updatePassUsecase = updatePass,
+        _forgotPassUsecase = forgotPass,
         _logoutUsecase = logout,
         _profileUsecase = profile,
+        _sendOtpUsecase = sendOtp,
         _resendOtpUsecase = resendOtp,
         _verificationOtpUsecase = verificationOtp,
         super(const AuthState()) {
     on<_Login>(_onLogin);
     on<_Signup>(_onSignup);
-    on<_UpdatePass>(_onUpdatePass);
+    on<_ForgotPass>(_onForgotPass);
     on<_Logout>(_onLogout);
     on<_CheckAuth>(_onCheckAuth);
     on<_ResetState>(_onResetState);
+    on<_SendOtp>(_onSendOtp);
     on<_ResendOtp>(_onResendOtp);
     on<_VerificationOtp>(_onVerificationOtp);
     on<_TokenExpired>(_onTokenExpired);
@@ -96,19 +100,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   //Login
-  /*Future<void> _onLogin(_Login event, Emitter<AuthState> emit) async {
+  Future<void> _onLogin(_Login event, Emitter<AuthState> emit) async {
     emit(state.copyWith(
       isLoading: true,
       failure: null,
       actionType: AuthActionType.login,
     ));
+
     final res = await _loginUsecase.call(LoginParams(
       email: event.email,
       pass: event.pass,
     ));
+
     await res.fold(
       (failure) async {
-        emit(state.copyWith(isLoading: false, failure: failure));
+        emit(state.copyWith(
+            isLoading: false,
+            failure: failure,
+            actionType: AuthActionType.login));
       },
       (accessToken) async {
         print('✅ Login thành công');
@@ -117,11 +126,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await sl<SharedPrefsService>()
             .saveBool(SharedPrefsKey.isLoggedIn, true);
 
-        final result = await _profileUsecase.call(ProfileParams());
+        final result = await _profileUsecase.call(NoParam());
         await result.fold(
           (failure) async {
             emit(state.copyWith(
-                isLoading: false, isAuthenticated: false, failure: failure));
+                isLoading: false,
+                isAuthenticated: false,
+                failure: failure,
+                actionType: AuthActionType.login));
           },
           (user) async {
             await sl<SharedPrefsService>()
@@ -144,126 +156,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
       },
     );
-  }*/
-
-  Future<void> _onLogin(_Login event, Emitter<AuthState> emit) async {
-    emit(state.copyWith(
-      isLoading: true,
-      failure: null,
-      isSuccess: false,
-      actionType: AuthActionType.login,
-    ));
-
-    await Future.delayed(const Duration(seconds: 2));
-
-    const String fakeEmail = 'quyen@gmail.com';
-    const String fakePassword = '123456';
-
-    if (event.email == fakeEmail && event.pass == fakePassword) {
-      const fakeAccessToken = 'fake-jwt-token-from-mock-server-12345';
-      final fakeUserEntity = UserEntity(
-        id: 1,
-        fullName: 'Người Dùng Thử Nghiệm',
-        email: 'test@gmail.com',
-        phone: '0987654321',
-        birthday: DateTime(2000, 5, 20),
-        status: true,
-      );
-
-      await sl<SharedPrefsService>()
-          .saveString(SharedPrefsKey.accessToken, fakeAccessToken);
-      await sl<SharedPrefsService>().saveBool(SharedPrefsKey.isLoggedIn, true);
-      await sl<SharedPrefsService>()
-          .saveUserEntity(SharedPrefsKey.user, fakeUserEntity);
-      await sl<SharedPrefsService>().saveInt(
-        SharedPrefsKey.tokenIssuedAt,
-        DateTime.now().millisecondsSinceEpoch,
-      );
-
-      emit(state.copyWith(
-          isLoading: false,
-          isSuccess: true,
-          isAuthenticated: true,
-          userModel: fakeUserEntity,
-          actionType: AuthActionType.login));
-
-      _startTokenMonitor();
-
-      print('✅✅✅ Login thành công! ✅✅✅');
-    } else {
-      final failure = Failure(
-        err: 'Email hoặc mật khẩu bạn nhập không chính xác. Vui lòng thử lại.',
-        type: ServerExceptionType.invalidCredentials,
-      );
-      emit(state.copyWith(isLoading: false, failure: failure));
-
-      print('❌❌❌ Login thất bại! ❌❌❌');
-    }
-  }
-
-  // Signup
-  Future<void> _onSignup(_Signup event, Emitter<AuthState> emit) async {
-    emit(state.copyWith(isLoading: true, failure: null));
-    final res = await _signupUsecase.call(SignupParams(
-        fullname: event.fullname,
-        email: event.email,
-        phone: event.phone,
-        pass: event.pass,
-        confirmPass: event.confirmPass,
-        birthday: event.birthday));
-    res.fold(
-        (failure) => emit(state.copyWith(isLoading: false, failure: failure)),
-        (_) {
-      print('✅ Signup thành công');
-      emit(state.copyWith(
-        isLoading: false,
-        isSuccess: true,
-      ));
-    });
-  }
-
-  // Update password
-  Future<void> _onUpdatePass(_UpdatePass event, Emitter<AuthState> emit) async {
-    emit(state.copyWith(isLoading: true, failure: null));
-    // Gọi usecase update pass
-    final res = await _updatePassUsecase.call(UpdatePassParams(
-        email: event.email, pass: event.pass, confirmPass: event.confirmPass));
-    //Xử lý kết quả Either
-    res.fold(
-        // Lỗi
-        (failure) {
-      emit(state.copyWith(failure: failure, isLoading: false));
-    },
-        // Thành công
-        (_) {
-      print('✅ Update thành công');
-      emit(state.copyWith(
-        isLoading: false,
-        isSuccess: true,
-        isAuthenticated: true,
-      ));
-    });
-  }
-
-  // Logout
-  Future<void> _onLogout(_Logout event, Emitter<AuthState> emit) async {
-    emit(state.copyWith(isLoading: true, failure: null));
-    // Gọi usecase logout
-    final res = await _logoutUsecase.call(LogoutParams());
-    // Xứ lí kết quả Either
-    res.fold(
-        // Lỗi
-        (failure) => emit(state.copyWith(isLoading: false, failure: failure)),
-        // Thành công
-        (_) {
-      print('✅ Logout thành công');
-      // Xóa authsession
-      clearAuthSession();
-      // Hủy bộ đếm
-      _cancelTokenMonitor();
-      emit(state.copyWith(
-          isLoading: false, isSuccess: true, isAuthenticated: false));
-    });
   }
 
   // Check login
@@ -271,57 +163,53 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(state.copyWith(isLoading: true));
     final isLoggedIn =
         sl<SharedPrefsService>().getBool(SharedPrefsKey.isLoggedIn) ?? false;
-    final accessTonken =
+
+    final accessToken =
         sl<SharedPrefsService>().getString(SharedPrefsKey.accessToken);
+
     // final userJson = sl<SharedPrefsService>().getJson(SharedPrefsKey.user);
-    final userJson =
+
+    final userEntity =
         sl<SharedPrefsService>().getUserEntity(SharedPrefsKey.user);
+
     final issuedAt =
         sl<SharedPrefsService>().getInt(SharedPrefsKey.tokenIssuedAt);
+
     final now = DateTime.now().millisecondsSinceEpoch;
 
     final isExpired =
         issuedAt != null && (now - issuedAt > tokenLifespan.inMilliseconds);
 
-    print('📌 Check auth: $isLoggedIn, $accessTonken, ${userJson?.status}');
+    final alreadyAuthenticated = isLoggedIn &&
+        accessToken != null &&
+        accessToken.isNotEmpty &&
+        userEntity != null;
+    print('📌 Check auth: $isLoggedIn, $accessToken, ${userEntity?.status}');
 
-    if (isLoggedIn &&
-        accessTonken != null &&
-        accessTonken.isNotEmpty &&
-        userJson != null &&
-        !isExpired) {
-      // Token còn hạn
-      // Đọc từ local trước
-      // final user = UserModel.fromJson(userJson);
+    // Token còn hạn
+    // Đọc từ local trước
+    if (alreadyAuthenticated && !isExpired) {
       emit(state.copyWith(
         isAuthenticated: true,
-        userModel: userJson,
+        userModel: userEntity,
         isLoading: false,
       ));
-      _startTokenMonitor();
       // Đọc api sau
-      final result = await _profileUsecase.call(ProfileParams());
+      final result = await _profileUsecase.call(NoParam());
       result.fold(
           (failure) => emit(state.copyWith(
                 isLoading: false,
                 failure: failure,
               )), (updatedUser) {
-        if (updatedUser.status == false) {
-          sl<SharedPrefsService>().clearLocalData();
-          emit(state.copyWith(
-            isLoading: false,
-            isAuthenticated: false,
-            failure: Failure(
-              err: 'Tài khoản đã bị khoá',
-              type: ServerExceptionType.accountBlocked,
-            ),
-          ));
-        } else {
+        (updatedUser) {
           sl<SharedPrefsService>()
               .saveUserEntity(SharedPrefsKey.user, updatedUser);
           emit(state.copyWith(
-              isLoading: false, isAuthenticated: true, userModel: updatedUser));
-        }
+              isLoading: false,
+              isSuccess: true,
+              isAuthenticated: true,
+              userModel: updatedUser));
+        };
       });
     } else if (isExpired) {
       // Token hết hạn
@@ -331,19 +219,94 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               err: 'Phiên đăng nhập đã hết hạn',
               type: ServerExceptionType.expiredToken)));
     } else {
-      emit(state.copyWith(isLoading: false, isAuthenticated: false));
+      emit(state.copyWith(
+          isLoading: false, isAuthenticated: false, isSuccess: false));
     }
   }
 
+  // Signup
+  void _onSignup(_Signup event, Emitter<AuthState> emit) async {
+    emit(state.copyWith(isLoading: true, failure: null));
+    final result = await _signupUsecase.call(NoParam());
+    result.fold(
+      (failure) => emit(state.copyWith(isLoading: false, failure: failure)),
+      (signup) =>
+          emit(state.copyWith(isLoading: false, contactToSignup: signup)),
+    );
+  }
+
   Future<void> _onResetState(_ResetState event, Emitter<AuthState> emit) async {
-    emit(state.copyWith(isLoading: false, isSuccess: false, failure: null));
+    emit(state.copyWith(
+        isLoading: false,
+        isSuccess: false,
+        failure: null,
+        actionType: AuthActionType.none,
+        userModel: null));
+  }
+
+  // forgot password
+  Future<void> _onForgotPass(_ForgotPass event, Emitter<AuthState> emit) async {
+    emit(state.copyWith(
+      isLoading: true,
+      failure: null,
+      isSuccess: false,
+      actionType: AuthActionType.resetPass,
+    ));
+    // Gọi usecase update pass
+    final res = await _forgotPassUsecase.call(ForgotPassParams(
+        email: event.email, pass: event.pass, confirmPass: event.confirmPass));
+    //Xử lý kết quả Either
+    res.fold(
+        // Lỗi
+        (failure) {
+      emit(state.copyWith(
+        failure: failure,
+        isLoading: false,
+        actionType: AuthActionType.resetPass,
+      ));
+    },
+        // Thành công
+        (_) {
+      print('✅ Update thành công');
+      emit(state.copyWith(
+        isLoading: false,
+        isSuccess: true,
+        isAuthenticated: true,
+        actionType: AuthActionType.resetPass,
+      ));
+    });
+  }
+
+  Future<void> _onSendOtp(_SendOtp event, Emitter<AuthState> emit) async {
+    emit(state.copyWith(
+      isLoading: true,
+      failure: null,
+      otpSend: false,
+      actionType: AuthActionType.sendOtp,
+    ));
+    // gọi api
+    final res =
+        await _sendOtpUsecase.call(SendOtpParams(email: event.email));
+    res.fold(
+        (failure) => emit(state.copyWith(
+              failure: failure,
+              isLoading: false,
+              actionType: AuthActionType.sendOtp,
+            )), (_) async {
+      emit(state.copyWith(
+        isLoading: false,
+        otpSend: true,
+        actionType: AuthActionType.sendOtp,
+      ));
+    });
   }
 
   Future<void> _onResendOtp(_ResendOtp event, Emitter<AuthState> emit) async {
     emit(state.copyWith(
       isLoading: true,
       failure: null,
-      isSuccess: false,
+      // isSuccess: false,
+      otpResent: false,
       actionType: AuthActionType.resendOtp,
     ));
     // gọi api
@@ -357,7 +320,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             )), (_) async {
       emit(state.copyWith(
         isLoading: false,
-        isSuccess: true,
+        // isSuccess: true,
+        otpResent: true,
         actionType: AuthActionType.resendOtp,
       ));
     });
@@ -368,6 +332,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(state.copyWith(
       isLoading: true,
       failure: null,
+      // isSuccess: false,
+      otpVerified: false,
       actionType: AuthActionType.verifyOtp,
     ));
     // gọi api
@@ -381,9 +347,31 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       print('✅ OTP VERIFIED');
       emit(state.copyWith(
         isLoading: false,
-        isSuccess: true,
+        // isSuccess: true,
+        otpVerified: true,
         actionType: AuthActionType.verifyOtp,
       ));
+    });
+  }
+
+  // Logout
+  Future<void> _onLogout(_Logout event, Emitter<AuthState> emit) async {
+    emit(state.copyWith(isLoading: true, failure: null));
+    // Gọi usecase logout
+    final res = await _logoutUsecase.call(NoParam());
+    // Xứ lí kết quả Either
+    res.fold(
+        // Lỗi
+        (failure) => emit(state.copyWith(isLoading: false, failure: failure)),
+        // Thành công
+        (_) {
+      print('✅ Logout thành công');
+      // Xóa authsession
+      clearAuthSession();
+      // Hủy bộ đếm
+      _cancelTokenMonitor();
+      emit(state.copyWith(
+          isLoading: false, isSuccess: true, isAuthenticated: false));
     });
   }
 }

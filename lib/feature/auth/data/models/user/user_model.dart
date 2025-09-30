@@ -7,15 +7,17 @@ part 'user_model.g.dart';
 @freezed
 sealed class UserModel with _$UserModel {
   const factory UserModel({
-    required int id,
-    required String fullname,
-    required String email,
-    required String phone,
-    String? address,
-    String? avatar,
-    required DateTime birthday,
-    int? gender,
-    bool? status,
+    required int? id,
+    required String? fullname,
+    required String? phone,
+    required int? gender,
+    required DateTime? birthday,
+    required String? avatar,
+    required int? status,
+    required String? address,
+    @JsonKey(name: 'created_at') required DateTime? createdAt,
+    required String? ward,
+    required String? province,
   }) = _UserModel;
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
@@ -24,14 +26,16 @@ sealed class UserModel with _$UserModel {
 
 extension UserModelX on UserModel {
   UserEntity toEntity() => UserEntity(
-    id: id,
-    fullName: fullname,
-    email: email,
-    phone: phone,
-    address: address,
-    avatar: avatar,
-    birthday: birthday,
-    gender: gender,
-    status: status,
-  );
+        id: id,
+        fullname: fullname,
+        phone: phone,
+        gender: gender,
+        birthday: birthday,
+        avatar: avatar,
+        status: status,
+        address: address,
+        createdAt: createdAt,
+        ward: ward,
+        province: province
+      );
 }

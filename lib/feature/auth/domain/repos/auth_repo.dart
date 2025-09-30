@@ -8,30 +8,28 @@ abstract interface class AuthRepo {
     required String pass,
   });
 
-  Future<Either<Failure, String>> signup({
-    required String fullname,
-    required String email,
-    required String phone,
-    required String pass,
-    required String confirmPass,
-    required DateTime birthday,
-  });
-
-  Future<Either<Failure, String>> updatePass({
-    required String email,
-    required String pass,
-    required String confirmPass,
-  });
-
-  Future<Either<Failure, void>> logout();
-
   Future<Either<Failure, UserEntity>> profile();
+
+  Future<Either<Failure, List<ContactSignupEntity>>> signup();
+
+  Future<Either<Failure, String>> forgotPass({
+    required String email,
+    required String pass,
+    required String confirmPass,
+  });
+
+  Future<Either<Failure, String>> sendOtp({
+    required String email,
+  });
 
   Future<Either<Failure, String>> resendOtp({
     required String email,
   });
+
   Future<Either<Failure, String>> verificationOtp({
     required String email,
     required int otp,
   });
+
+  Future<Either<Failure, void>> logout();
 }

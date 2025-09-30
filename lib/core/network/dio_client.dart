@@ -1,24 +1,19 @@
-import 'dart:io';
-
 import 'package:app_tl_land_3212/common/enums/dio_method.dart';
 import 'package:app_tl_land_3212/common/enums/server_exception_type.dart';
-import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
-import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:path_provider/path_provider.dart';
 
 import '../errors/server_exception.dart';
 import 'app_interceptor.dart';
 
 class DioClient {
   final Dio _dio;
-  late final PersistCookieJar _cookieJar;
 
   DioClient()
       : _dio = Dio(
           BaseOptions(
             baseUrl: dotenv.get('API_DOMAIN_URL'),
+            validateStatus: (_) => true,
             headers: {"X-TOKEN-ACCESS": dotenv.get('API_KEY')},
             responseType: ResponseType.json,
             sendTimeout: const Duration(seconds: 10),
@@ -29,12 +24,13 @@ class DioClient {
               request: true,
               requestBody: true,
               requestHeader: true,
+              responseBody: true,
               logPrint: print,
             ),
             AppInterceptor(),
           ]);
   void setBearerToken(String token) {
-    _dio.options.headers.remove("X-TOKEN-ACCESS");
+    // _dio.options.headers.remove("X-TOKEN-ACCESS");
     _dio.options.headers["Authorization"] = "Bearer $token";
   }
 
@@ -43,20 +39,12 @@ class DioClient {
     _dio.options.headers["X-TOKEN-ACCESS"] = dotenv.get('API_KEY');
   }
 
-  // Initialize session
-  Future<void> initSession() async {
-    Directory appDocDir = await getApplicationDocumentsDirectory();
-    String cookiePath = "${appDocDir.path}/.cookies/";
-    _cookieJar = PersistCookieJar(storage: FileStorage(cookiePath));
-    _dio.interceptors.add(CookieManager(_cookieJar));
-  }
-
   // Request
   Future<Response> request(
     String endpoint,
     DioMethod method, {
     Map<String, dynamic>? param,
-    Object? data,
+    dynamic data,
   }) async {
     try {
       switch (method) {
@@ -88,9 +76,11 @@ class DioClient {
       final errType = e.type;
 
       if (errType == DioExceptionType.badResponse &&
- e.response?.statusCode == 401) {
+          e.response?.statusCode == 401) {
         //! If token is expired (HTTP 401 Unauthorized)
-        throw ServerException(err: "", type: ServerExceptionType.expiredToken);
+        throw ServerException(
+            err: "Phiên đăng nhập hết hạn, vui lòng đăng nhập lại",
+            type: ServerExceptionType.expiredToken);
       } else if (errType == DioExceptionType.connectionError) {
         // If no internet connection
         throw ServerException(
@@ -131,17 +121,20 @@ class DioClient {
   // Get error texts
   static String getErrorTexts(Map<String, dynamic> validateMessages) {
     if (validateMessages.containsKey('message_validate')) {
-      final errMessages =
-          validateMessages['message_validate'] as Map<String, dynamic>;
+      final errMessages = validateMessages['message_validate'];
 
-      for (var el in errMessages.keys) {
-        if (errMessages[el] is List<String>) {
-          return (errMessages[el] as List<String>).first;
+      if (errMessages is Map<String, dynamic>) {
+        for (final field in errMessages.keys) {
+          final errors = errMessages[field];
+          if (errors is List && errors.isNotEmpty) {
+            return errors.first;
+          }
         }
       }
     }
-    return validateMessages.containsKey("message")
-        ? validateMessages["message"].toString()
-        : 'Đã xảy ra lỗi không xác định';
+    if (validateMessages.containsKey('message')) {
+      return validateMessages['message'].toString();
+    }
+    return 'Đã xảy ra lỗi không xác định';
   }
 }

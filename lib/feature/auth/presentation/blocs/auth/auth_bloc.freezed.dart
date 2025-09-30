@@ -51,36 +51,39 @@ extension AuthEventPatterns on AuthEvent {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Login value)? login,
-    TResult Function(_Signup value)? signup,
-    TResult Function(_UpdatePass value)? updatePass,
-    TResult Function(_Logout value)? logout,
     TResult Function(_CheckAuth value)? checkAuth,
     TResult Function(_ResetState value)? resetState,
+    TResult Function(_TokenExpired value)? tokenExpired,
+    TResult Function(_Signup value)? signup,
+    TResult Function(_ForgotPass value)? forgotPass,
+    TResult Function(_SendOtp value)? sendOtp,
     TResult Function(_ResendOtp value)? resendOtp,
     TResult Function(_VerificationOtp value)? verificationOtp,
-    TResult Function(_TokenExpired value)? tokenExpired,
+    TResult Function(_Logout value)? logout,
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
       case _Login() when login != null:
         return login(_that);
-      case _Signup() when signup != null:
-        return signup(_that);
-      case _UpdatePass() when updatePass != null:
-        return updatePass(_that);
-      case _Logout() when logout != null:
-        return logout(_that);
       case _CheckAuth() when checkAuth != null:
         return checkAuth(_that);
       case _ResetState() when resetState != null:
         return resetState(_that);
+      case _TokenExpired() when tokenExpired != null:
+        return tokenExpired(_that);
+      case _Signup() when signup != null:
+        return signup(_that);
+      case _ForgotPass() when forgotPass != null:
+        return forgotPass(_that);
+      case _SendOtp() when sendOtp != null:
+        return sendOtp(_that);
       case _ResendOtp() when resendOtp != null:
         return resendOtp(_that);
       case _VerificationOtp() when verificationOtp != null:
         return verificationOtp(_that);
-      case _TokenExpired() when tokenExpired != null:
-        return tokenExpired(_that);
+      case _Logout() when logout != null:
+        return logout(_that);
       case _:
         return orElse();
     }
@@ -102,35 +105,38 @@ extension AuthEventPatterns on AuthEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Login value) login,
-    required TResult Function(_Signup value) signup,
-    required TResult Function(_UpdatePass value) updatePass,
-    required TResult Function(_Logout value) logout,
     required TResult Function(_CheckAuth value) checkAuth,
     required TResult Function(_ResetState value) resetState,
+    required TResult Function(_TokenExpired value) tokenExpired,
+    required TResult Function(_Signup value) signup,
+    required TResult Function(_ForgotPass value) forgotPass,
+    required TResult Function(_SendOtp value) sendOtp,
     required TResult Function(_ResendOtp value) resendOtp,
     required TResult Function(_VerificationOtp value) verificationOtp,
-    required TResult Function(_TokenExpired value) tokenExpired,
+    required TResult Function(_Logout value) logout,
   }) {
     final _that = this;
     switch (_that) {
       case _Login():
         return login(_that);
-      case _Signup():
-        return signup(_that);
-      case _UpdatePass():
-        return updatePass(_that);
-      case _Logout():
-        return logout(_that);
       case _CheckAuth():
         return checkAuth(_that);
       case _ResetState():
         return resetState(_that);
+      case _TokenExpired():
+        return tokenExpired(_that);
+      case _Signup():
+        return signup(_that);
+      case _ForgotPass():
+        return forgotPass(_that);
+      case _SendOtp():
+        return sendOtp(_that);
       case _ResendOtp():
         return resendOtp(_that);
       case _VerificationOtp():
         return verificationOtp(_that);
-      case _TokenExpired():
-        return tokenExpired(_that);
+      case _Logout():
+        return logout(_that);
     }
   }
 
@@ -149,35 +155,38 @@ extension AuthEventPatterns on AuthEvent {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Login value)? login,
-    TResult? Function(_Signup value)? signup,
-    TResult? Function(_UpdatePass value)? updatePass,
-    TResult? Function(_Logout value)? logout,
     TResult? Function(_CheckAuth value)? checkAuth,
     TResult? Function(_ResetState value)? resetState,
+    TResult? Function(_TokenExpired value)? tokenExpired,
+    TResult? Function(_Signup value)? signup,
+    TResult? Function(_ForgotPass value)? forgotPass,
+    TResult? Function(_SendOtp value)? sendOtp,
     TResult? Function(_ResendOtp value)? resendOtp,
     TResult? Function(_VerificationOtp value)? verificationOtp,
-    TResult? Function(_TokenExpired value)? tokenExpired,
+    TResult? Function(_Logout value)? logout,
   }) {
     final _that = this;
     switch (_that) {
       case _Login() when login != null:
         return login(_that);
-      case _Signup() when signup != null:
-        return signup(_that);
-      case _UpdatePass() when updatePass != null:
-        return updatePass(_that);
-      case _Logout() when logout != null:
-        return logout(_that);
       case _CheckAuth() when checkAuth != null:
         return checkAuth(_that);
       case _ResetState() when resetState != null:
         return resetState(_that);
+      case _TokenExpired() when tokenExpired != null:
+        return tokenExpired(_that);
+      case _Signup() when signup != null:
+        return signup(_that);
+      case _ForgotPass() when forgotPass != null:
+        return forgotPass(_that);
+      case _SendOtp() when sendOtp != null:
+        return sendOtp(_that);
       case _ResendOtp() when resendOtp != null:
         return resendOtp(_that);
       case _VerificationOtp() when verificationOtp != null:
         return verificationOtp(_that);
-      case _TokenExpired() when tokenExpired != null:
-        return tokenExpired(_that);
+      case _Logout() when logout != null:
+        return logout(_that);
       case _:
         return null;
     }
@@ -198,39 +207,39 @@ extension AuthEventPatterns on AuthEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String email, String pass)? login,
-    TResult Function(String fullname, String email, String phone, String pass,
-            String confirmPass, DateTime birthday)?
-        signup,
-    TResult Function(String email, String pass, String confirmPass)? updatePass,
-    TResult Function()? logout,
     TResult Function()? checkAuth,
     TResult Function()? resetState,
+    TResult Function()? tokenExpired,
+    TResult Function()? signup,
+    TResult Function(String email, String pass, String confirmPass)? forgotPass,
+    TResult Function(String email)? sendOtp,
     TResult Function(String email)? resendOtp,
     TResult Function(String email, int otp)? verificationOtp,
-    TResult Function()? tokenExpired,
+    TResult Function()? logout,
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
       case _Login() when login != null:
         return login(_that.email, _that.pass);
-      case _Signup() when signup != null:
-        return signup(_that.fullname, _that.email, _that.phone, _that.pass,
-            _that.confirmPass, _that.birthday);
-      case _UpdatePass() when updatePass != null:
-        return updatePass(_that.email, _that.pass, _that.confirmPass);
-      case _Logout() when logout != null:
-        return logout();
       case _CheckAuth() when checkAuth != null:
         return checkAuth();
       case _ResetState() when resetState != null:
         return resetState();
+      case _TokenExpired() when tokenExpired != null:
+        return tokenExpired();
+      case _Signup() when signup != null:
+        return signup();
+      case _ForgotPass() when forgotPass != null:
+        return forgotPass(_that.email, _that.pass, _that.confirmPass);
+      case _SendOtp() when sendOtp != null:
+        return sendOtp(_that.email);
       case _ResendOtp() when resendOtp != null:
         return resendOtp(_that.email);
       case _VerificationOtp() when verificationOtp != null:
         return verificationOtp(_that.email, _that.otp);
-      case _TokenExpired() when tokenExpired != null:
-        return tokenExpired();
+      case _Logout() when logout != null:
+        return logout();
       case _:
         return orElse();
     }
@@ -252,39 +261,39 @@ extension AuthEventPatterns on AuthEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String email, String pass) login,
-    required TResult Function(String fullname, String email, String phone,
-            String pass, String confirmPass, DateTime birthday)
-        signup,
-    required TResult Function(String email, String pass, String confirmPass)
-        updatePass,
-    required TResult Function() logout,
     required TResult Function() checkAuth,
     required TResult Function() resetState,
+    required TResult Function() tokenExpired,
+    required TResult Function() signup,
+    required TResult Function(String email, String pass, String confirmPass)
+        forgotPass,
+    required TResult Function(String email) sendOtp,
     required TResult Function(String email) resendOtp,
     required TResult Function(String email, int otp) verificationOtp,
-    required TResult Function() tokenExpired,
+    required TResult Function() logout,
   }) {
     final _that = this;
     switch (_that) {
       case _Login():
         return login(_that.email, _that.pass);
-      case _Signup():
-        return signup(_that.fullname, _that.email, _that.phone, _that.pass,
-            _that.confirmPass, _that.birthday);
-      case _UpdatePass():
-        return updatePass(_that.email, _that.pass, _that.confirmPass);
-      case _Logout():
-        return logout();
       case _CheckAuth():
         return checkAuth();
       case _ResetState():
         return resetState();
+      case _TokenExpired():
+        return tokenExpired();
+      case _Signup():
+        return signup();
+      case _ForgotPass():
+        return forgotPass(_that.email, _that.pass, _that.confirmPass);
+      case _SendOtp():
+        return sendOtp(_that.email);
       case _ResendOtp():
         return resendOtp(_that.email);
       case _VerificationOtp():
         return verificationOtp(_that.email, _that.otp);
-      case _TokenExpired():
-        return tokenExpired();
+      case _Logout():
+        return logout();
     }
   }
 
@@ -303,39 +312,39 @@ extension AuthEventPatterns on AuthEvent {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String email, String pass)? login,
-    TResult? Function(String fullname, String email, String phone, String pass,
-            String confirmPass, DateTime birthday)?
-        signup,
-    TResult? Function(String email, String pass, String confirmPass)?
-        updatePass,
-    TResult? Function()? logout,
     TResult? Function()? checkAuth,
     TResult? Function()? resetState,
+    TResult? Function()? tokenExpired,
+    TResult? Function()? signup,
+    TResult? Function(String email, String pass, String confirmPass)?
+        forgotPass,
+    TResult? Function(String email)? sendOtp,
     TResult? Function(String email)? resendOtp,
     TResult? Function(String email, int otp)? verificationOtp,
-    TResult? Function()? tokenExpired,
+    TResult? Function()? logout,
   }) {
     final _that = this;
     switch (_that) {
       case _Login() when login != null:
         return login(_that.email, _that.pass);
-      case _Signup() when signup != null:
-        return signup(_that.fullname, _that.email, _that.phone, _that.pass,
-            _that.confirmPass, _that.birthday);
-      case _UpdatePass() when updatePass != null:
-        return updatePass(_that.email, _that.pass, _that.confirmPass);
-      case _Logout() when logout != null:
-        return logout();
       case _CheckAuth() when checkAuth != null:
         return checkAuth();
       case _ResetState() when resetState != null:
         return resetState();
+      case _TokenExpired() when tokenExpired != null:
+        return tokenExpired();
+      case _Signup() when signup != null:
+        return signup();
+      case _ForgotPass() when forgotPass != null:
+        return forgotPass(_that.email, _that.pass, _that.confirmPass);
+      case _SendOtp() when sendOtp != null:
+        return sendOtp(_that.email);
       case _ResendOtp() when resendOtp != null:
         return resendOtp(_that.email);
       case _VerificationOtp() when verificationOtp != null:
         return verificationOtp(_that.email, _that.otp);
-      case _TokenExpired() when tokenExpired != null:
-        return tokenExpired();
+      case _Logout() when logout != null:
+        return logout();
       case _:
         return null;
     }
@@ -412,218 +421,6 @@ class __$LoginCopyWithImpl<$Res> implements _$LoginCopyWith<$Res> {
 
 /// @nodoc
 
-class _Signup implements AuthEvent {
-  const _Signup(
-      {required this.fullname,
-      required this.email,
-      required this.phone,
-      required this.pass,
-      required this.confirmPass,
-      required this.birthday});
-
-  final String fullname;
-  final String email;
-  final String phone;
-  final String pass;
-  final String confirmPass;
-  final DateTime birthday;
-
-  /// Create a copy of AuthEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
-  _$SignupCopyWith<_Signup> get copyWith =>
-      __$SignupCopyWithImpl<_Signup>(this, _$identity);
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _Signup &&
-            (identical(other.fullname, fullname) ||
-                other.fullname == fullname) &&
-            (identical(other.email, email) || other.email == email) &&
-            (identical(other.phone, phone) || other.phone == phone) &&
-            (identical(other.pass, pass) || other.pass == pass) &&
-            (identical(other.confirmPass, confirmPass) ||
-                other.confirmPass == confirmPass) &&
-            (identical(other.birthday, birthday) ||
-                other.birthday == birthday));
-  }
-
-  @override
-  int get hashCode => Object.hash(
-      runtimeType, fullname, email, phone, pass, confirmPass, birthday);
-
-  @override
-  String toString() {
-    return 'AuthEvent.signup(fullname: $fullname, email: $email, phone: $phone, pass: $pass, confirmPass: $confirmPass, birthday: $birthday)';
-  }
-}
-
-/// @nodoc
-abstract mixin class _$SignupCopyWith<$Res>
-    implements $AuthEventCopyWith<$Res> {
-  factory _$SignupCopyWith(_Signup value, $Res Function(_Signup) _then) =
-      __$SignupCopyWithImpl;
-  @useResult
-  $Res call(
-      {String fullname,
-      String email,
-      String phone,
-      String pass,
-      String confirmPass,
-      DateTime birthday});
-}
-
-/// @nodoc
-class __$SignupCopyWithImpl<$Res> implements _$SignupCopyWith<$Res> {
-  __$SignupCopyWithImpl(this._self, this._then);
-
-  final _Signup _self;
-  final $Res Function(_Signup) _then;
-
-  /// Create a copy of AuthEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  $Res call({
-    Object? fullname = null,
-    Object? email = null,
-    Object? phone = null,
-    Object? pass = null,
-    Object? confirmPass = null,
-    Object? birthday = null,
-  }) {
-    return _then(_Signup(
-      fullname: null == fullname
-          ? _self.fullname
-          : fullname // ignore: cast_nullable_to_non_nullable
-              as String,
-      email: null == email
-          ? _self.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String,
-      phone: null == phone
-          ? _self.phone
-          : phone // ignore: cast_nullable_to_non_nullable
-              as String,
-      pass: null == pass
-          ? _self.pass
-          : pass // ignore: cast_nullable_to_non_nullable
-              as String,
-      confirmPass: null == confirmPass
-          ? _self.confirmPass
-          : confirmPass // ignore: cast_nullable_to_non_nullable
-              as String,
-      birthday: null == birthday
-          ? _self.birthday
-          : birthday // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _UpdatePass implements AuthEvent {
-  const _UpdatePass(
-      {required this.email, required this.pass, required this.confirmPass});
-
-  final String email;
-  final String pass;
-  final String confirmPass;
-
-  /// Create a copy of AuthEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
-  _$UpdatePassCopyWith<_UpdatePass> get copyWith =>
-      __$UpdatePassCopyWithImpl<_UpdatePass>(this, _$identity);
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _UpdatePass &&
-            (identical(other.email, email) || other.email == email) &&
-            (identical(other.pass, pass) || other.pass == pass) &&
-            (identical(other.confirmPass, confirmPass) ||
-                other.confirmPass == confirmPass));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, email, pass, confirmPass);
-
-  @override
-  String toString() {
-    return 'AuthEvent.updatePass(email: $email, pass: $pass, confirmPass: $confirmPass)';
-  }
-}
-
-/// @nodoc
-abstract mixin class _$UpdatePassCopyWith<$Res>
-    implements $AuthEventCopyWith<$Res> {
-  factory _$UpdatePassCopyWith(
-          _UpdatePass value, $Res Function(_UpdatePass) _then) =
-      __$UpdatePassCopyWithImpl;
-  @useResult
-  $Res call({String email, String pass, String confirmPass});
-}
-
-/// @nodoc
-class __$UpdatePassCopyWithImpl<$Res> implements _$UpdatePassCopyWith<$Res> {
-  __$UpdatePassCopyWithImpl(this._self, this._then);
-
-  final _UpdatePass _self;
-  final $Res Function(_UpdatePass) _then;
-
-  /// Create a copy of AuthEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  $Res call({
-    Object? email = null,
-    Object? pass = null,
-    Object? confirmPass = null,
-  }) {
-    return _then(_UpdatePass(
-      email: null == email
-          ? _self.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String,
-      pass: null == pass
-          ? _self.pass
-          : pass // ignore: cast_nullable_to_non_nullable
-              as String,
-      confirmPass: null == confirmPass
-          ? _self.confirmPass
-          : confirmPass // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _Logout implements AuthEvent {
-  const _Logout();
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _Logout);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  String toString() {
-    return 'AuthEvent.logout()';
-  }
-}
-
-/// @nodoc
-
 class _CheckAuth implements AuthEvent {
   const _CheckAuth();
 
@@ -659,6 +456,187 @@ class _ResetState implements AuthEvent {
   @override
   String toString() {
     return 'AuthEvent.resetState()';
+  }
+}
+
+/// @nodoc
+
+class _TokenExpired implements AuthEvent {
+  const _TokenExpired();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _TokenExpired);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'AuthEvent.tokenExpired()';
+  }
+}
+
+/// @nodoc
+
+class _Signup implements AuthEvent {
+  const _Signup();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _Signup);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'AuthEvent.signup()';
+  }
+}
+
+/// @nodoc
+
+class _ForgotPass implements AuthEvent {
+  const _ForgotPass(
+      {required this.email, required this.pass, required this.confirmPass});
+
+  final String email;
+  final String pass;
+  final String confirmPass;
+
+  /// Create a copy of AuthEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ForgotPassCopyWith<_ForgotPass> get copyWith =>
+      __$ForgotPassCopyWithImpl<_ForgotPass>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _ForgotPass &&
+            (identical(other.email, email) || other.email == email) &&
+            (identical(other.pass, pass) || other.pass == pass) &&
+            (identical(other.confirmPass, confirmPass) ||
+                other.confirmPass == confirmPass));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, email, pass, confirmPass);
+
+  @override
+  String toString() {
+    return 'AuthEvent.forgotPass(email: $email, pass: $pass, confirmPass: $confirmPass)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$ForgotPassCopyWith<$Res>
+    implements $AuthEventCopyWith<$Res> {
+  factory _$ForgotPassCopyWith(
+          _ForgotPass value, $Res Function(_ForgotPass) _then) =
+      __$ForgotPassCopyWithImpl;
+  @useResult
+  $Res call({String email, String pass, String confirmPass});
+}
+
+/// @nodoc
+class __$ForgotPassCopyWithImpl<$Res> implements _$ForgotPassCopyWith<$Res> {
+  __$ForgotPassCopyWithImpl(this._self, this._then);
+
+  final _ForgotPass _self;
+  final $Res Function(_ForgotPass) _then;
+
+  /// Create a copy of AuthEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? email = null,
+    Object? pass = null,
+    Object? confirmPass = null,
+  }) {
+    return _then(_ForgotPass(
+      email: null == email
+          ? _self.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String,
+      pass: null == pass
+          ? _self.pass
+          : pass // ignore: cast_nullable_to_non_nullable
+              as String,
+      confirmPass: null == confirmPass
+          ? _self.confirmPass
+          : confirmPass // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _SendOtp implements AuthEvent {
+  const _SendOtp({required this.email});
+
+  final String email;
+
+  /// Create a copy of AuthEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$SendOtpCopyWith<_SendOtp> get copyWith =>
+      __$SendOtpCopyWithImpl<_SendOtp>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _SendOtp &&
+            (identical(other.email, email) || other.email == email));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, email);
+
+  @override
+  String toString() {
+    return 'AuthEvent.sendOtp(email: $email)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$SendOtpCopyWith<$Res>
+    implements $AuthEventCopyWith<$Res> {
+  factory _$SendOtpCopyWith(_SendOtp value, $Res Function(_SendOtp) _then) =
+      __$SendOtpCopyWithImpl;
+  @useResult
+  $Res call({String email});
+}
+
+/// @nodoc
+class __$SendOtpCopyWithImpl<$Res> implements _$SendOtpCopyWith<$Res> {
+  __$SendOtpCopyWithImpl(this._self, this._then);
+
+  final _SendOtp _self;
+  final $Res Function(_SendOtp) _then;
+
+  /// Create a copy of AuthEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? email = null,
+  }) {
+    return _then(_SendOtp(
+      email: null == email
+          ? _self.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
   }
 }
 
@@ -798,13 +776,13 @@ class __$VerificationOtpCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _TokenExpired implements AuthEvent {
-  const _TokenExpired();
+class _Logout implements AuthEvent {
+  const _Logout();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _TokenExpired);
+        (other.runtimeType == runtimeType && other is _Logout);
   }
 
   @override
@@ -812,7 +790,7 @@ class _TokenExpired implements AuthEvent {
 
   @override
   String toString() {
-    return 'AuthEvent.tokenExpired()';
+    return 'AuthEvent.logout()';
   }
 }
 
@@ -822,8 +800,12 @@ mixin _$AuthState {
   bool get isSuccess;
   Failure? get failure;
   AuthActionType get actionType;
-  bool? get isAuthenticated; // UserModel? userModel,
+  bool? get isAuthenticated;
+  bool? get otpVerified;
+  bool? get otpResent;
+  bool? get otpSend;
   UserEntity? get userModel;
+  List<ContactSignupEntity> get contactToSignup;
 
   /// Create a copy of AuthState
   /// with the given fields replaced by the non-null parameter values.
@@ -846,17 +828,34 @@ mixin _$AuthState {
                 other.actionType == actionType) &&
             (identical(other.isAuthenticated, isAuthenticated) ||
                 other.isAuthenticated == isAuthenticated) &&
+            (identical(other.otpVerified, otpVerified) ||
+                other.otpVerified == otpVerified) &&
+            (identical(other.otpResent, otpResent) ||
+                other.otpResent == otpResent) &&
+            (identical(other.otpSend, otpSend) || other.otpSend == otpSend) &&
             (identical(other.userModel, userModel) ||
-                other.userModel == userModel));
+                other.userModel == userModel) &&
+            const DeepCollectionEquality()
+                .equals(other.contactToSignup, contactToSignup));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isLoading, isSuccess, failure,
-      actionType, isAuthenticated, userModel);
+  int get hashCode => Object.hash(
+      runtimeType,
+      isLoading,
+      isSuccess,
+      failure,
+      actionType,
+      isAuthenticated,
+      otpVerified,
+      otpResent,
+      otpSend,
+      userModel,
+      const DeepCollectionEquality().hash(contactToSignup));
 
   @override
   String toString() {
-    return 'AuthState(isLoading: $isLoading, isSuccess: $isSuccess, failure: $failure, actionType: $actionType, isAuthenticated: $isAuthenticated, userModel: $userModel)';
+    return 'AuthState(isLoading: $isLoading, isSuccess: $isSuccess, failure: $failure, actionType: $actionType, isAuthenticated: $isAuthenticated, otpVerified: $otpVerified, otpResent: $otpResent, otpSend: $otpSend, userModel: $userModel, contactToSignup: $contactToSignup)';
   }
 }
 
@@ -871,7 +870,11 @@ abstract mixin class $AuthStateCopyWith<$Res> {
       Failure? failure,
       AuthActionType actionType,
       bool? isAuthenticated,
-      UserEntity? userModel});
+      bool? otpVerified,
+      bool? otpResent,
+      bool? otpSend,
+      UserEntity? userModel,
+      List<ContactSignupEntity> contactToSignup});
 }
 
 /// @nodoc
@@ -891,7 +894,11 @@ class _$AuthStateCopyWithImpl<$Res> implements $AuthStateCopyWith<$Res> {
     Object? failure = freezed,
     Object? actionType = null,
     Object? isAuthenticated = freezed,
+    Object? otpVerified = freezed,
+    Object? otpResent = freezed,
+    Object? otpSend = freezed,
     Object? userModel = freezed,
+    Object? contactToSignup = null,
   }) {
     return _then(_self.copyWith(
       isLoading: null == isLoading
@@ -914,10 +921,26 @@ class _$AuthStateCopyWithImpl<$Res> implements $AuthStateCopyWith<$Res> {
           ? _self.isAuthenticated
           : isAuthenticated // ignore: cast_nullable_to_non_nullable
               as bool?,
+      otpVerified: freezed == otpVerified
+          ? _self.otpVerified
+          : otpVerified // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      otpResent: freezed == otpResent
+          ? _self.otpResent
+          : otpResent // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      otpSend: freezed == otpSend
+          ? _self.otpSend
+          : otpSend // ignore: cast_nullable_to_non_nullable
+              as bool?,
       userModel: freezed == userModel
           ? _self.userModel
           : userModel // ignore: cast_nullable_to_non_nullable
               as UserEntity?,
+      contactToSignup: null == contactToSignup
+          ? _self.contactToSignup
+          : contactToSignup // ignore: cast_nullable_to_non_nullable
+              as List<ContactSignupEntity>,
     ));
   }
 }
@@ -1019,15 +1042,28 @@ extension AuthStatePatterns on AuthState {
             Failure? failure,
             AuthActionType actionType,
             bool? isAuthenticated,
-            UserEntity? userModel)?
+            bool? otpVerified,
+            bool? otpResent,
+            bool? otpSend,
+            UserEntity? userModel,
+            List<ContactSignupEntity> contactToSignup)?
         $default, {
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
       case _AuthState() when $default != null:
-        return $default(_that.isLoading, _that.isSuccess, _that.failure,
-            _that.actionType, _that.isAuthenticated, _that.userModel);
+        return $default(
+            _that.isLoading,
+            _that.isSuccess,
+            _that.failure,
+            _that.actionType,
+            _that.isAuthenticated,
+            _that.otpVerified,
+            _that.otpResent,
+            _that.otpSend,
+            _that.userModel,
+            _that.contactToSignup);
       case _:
         return orElse();
     }
@@ -1054,14 +1090,27 @@ extension AuthStatePatterns on AuthState {
             Failure? failure,
             AuthActionType actionType,
             bool? isAuthenticated,
-            UserEntity? userModel)
+            bool? otpVerified,
+            bool? otpResent,
+            bool? otpSend,
+            UserEntity? userModel,
+            List<ContactSignupEntity> contactToSignup)
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _AuthState():
-        return $default(_that.isLoading, _that.isSuccess, _that.failure,
-            _that.actionType, _that.isAuthenticated, _that.userModel);
+        return $default(
+            _that.isLoading,
+            _that.isSuccess,
+            _that.failure,
+            _that.actionType,
+            _that.isAuthenticated,
+            _that.otpVerified,
+            _that.otpResent,
+            _that.otpSend,
+            _that.userModel,
+            _that.contactToSignup);
     }
   }
 
@@ -1085,14 +1134,27 @@ extension AuthStatePatterns on AuthState {
             Failure? failure,
             AuthActionType actionType,
             bool? isAuthenticated,
-            UserEntity? userModel)?
+            bool? otpVerified,
+            bool? otpResent,
+            bool? otpSend,
+            UserEntity? userModel,
+            List<ContactSignupEntity> contactToSignup)?
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _AuthState() when $default != null:
-        return $default(_that.isLoading, _that.isSuccess, _that.failure,
-            _that.actionType, _that.isAuthenticated, _that.userModel);
+        return $default(
+            _that.isLoading,
+            _that.isSuccess,
+            _that.failure,
+            _that.actionType,
+            _that.isAuthenticated,
+            _that.otpVerified,
+            _that.otpResent,
+            _that.otpSend,
+            _that.userModel,
+            _that.contactToSignup);
       case _:
         return null;
     }
@@ -1108,7 +1170,12 @@ class _AuthState implements AuthState {
       this.failure = null,
       this.actionType = AuthActionType.none,
       this.isAuthenticated,
-      this.userModel});
+      this.otpVerified,
+      this.otpResent,
+      this.otpSend,
+      this.userModel,
+      final List<ContactSignupEntity> contactToSignup = const []})
+      : _contactToSignup = contactToSignup;
 
   @override
   @JsonKey()
@@ -1124,9 +1191,22 @@ class _AuthState implements AuthState {
   final AuthActionType actionType;
   @override
   final bool? isAuthenticated;
-// UserModel? userModel,
+  @override
+  final bool? otpVerified;
+  @override
+  final bool? otpResent;
+  @override
+  final bool? otpSend;
   @override
   final UserEntity? userModel;
+  final List<ContactSignupEntity> _contactToSignup;
+  @override
+  @JsonKey()
+  List<ContactSignupEntity> get contactToSignup {
+    if (_contactToSignup is EqualUnmodifiableListView) return _contactToSignup;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_contactToSignup);
+  }
 
   /// Create a copy of AuthState
   /// with the given fields replaced by the non-null parameter values.
@@ -1150,17 +1230,34 @@ class _AuthState implements AuthState {
                 other.actionType == actionType) &&
             (identical(other.isAuthenticated, isAuthenticated) ||
                 other.isAuthenticated == isAuthenticated) &&
+            (identical(other.otpVerified, otpVerified) ||
+                other.otpVerified == otpVerified) &&
+            (identical(other.otpResent, otpResent) ||
+                other.otpResent == otpResent) &&
+            (identical(other.otpSend, otpSend) || other.otpSend == otpSend) &&
             (identical(other.userModel, userModel) ||
-                other.userModel == userModel));
+                other.userModel == userModel) &&
+            const DeepCollectionEquality()
+                .equals(other._contactToSignup, _contactToSignup));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isLoading, isSuccess, failure,
-      actionType, isAuthenticated, userModel);
+  int get hashCode => Object.hash(
+      runtimeType,
+      isLoading,
+      isSuccess,
+      failure,
+      actionType,
+      isAuthenticated,
+      otpVerified,
+      otpResent,
+      otpSend,
+      userModel,
+      const DeepCollectionEquality().hash(_contactToSignup));
 
   @override
   String toString() {
-    return 'AuthState(isLoading: $isLoading, isSuccess: $isSuccess, failure: $failure, actionType: $actionType, isAuthenticated: $isAuthenticated, userModel: $userModel)';
+    return 'AuthState(isLoading: $isLoading, isSuccess: $isSuccess, failure: $failure, actionType: $actionType, isAuthenticated: $isAuthenticated, otpVerified: $otpVerified, otpResent: $otpResent, otpSend: $otpSend, userModel: $userModel, contactToSignup: $contactToSignup)';
   }
 }
 
@@ -1178,7 +1275,11 @@ abstract mixin class _$AuthStateCopyWith<$Res>
       Failure? failure,
       AuthActionType actionType,
       bool? isAuthenticated,
-      UserEntity? userModel});
+      bool? otpVerified,
+      bool? otpResent,
+      bool? otpSend,
+      UserEntity? userModel,
+      List<ContactSignupEntity> contactToSignup});
 }
 
 /// @nodoc
@@ -1198,7 +1299,11 @@ class __$AuthStateCopyWithImpl<$Res> implements _$AuthStateCopyWith<$Res> {
     Object? failure = freezed,
     Object? actionType = null,
     Object? isAuthenticated = freezed,
+    Object? otpVerified = freezed,
+    Object? otpResent = freezed,
+    Object? otpSend = freezed,
     Object? userModel = freezed,
+    Object? contactToSignup = null,
   }) {
     return _then(_AuthState(
       isLoading: null == isLoading
@@ -1221,10 +1326,26 @@ class __$AuthStateCopyWithImpl<$Res> implements _$AuthStateCopyWith<$Res> {
           ? _self.isAuthenticated
           : isAuthenticated // ignore: cast_nullable_to_non_nullable
               as bool?,
+      otpVerified: freezed == otpVerified
+          ? _self.otpVerified
+          : otpVerified // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      otpResent: freezed == otpResent
+          ? _self.otpResent
+          : otpResent // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      otpSend: freezed == otpSend
+          ? _self.otpSend
+          : otpSend // ignore: cast_nullable_to_non_nullable
+              as bool?,
       userModel: freezed == userModel
           ? _self.userModel
           : userModel // ignore: cast_nullable_to_non_nullable
               as UserEntity?,
+      contactToSignup: null == contactToSignup
+          ? _self._contactToSignup
+          : contactToSignup // ignore: cast_nullable_to_non_nullable
+              as List<ContactSignupEntity>,
     ));
   }
 }

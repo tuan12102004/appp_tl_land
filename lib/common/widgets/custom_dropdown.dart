@@ -122,7 +122,7 @@ class _CustomizeDropdownState<T> extends State<CustomDropdown<T>> {
                           return CupertinoButton(
                             color: isSelected
                                 ? BasicColors.blueZodiac500
-                                : AppColors.textButtonPrimary,
+                                : TextColors.textButtonPrimary,
                             minSize: 0,
                             borderRadius: BorderRadius.zero,
                             padding: widget.paddingDropdownItems ??
@@ -158,7 +158,8 @@ class _CustomizeDropdownState<T> extends State<CustomDropdown<T>> {
                                         .bodyMedium!
                                         .copyWith(
                                           color: isSelected
-                                              ? Colors.white
+                                              ? TextColors
+                                                  .textComboBoxMenuItemOnselected
                                               : TextColors
                                                   .textComboBoxMenuItemDefault,
                                         ),

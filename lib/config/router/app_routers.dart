@@ -11,9 +11,9 @@ class AppRouters {
     navigatorKey: navigatorKey,
 
     // Khi app khởi động, nó sẽ mở màn hình có đường dẫn /intro/splash đầu tiên.
-    // initialLocation: '/intro/splash',
+    initialLocation: '/intro/splash',
     // Dành cho đi thẳng vô home
-    initialLocation: '/auth/login',
+    // initialLocation: '/auth/login',
     // danh sách các route
     routes: [
       // Router của intro

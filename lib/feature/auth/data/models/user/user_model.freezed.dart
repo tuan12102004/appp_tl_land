@@ -14,15 +14,18 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$UserModel {
-  int get id;
-  String get fullname;
-  String get email;
-  String get phone;
-  String? get address;
-  String? get avatar;
-  DateTime get birthday;
+  int? get id;
+  String? get fullname;
+  String? get phone;
   int? get gender;
-  bool? get status;
+  DateTime? get birthday;
+  String? get avatar;
+  int? get status;
+  String? get address;
+  @JsonKey(name: 'created_at')
+  DateTime? get createdAt;
+  String? get ward;
+  String? get province;
 
   /// Create a copy of UserModel
   /// with the given fields replaced by the non-null parameter values.
@@ -42,24 +45,28 @@ mixin _$UserModel {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.fullname, fullname) ||
                 other.fullname == fullname) &&
-            (identical(other.email, email) || other.email == email) &&
             (identical(other.phone, phone) || other.phone == phone) &&
-            (identical(other.address, address) || other.address == address) &&
-            (identical(other.avatar, avatar) || other.avatar == avatar) &&
+            (identical(other.gender, gender) || other.gender == gender) &&
             (identical(other.birthday, birthday) ||
                 other.birthday == birthday) &&
-            (identical(other.gender, gender) || other.gender == gender) &&
-            (identical(other.status, status) || other.status == status));
+            (identical(other.avatar, avatar) || other.avatar == avatar) &&
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.address, address) || other.address == address) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.ward, ward) || other.ward == ward) &&
+            (identical(other.province, province) ||
+                other.province == province));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, fullname, email, phone,
-      address, avatar, birthday, gender, status);
+  int get hashCode => Object.hash(runtimeType, id, fullname, phone, gender,
+      birthday, avatar, status, address, createdAt, ward, province);
 
   @override
   String toString() {
-    return 'UserModel(id: $id, fullname: $fullname, email: $email, phone: $phone, address: $address, avatar: $avatar, birthday: $birthday, gender: $gender, status: $status)';
+    return 'UserModel(id: $id, fullname: $fullname, phone: $phone, gender: $gender, birthday: $birthday, avatar: $avatar, status: $status, address: $address, createdAt: $createdAt, ward: $ward, province: $province)';
   }
 }
 
@@ -69,15 +76,17 @@ abstract mixin class $UserModelCopyWith<$Res> {
       _$UserModelCopyWithImpl;
   @useResult
   $Res call(
-      {int id,
-      String fullname,
-      String email,
-      String phone,
-      String? address,
-      String? avatar,
-      DateTime birthday,
+      {int? id,
+      String? fullname,
+      String? phone,
       int? gender,
-      bool? status});
+      DateTime? birthday,
+      String? avatar,
+      int? status,
+      String? address,
+      @JsonKey(name: 'created_at') DateTime? createdAt,
+      String? ward,
+      String? province});
 }
 
 /// @nodoc
@@ -92,53 +101,63 @@ class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? fullname = null,
-    Object? email = null,
-    Object? phone = null,
-    Object? address = freezed,
-    Object? avatar = freezed,
-    Object? birthday = null,
+    Object? id = freezed,
+    Object? fullname = freezed,
+    Object? phone = freezed,
     Object? gender = freezed,
+    Object? birthday = freezed,
+    Object? avatar = freezed,
     Object? status = freezed,
+    Object? address = freezed,
+    Object? createdAt = freezed,
+    Object? ward = freezed,
+    Object? province = freezed,
   }) {
     return _then(_self.copyWith(
-      id: null == id
+      id: freezed == id
           ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      fullname: null == fullname
+              as int?,
+      fullname: freezed == fullname
           ? _self.fullname
           : fullname // ignore: cast_nullable_to_non_nullable
-              as String,
-      email: null == email
-          ? _self.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String,
-      phone: null == phone
+              as String?,
+      phone: freezed == phone
           ? _self.phone
           : phone // ignore: cast_nullable_to_non_nullable
-              as String,
-      address: freezed == address
-          ? _self.address
-          : address // ignore: cast_nullable_to_non_nullable
               as String?,
-      avatar: freezed == avatar
-          ? _self.avatar
-          : avatar // ignore: cast_nullable_to_non_nullable
-              as String?,
-      birthday: null == birthday
-          ? _self.birthday
-          : birthday // ignore: cast_nullable_to_non_nullable
-              as DateTime,
       gender: freezed == gender
           ? _self.gender
           : gender // ignore: cast_nullable_to_non_nullable
               as int?,
+      birthday: freezed == birthday
+          ? _self.birthday
+          : birthday // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      avatar: freezed == avatar
+          ? _self.avatar
+          : avatar // ignore: cast_nullable_to_non_nullable
+              as String?,
       status: freezed == status
           ? _self.status
           : status // ignore: cast_nullable_to_non_nullable
-              as bool?,
+              as int?,
+      address: freezed == address
+          ? _self.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as String?,
+      createdAt: freezed == createdAt
+          ? _self.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      ward: freezed == ward
+          ? _self.ward
+          : ward // ignore: cast_nullable_to_non_nullable
+              as String?,
+      province: freezed == province
+          ? _self.province
+          : province // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -235,15 +254,17 @@ extension UserModelPatterns on UserModel {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
     TResult Function(
-            int id,
-            String fullname,
-            String email,
-            String phone,
-            String? address,
-            String? avatar,
-            DateTime birthday,
+            int? id,
+            String? fullname,
+            String? phone,
             int? gender,
-            bool? status)?
+            DateTime? birthday,
+            String? avatar,
+            int? status,
+            String? address,
+            @JsonKey(name: 'created_at') DateTime? createdAt,
+            String? ward,
+            String? province)?
         $default, {
     required TResult orElse(),
   }) {
@@ -253,13 +274,15 @@ extension UserModelPatterns on UserModel {
         return $default(
             _that.id,
             _that.fullname,
-            _that.email,
             _that.phone,
-            _that.address,
-            _that.avatar,
-            _that.birthday,
             _that.gender,
-            _that.status);
+            _that.birthday,
+            _that.avatar,
+            _that.status,
+            _that.address,
+            _that.createdAt,
+            _that.ward,
+            _that.province);
       case _:
         return orElse();
     }
@@ -281,15 +304,17 @@ extension UserModelPatterns on UserModel {
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
     TResult Function(
-            int id,
-            String fullname,
-            String email,
-            String phone,
-            String? address,
-            String? avatar,
-            DateTime birthday,
+            int? id,
+            String? fullname,
+            String? phone,
             int? gender,
-            bool? status)
+            DateTime? birthday,
+            String? avatar,
+            int? status,
+            String? address,
+            @JsonKey(name: 'created_at') DateTime? createdAt,
+            String? ward,
+            String? province)
         $default,
   ) {
     final _that = this;
@@ -298,13 +323,15 @@ extension UserModelPatterns on UserModel {
         return $default(
             _that.id,
             _that.fullname,
-            _that.email,
             _that.phone,
-            _that.address,
-            _that.avatar,
-            _that.birthday,
             _that.gender,
-            _that.status);
+            _that.birthday,
+            _that.avatar,
+            _that.status,
+            _that.address,
+            _that.createdAt,
+            _that.ward,
+            _that.province);
     }
   }
 
@@ -323,15 +350,17 @@ extension UserModelPatterns on UserModel {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
     TResult? Function(
-            int id,
-            String fullname,
-            String email,
-            String phone,
-            String? address,
-            String? avatar,
-            DateTime birthday,
+            int? id,
+            String? fullname,
+            String? phone,
             int? gender,
-            bool? status)?
+            DateTime? birthday,
+            String? avatar,
+            int? status,
+            String? address,
+            @JsonKey(name: 'created_at') DateTime? createdAt,
+            String? ward,
+            String? province)?
         $default,
   ) {
     final _that = this;
@@ -340,13 +369,15 @@ extension UserModelPatterns on UserModel {
         return $default(
             _that.id,
             _that.fullname,
-            _that.email,
             _that.phone,
-            _that.address,
-            _that.avatar,
-            _that.birthday,
             _that.gender,
-            _that.status);
+            _that.birthday,
+            _that.avatar,
+            _that.status,
+            _that.address,
+            _that.createdAt,
+            _that.ward,
+            _that.province);
       case _:
         return null;
     }
@@ -359,34 +390,41 @@ class _UserModel implements UserModel {
   const _UserModel(
       {required this.id,
       required this.fullname,
-      required this.email,
       required this.phone,
-      this.address,
-      this.avatar,
+      required this.gender,
       required this.birthday,
-      this.gender,
-      this.status});
+      required this.avatar,
+      required this.status,
+      required this.address,
+      @JsonKey(name: 'created_at') required this.createdAt,
+      required this.ward,
+      required this.province});
   factory _UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);
 
   @override
-  final int id;
+  final int? id;
   @override
-  final String fullname;
+  final String? fullname;
   @override
-  final String email;
-  @override
-  final String phone;
-  @override
-  final String? address;
-  @override
-  final String? avatar;
-  @override
-  final DateTime birthday;
+  final String? phone;
   @override
   final int? gender;
   @override
-  final bool? status;
+  final DateTime? birthday;
+  @override
+  final String? avatar;
+  @override
+  final int? status;
+  @override
+  final String? address;
+  @override
+  @JsonKey(name: 'created_at')
+  final DateTime? createdAt;
+  @override
+  final String? ward;
+  @override
+  final String? province;
 
   /// Create a copy of UserModel
   /// with the given fields replaced by the non-null parameter values.
@@ -411,24 +449,28 @@ class _UserModel implements UserModel {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.fullname, fullname) ||
                 other.fullname == fullname) &&
-            (identical(other.email, email) || other.email == email) &&
             (identical(other.phone, phone) || other.phone == phone) &&
-            (identical(other.address, address) || other.address == address) &&
-            (identical(other.avatar, avatar) || other.avatar == avatar) &&
+            (identical(other.gender, gender) || other.gender == gender) &&
             (identical(other.birthday, birthday) ||
                 other.birthday == birthday) &&
-            (identical(other.gender, gender) || other.gender == gender) &&
-            (identical(other.status, status) || other.status == status));
+            (identical(other.avatar, avatar) || other.avatar == avatar) &&
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.address, address) || other.address == address) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.ward, ward) || other.ward == ward) &&
+            (identical(other.province, province) ||
+                other.province == province));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, fullname, email, phone,
-      address, avatar, birthday, gender, status);
+  int get hashCode => Object.hash(runtimeType, id, fullname, phone, gender,
+      birthday, avatar, status, address, createdAt, ward, province);
 
   @override
   String toString() {
-    return 'UserModel(id: $id, fullname: $fullname, email: $email, phone: $phone, address: $address, avatar: $avatar, birthday: $birthday, gender: $gender, status: $status)';
+    return 'UserModel(id: $id, fullname: $fullname, phone: $phone, gender: $gender, birthday: $birthday, avatar: $avatar, status: $status, address: $address, createdAt: $createdAt, ward: $ward, province: $province)';
   }
 }
 
@@ -441,15 +483,17 @@ abstract mixin class _$UserModelCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int id,
-      String fullname,
-      String email,
-      String phone,
-      String? address,
-      String? avatar,
-      DateTime birthday,
+      {int? id,
+      String? fullname,
+      String? phone,
       int? gender,
-      bool? status});
+      DateTime? birthday,
+      String? avatar,
+      int? status,
+      String? address,
+      @JsonKey(name: 'created_at') DateTime? createdAt,
+      String? ward,
+      String? province});
 }
 
 /// @nodoc
@@ -464,53 +508,63 @@ class __$UserModelCopyWithImpl<$Res> implements _$UserModelCopyWith<$Res> {
   @override
   @pragma('vm:prefer-inline')
   $Res call({
-    Object? id = null,
-    Object? fullname = null,
-    Object? email = null,
-    Object? phone = null,
-    Object? address = freezed,
-    Object? avatar = freezed,
-    Object? birthday = null,
+    Object? id = freezed,
+    Object? fullname = freezed,
+    Object? phone = freezed,
     Object? gender = freezed,
+    Object? birthday = freezed,
+    Object? avatar = freezed,
     Object? status = freezed,
+    Object? address = freezed,
+    Object? createdAt = freezed,
+    Object? ward = freezed,
+    Object? province = freezed,
   }) {
     return _then(_UserModel(
-      id: null == id
+      id: freezed == id
           ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      fullname: null == fullname
+              as int?,
+      fullname: freezed == fullname
           ? _self.fullname
           : fullname // ignore: cast_nullable_to_non_nullable
-              as String,
-      email: null == email
-          ? _self.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String,
-      phone: null == phone
+              as String?,
+      phone: freezed == phone
           ? _self.phone
           : phone // ignore: cast_nullable_to_non_nullable
-              as String,
-      address: freezed == address
-          ? _self.address
-          : address // ignore: cast_nullable_to_non_nullable
               as String?,
-      avatar: freezed == avatar
-          ? _self.avatar
-          : avatar // ignore: cast_nullable_to_non_nullable
-              as String?,
-      birthday: null == birthday
-          ? _self.birthday
-          : birthday // ignore: cast_nullable_to_non_nullable
-              as DateTime,
       gender: freezed == gender
           ? _self.gender
           : gender // ignore: cast_nullable_to_non_nullable
               as int?,
+      birthday: freezed == birthday
+          ? _self.birthday
+          : birthday // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      avatar: freezed == avatar
+          ? _self.avatar
+          : avatar // ignore: cast_nullable_to_non_nullable
+              as String?,
       status: freezed == status
           ? _self.status
           : status // ignore: cast_nullable_to_non_nullable
-              as bool?,
+              as int?,
+      address: freezed == address
+          ? _self.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as String?,
+      createdAt: freezed == createdAt
+          ? _self.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      ward: freezed == ward
+          ? _self.ward
+          : ward // ignore: cast_nullable_to_non_nullable
+              as String?,
+      province: freezed == province
+          ? _self.province
+          : province // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }

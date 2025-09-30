@@ -17,5 +17,9 @@ export 'widgets/forgot_pass/reset_pass_form.dart';
 export 'widgets/login/auth_end_text.dart';
 export 'widgets/login/login_form.dart';
 
-// auth/blocs
+// auth/shared
+export 'widgets/shared/contact_signup_shimmer.dart';
+
+// auth/signup
+export 'widgets/signup/contact_signup_list.dart';
 

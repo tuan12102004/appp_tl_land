@@ -44,6 +44,7 @@ class LoginForm extends StatelessWidget {
             controller: passwordCon,
             focusNode: passwordNode,
             validator: InputValidators.validatePassword,
+            textInputAction: TextInputAction.next,
             onEditingComplete: onLogin,
           ),
           SizedBox(height: 16.h),

@@ -14,7 +14,18 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$LoginModel {
-  String? get accessToken;
+  @JsonKey(name: 'access_token')
+  String get accessToken;
+  @JsonKey(name: 'refresh_token')
+  String? get refreshToken;
+  @JsonKey(name: 'is_email_verified')
+  bool? get isEmailVerified;
+  @JsonKey(name: 'is_sms_verified')
+  bool? get isSmsVerified;
+  @JsonKey(name: 'expires_in')
+  int? get expiresIn;
+  int? get status;
+  List<String>? get role;
 
   /// Create a copy of LoginModel
   /// with the given fields replaced by the non-null parameter values.
@@ -32,16 +43,34 @@ mixin _$LoginModel {
         (other.runtimeType == runtimeType &&
             other is LoginModel &&
             (identical(other.accessToken, accessToken) ||
-                other.accessToken == accessToken));
+                other.accessToken == accessToken) &&
+            (identical(other.refreshToken, refreshToken) ||
+                other.refreshToken == refreshToken) &&
+            (identical(other.isEmailVerified, isEmailVerified) ||
+                other.isEmailVerified == isEmailVerified) &&
+            (identical(other.isSmsVerified, isSmsVerified) ||
+                other.isSmsVerified == isSmsVerified) &&
+            (identical(other.expiresIn, expiresIn) ||
+                other.expiresIn == expiresIn) &&
+            (identical(other.status, status) || other.status == status) &&
+            const DeepCollectionEquality().equals(other.role, role));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, accessToken);
+  int get hashCode => Object.hash(
+      runtimeType,
+      accessToken,
+      refreshToken,
+      isEmailVerified,
+      isSmsVerified,
+      expiresIn,
+      status,
+      const DeepCollectionEquality().hash(role));
 
   @override
   String toString() {
-    return 'LoginModel(accessToken: $accessToken)';
+    return 'LoginModel(accessToken: $accessToken, refreshToken: $refreshToken, isEmailVerified: $isEmailVerified, isSmsVerified: $isSmsVerified, expiresIn: $expiresIn, status: $status, role: $role)';
   }
 }
 
@@ -51,7 +80,14 @@ abstract mixin class $LoginModelCopyWith<$Res> {
           LoginModel value, $Res Function(LoginModel) _then) =
       _$LoginModelCopyWithImpl;
   @useResult
-  $Res call({String? accessToken});
+  $Res call(
+      {@JsonKey(name: 'access_token') String accessToken,
+      @JsonKey(name: 'refresh_token') String? refreshToken,
+      @JsonKey(name: 'is_email_verified') bool? isEmailVerified,
+      @JsonKey(name: 'is_sms_verified') bool? isSmsVerified,
+      @JsonKey(name: 'expires_in') int? expiresIn,
+      int? status,
+      List<String>? role});
 }
 
 /// @nodoc
@@ -66,13 +102,43 @@ class _$LoginModelCopyWithImpl<$Res> implements $LoginModelCopyWith<$Res> {
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? accessToken = freezed,
+    Object? accessToken = null,
+    Object? refreshToken = freezed,
+    Object? isEmailVerified = freezed,
+    Object? isSmsVerified = freezed,
+    Object? expiresIn = freezed,
+    Object? status = freezed,
+    Object? role = freezed,
   }) {
     return _then(_self.copyWith(
-      accessToken: freezed == accessToken
+      accessToken: null == accessToken
           ? _self.accessToken
           : accessToken // ignore: cast_nullable_to_non_nullable
+              as String,
+      refreshToken: freezed == refreshToken
+          ? _self.refreshToken
+          : refreshToken // ignore: cast_nullable_to_non_nullable
               as String?,
+      isEmailVerified: freezed == isEmailVerified
+          ? _self.isEmailVerified
+          : isEmailVerified // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      isSmsVerified: freezed == isSmsVerified
+          ? _self.isSmsVerified
+          : isSmsVerified // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      expiresIn: freezed == expiresIn
+          ? _self.expiresIn
+          : expiresIn // ignore: cast_nullable_to_non_nullable
+              as int?,
+      status: freezed == status
+          ? _self.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as int?,
+      role: freezed == role
+          ? _self.role
+          : role // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
     ));
   }
 }
@@ -168,13 +234,28 @@ extension LoginModelPatterns on LoginModel {
 
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(String? accessToken)? $default, {
+    TResult Function(
+            @JsonKey(name: 'access_token') String accessToken,
+            @JsonKey(name: 'refresh_token') String? refreshToken,
+            @JsonKey(name: 'is_email_verified') bool? isEmailVerified,
+            @JsonKey(name: 'is_sms_verified') bool? isSmsVerified,
+            @JsonKey(name: 'expires_in') int? expiresIn,
+            int? status,
+            List<String>? role)?
+        $default, {
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
       case _LoginModel() when $default != null:
-        return $default(_that.accessToken);
+        return $default(
+            _that.accessToken,
+            _that.refreshToken,
+            _that.isEmailVerified,
+            _that.isSmsVerified,
+            _that.expiresIn,
+            _that.status,
+            _that.role);
       case _:
         return orElse();
     }
@@ -195,12 +276,27 @@ extension LoginModelPatterns on LoginModel {
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(String? accessToken) $default,
+    TResult Function(
+            @JsonKey(name: 'access_token') String accessToken,
+            @JsonKey(name: 'refresh_token') String? refreshToken,
+            @JsonKey(name: 'is_email_verified') bool? isEmailVerified,
+            @JsonKey(name: 'is_sms_verified') bool? isSmsVerified,
+            @JsonKey(name: 'expires_in') int? expiresIn,
+            int? status,
+            List<String>? role)
+        $default,
   ) {
     final _that = this;
     switch (_that) {
       case _LoginModel():
-        return $default(_that.accessToken);
+        return $default(
+            _that.accessToken,
+            _that.refreshToken,
+            _that.isEmailVerified,
+            _that.isSmsVerified,
+            _that.expiresIn,
+            _that.status,
+            _that.role);
     }
   }
 
@@ -218,12 +314,27 @@ extension LoginModelPatterns on LoginModel {
 
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(String? accessToken)? $default,
+    TResult? Function(
+            @JsonKey(name: 'access_token') String accessToken,
+            @JsonKey(name: 'refresh_token') String? refreshToken,
+            @JsonKey(name: 'is_email_verified') bool? isEmailVerified,
+            @JsonKey(name: 'is_sms_verified') bool? isSmsVerified,
+            @JsonKey(name: 'expires_in') int? expiresIn,
+            int? status,
+            List<String>? role)?
+        $default,
   ) {
     final _that = this;
     switch (_that) {
       case _LoginModel() when $default != null:
-        return $default(_that.accessToken);
+        return $default(
+            _that.accessToken,
+            _that.refreshToken,
+            _that.isEmailVerified,
+            _that.isSmsVerified,
+            _that.expiresIn,
+            _that.status,
+            _that.role);
       case _:
         return null;
     }
@@ -233,12 +344,44 @@ extension LoginModelPatterns on LoginModel {
 /// @nodoc
 @JsonSerializable()
 class _LoginModel implements LoginModel {
-  _LoginModel({this.accessToken});
+  const _LoginModel(
+      {@JsonKey(name: 'access_token') required this.accessToken,
+      @JsonKey(name: 'refresh_token') this.refreshToken,
+      @JsonKey(name: 'is_email_verified') this.isEmailVerified,
+      @JsonKey(name: 'is_sms_verified') this.isSmsVerified,
+      @JsonKey(name: 'expires_in') this.expiresIn,
+      this.status,
+      final List<String>? role})
+      : _role = role;
   factory _LoginModel.fromJson(Map<String, dynamic> json) =>
       _$LoginModelFromJson(json);
 
   @override
-  final String? accessToken;
+  @JsonKey(name: 'access_token')
+  final String accessToken;
+  @override
+  @JsonKey(name: 'refresh_token')
+  final String? refreshToken;
+  @override
+  @JsonKey(name: 'is_email_verified')
+  final bool? isEmailVerified;
+  @override
+  @JsonKey(name: 'is_sms_verified')
+  final bool? isSmsVerified;
+  @override
+  @JsonKey(name: 'expires_in')
+  final int? expiresIn;
+  @override
+  final int? status;
+  final List<String>? _role;
+  @override
+  List<String>? get role {
+    final value = _role;
+    if (value == null) return null;
+    if (_role is EqualUnmodifiableListView) return _role;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   /// Create a copy of LoginModel
   /// with the given fields replaced by the non-null parameter values.
@@ -261,16 +404,34 @@ class _LoginModel implements LoginModel {
         (other.runtimeType == runtimeType &&
             other is _LoginModel &&
             (identical(other.accessToken, accessToken) ||
-                other.accessToken == accessToken));
+                other.accessToken == accessToken) &&
+            (identical(other.refreshToken, refreshToken) ||
+                other.refreshToken == refreshToken) &&
+            (identical(other.isEmailVerified, isEmailVerified) ||
+                other.isEmailVerified == isEmailVerified) &&
+            (identical(other.isSmsVerified, isSmsVerified) ||
+                other.isSmsVerified == isSmsVerified) &&
+            (identical(other.expiresIn, expiresIn) ||
+                other.expiresIn == expiresIn) &&
+            (identical(other.status, status) || other.status == status) &&
+            const DeepCollectionEquality().equals(other._role, _role));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, accessToken);
+  int get hashCode => Object.hash(
+      runtimeType,
+      accessToken,
+      refreshToken,
+      isEmailVerified,
+      isSmsVerified,
+      expiresIn,
+      status,
+      const DeepCollectionEquality().hash(_role));
 
   @override
   String toString() {
-    return 'LoginModel(accessToken: $accessToken)';
+    return 'LoginModel(accessToken: $accessToken, refreshToken: $refreshToken, isEmailVerified: $isEmailVerified, isSmsVerified: $isSmsVerified, expiresIn: $expiresIn, status: $status, role: $role)';
   }
 }
 
@@ -282,7 +443,14 @@ abstract mixin class _$LoginModelCopyWith<$Res>
       __$LoginModelCopyWithImpl;
   @override
   @useResult
-  $Res call({String? accessToken});
+  $Res call(
+      {@JsonKey(name: 'access_token') String accessToken,
+      @JsonKey(name: 'refresh_token') String? refreshToken,
+      @JsonKey(name: 'is_email_verified') bool? isEmailVerified,
+      @JsonKey(name: 'is_sms_verified') bool? isSmsVerified,
+      @JsonKey(name: 'expires_in') int? expiresIn,
+      int? status,
+      List<String>? role});
 }
 
 /// @nodoc
@@ -297,13 +465,43 @@ class __$LoginModelCopyWithImpl<$Res> implements _$LoginModelCopyWith<$Res> {
   @override
   @pragma('vm:prefer-inline')
   $Res call({
-    Object? accessToken = freezed,
+    Object? accessToken = null,
+    Object? refreshToken = freezed,
+    Object? isEmailVerified = freezed,
+    Object? isSmsVerified = freezed,
+    Object? expiresIn = freezed,
+    Object? status = freezed,
+    Object? role = freezed,
   }) {
     return _then(_LoginModel(
-      accessToken: freezed == accessToken
+      accessToken: null == accessToken
           ? _self.accessToken
           : accessToken // ignore: cast_nullable_to_non_nullable
+              as String,
+      refreshToken: freezed == refreshToken
+          ? _self.refreshToken
+          : refreshToken // ignore: cast_nullable_to_non_nullable
               as String?,
+      isEmailVerified: freezed == isEmailVerified
+          ? _self.isEmailVerified
+          : isEmailVerified // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      isSmsVerified: freezed == isSmsVerified
+          ? _self.isSmsVerified
+          : isSmsVerified // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      expiresIn: freezed == expiresIn
+          ? _self.expiresIn
+          : expiresIn // ignore: cast_nullable_to_non_nullable
+              as int?,
+      status: freezed == status
+          ? _self.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as int?,
+      role: freezed == role
+          ? _self._role
+          : role // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
     ));
   }
 }

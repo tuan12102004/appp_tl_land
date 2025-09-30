@@ -22,28 +22,20 @@ class AuthRouters {
             buildPageWithSlideTransition(SignupPage(), state),
       ),
       GoRoute(
-        path: 'enter-otp',
+        path: 'forgot-pass',
         pageBuilder: (context, state) {
-          final extraData = state.extra is Map<String, dynamic>
-              ? state.extra as Map<String, dynamic>
-              : {};
           return buildPageWithSlideTransition(
-            EnterOtpPage(
-              onCompleted: extraData['onCompleted'] ?? (context) {},
-              email: extraData['email'] ?? '',
-            ),
+            ForgotPassPage(),
             state,
           );
         },
       ),
       GoRoute(
-        path: 'forgot-pass',
+        path: 'enter-otp',
         pageBuilder: (context, state) {
-          final extraData = state.extra is Map<String, dynamic>
-              ? state.extra as Map<String, dynamic>
-              : {};
+          final email = state.extra is String ? state.extra as String : '';
           return buildPageWithSlideTransition(
-            ForgotPassPage(onContinue: extraData['onContinue'] ?? (context, _) {}),
+            EnterOtpPage(email: email),
             state,
           );
         },

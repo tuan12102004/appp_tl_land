@@ -4,15 +4,16 @@ import 'package:app_tl_land_3212/feature/auth/presentation/auth_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class EnterOtpPage extends StatefulWidget {
   final String email;
-  final void Function(BuildContext context) onCompleted;
+  // final void Function(BuildContext context) onCompleted;
 
   const EnterOtpPage({
     super.key,
     required this.email,
-    required this.onCompleted,
+    // required this.onCompleted,
   });
 
   @override
@@ -45,30 +46,92 @@ class _EnterOtpPageState extends State<EnterOtpPage> {
     super.dispose();
   }
 
-  void _onEnterOtp(String otpCode) {
-    FocusScope.of(context).unfocus();
+  void _unFocus(BuildContext context) => FocusScope.of(context).unfocus();
 
-    if (otpCode.trim() != "1111") {
-      setState(() {
-        _errorText = 'Mã chưa chính xác, xin vui lòng thử lại!';
-      });
-      _otpCodeCon.clear();
-      _countDownBloc
-          .add(const CountDownEvent.cancelCountdown()); // Dừng đếm ngược
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _otpCodeNode.requestFocus();
-      });
-    } else {
-      setState(() {
-        _errorText = null;
-      });
-      widget.onCompleted(context);
+  void _onEnterOtp(String otpCode) {
+    _unFocus(context);
+    final otp = int.tryParse(otpCode) ?? 0;
+    sl<AuthBloc>().add(AuthEvent.verificationOtp(
+      email: widget.email,
+      otp: otp,
+    ));
+  }
+
+  void _onEnterOtpListener(BuildContext context, AuthState state) async {
+    if (state.actionType != AuthActionType.verifyOtp &&
+        state.actionType != AuthActionType.resendOtp) {
+      return;
+    }
+
+    if (state.isLoading) {
+      showAppLoading(
+        context,
+        riveAnimationPath: AppRiveAnimations.multiLoadingState,
+        onInit: sl<MultiLoadingStateService>().init,
+      );
+      return;
+    }
+
+    _popAnimation(context);
+
+    if (state.actionType == AuthActionType.verifyOtp) {
+      if (state.otpVerified == true) {
+        sl<MultiLoadingStateService>().fireCheck();
+        await Future.delayed(const Duration(seconds: 2));
+        if (context.mounted) {
+          context.replace('/auth/reset-pass', extra: widget.email);
+        }
+        sl<AuthBloc>().add(const AuthEvent.resetState());
+      } else if (state.failure != null) {
+        sl<MultiLoadingStateService>().fireError();
+        await Future.delayed(const Duration(seconds: 2));
+        if (context.mounted) {
+          setState(() {
+            _errorText = 'Mã chưa chính xác, xin vui lòng thử lại!';
+          });
+          _otpCodeCon.clear();
+          _countDownBloc.add(const CountDownEvent.cancelCountdown());
+          _otpCodeNode.requestFocus();
+        }
+        sl<AuthBloc>().add(const AuthEvent.resetState());
+      }
+    } else if (state.actionType == AuthActionType.resendOtp) {
+      if (state.otpResent == true) {
+        if (context.mounted) {
+          sl<MultiLoadingStateService>().fireCheck();
+          await Future.delayed(const Duration(seconds: 2));
+
+          showAppSnackbar(context, content: "Đã gửi lại mã OTP thành công!");
+          sl<CountDownBloc>().add(CountDownEvent.cancelCountdown());
+          _countDownBloc.add(const CountDownEvent.startCountdown(second: 59));
+        }
+        sl<AuthBloc>().add(const AuthEvent.resetState());
+      } else if (state.failure != null) {
+        if (context.mounted) {
+          sl<MultiLoadingStateService>().fireError();
+          await Future.delayed(const Duration(seconds: 2));
+
+          DisplayError.handle(
+            context: context,
+            errerrType: state.failure!.type,
+            apiMessage: state.failure!.err,
+          );
+        }
+        sl<AuthBloc>().add(const AuthEvent.resetState());
+      }
     }
   }
 
+  Future<void> _popAnimation(BuildContext context) async {
+    await Future.delayed(Duration(seconds: 2), () {
+      if (context.mounted) {
+        context.pop();
+      }
+    });
+  }
+
   void _resendOtp() {
-    // Logic gửi lại OTP
-    _countDownBloc.add(const CountDownEvent.startCountdown(second: 59));
+    sl<AuthBloc>().add(AuthEvent.resendOtp(email: widget.email));
   }
 
   @override
@@ -76,71 +139,84 @@ class _EnterOtpPageState extends State<EnterOtpPage> {
     return UnfocusWidget(
       child: Scaffold(
         appBar: CustomAuthAppbar(),
-        body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
-            child: Column(
-              children: [
-                Text(
-                  'Nhập mã xác thực',
-                  style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
-                ),
-                SizedBox(height: 8.h),
-                Text(
-                  'Một mã xác thực đã được gửi đến email ${widget.email}, vui lòng kiểm tra tin nhắn của bạn. ',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-                SizedBox(height: 16.h),
-                EnterOtpForm(
-                  controller: _otpCodeCon,
-                  focusNode: _otpCodeNode,
-                  errorText: _errorText,
-                  onCompleted: _onEnterOtp,
-                ),
-                SizedBox(height: 24.h),
-                BlocBuilder<CountDownBloc, CountDownState>(
-                  bloc: _countDownBloc,
-                  builder: (context, state) {
-                    return state.maybeWhen(
-                      remainingTime: (time, isActive) {
-                        if (isActive) {
-                          return RichText(
-                            text: TextSpan(children: [
-                              TextSpan(
-                                text: 'Bạn có thể yêu cầu gửi lại sau ',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge!
-                                    .copyWith(
-                                        color: TextColors.textDefaultSecondary),
-                              ),
-                              TextSpan(
-                                text: '00:$time',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium!
-                                    .copyWith(
-                                        color: TextColors.textBrandPrimary,
-                                        fontWeight: FontWeight.w600),
-                              ),
-                            ]),
-                          );
-                        } else {
-                          return CustomAdaptiveButton(
-                            width: double.infinity,
-                            onPressed: _resendOtp,
-                            text: 'Gửi lại mã mới',
-                          );
-                        }
-                      },
-                      orElse: () => const SizedBox.shrink(),
-                    );
-                  },
-                ),
-              ],
+        body: MultiBlocListener(
+          listeners: [
+            BlocListener<AuthBloc, AuthState>(
+              bloc: sl<AuthBloc>(),
+              listener: _onEnterOtpListener,
+            ),
+            BlocListener<CountDownBloc, CountDownState>(
+              bloc: sl<CountDownBloc>(),
+              listener: (context, state) {},
+            ),
+          ],
+          child: SafeArea(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
+              child: Column(
+                children: [
+                  Text(
+                    'Nhập mã xác thực',
+                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                  ),
+                  SizedBox(height: 8.h),
+                  Text(
+                    'Một mã xác thực đã được gửi đến email ${formatHiddenEmail(widget.email)}, vui lòng kiểm tra tin nhắn của bạn. ',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  SizedBox(height: 16.h),
+                  EnterOtpForm(
+                    controller: _otpCodeCon,
+                    focusNode: _otpCodeNode,
+                    errorText: _errorText,
+                    onCompleted: (otpCode) => _onEnterOtp(otpCode),
+                  ),
+                  SizedBox(height: 24.h),
+                  BlocBuilder<CountDownBloc, CountDownState>(
+                    bloc: _countDownBloc,
+                    builder: (context, state) {
+                      return state.maybeWhen(
+                        remainingTime: (time, isActive) {
+                          if (isActive) {
+                            return RichText(
+                              text: TextSpan(children: [
+                                TextSpan(
+                                  text: 'Bạn có thể yêu cầu gửi lại sau ',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .copyWith(
+                                          color:
+                                              TextColors.textDefaultSecondary),
+                                ),
+                                TextSpan(
+                                  text: '00:$time',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(
+                                          color: TextColors.textBrandPrimary,
+                                          fontWeight: FontWeight.w600),
+                                ),
+                              ]),
+                            );
+                          } else {
+                            return CustomAdaptiveButton(
+                              width: double.infinity,
+                              onPressed: _resendOtp,
+                              text: 'Gửi lại mã mới',
+                            );
+                          }
+                        },
+                        orElse: () => const SizedBox.shrink(),
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),

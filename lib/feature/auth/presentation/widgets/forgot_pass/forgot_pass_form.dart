@@ -25,7 +25,7 @@ class ForgotPassForm extends StatelessWidget {
       child: Column(
         children: [
           CustomInputField(
-              hintText: "Email của bạn",
+              hintText: "Email của bạn", 
               focusNode: _emailNode,
               controller: _emailCon,
               textInputAction: TextInputAction.next,

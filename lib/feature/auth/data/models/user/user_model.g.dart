@@ -7,26 +7,34 @@ part of 'user_model.dart';
 // **************************************************************************
 
 _UserModel _$UserModelFromJson(Map<String, dynamic> json) => _UserModel(
-      id: (json['id'] as num).toInt(),
-      fullname: json['fullname'] as String,
-      email: json['email'] as String,
-      phone: json['phone'] as String,
-      address: json['address'] as String?,
-      avatar: json['avatar'] as String?,
-      birthday: DateTime.parse(json['birthday'] as String),
+      id: (json['id'] as num?)?.toInt(),
+      fullname: json['fullname'] as String?,
+      phone: json['phone'] as String?,
       gender: (json['gender'] as num?)?.toInt(),
-      status: json['status'] as bool?,
+      birthday: json['birthday'] == null
+          ? null
+          : DateTime.parse(json['birthday'] as String),
+      avatar: json['avatar'] as String?,
+      status: (json['status'] as num?)?.toInt(),
+      address: json['address'] as String?,
+      createdAt: json['created_at'] == null
+          ? null
+          : DateTime.parse(json['created_at'] as String),
+      ward: json['ward'] as String?,
+      province: json['province'] as String?,
     );
 
 Map<String, dynamic> _$UserModelToJson(_UserModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'fullname': instance.fullname,
-      'email': instance.email,
       'phone': instance.phone,
-      'address': instance.address,
-      'avatar': instance.avatar,
-      'birthday': instance.birthday.toIso8601String(),
       'gender': instance.gender,
+      'birthday': instance.birthday?.toIso8601String(),
+      'avatar': instance.avatar,
       'status': instance.status,
+      'address': instance.address,
+      'created_at': instance.createdAt?.toIso8601String(),
+      'ward': instance.ward,
+      'province': instance.province,
     };

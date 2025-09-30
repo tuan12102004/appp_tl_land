@@ -2,7 +2,6 @@ import 'package:app_tl_land_3212/common/common_module.dart';
 import 'package:app_tl_land_3212/core/core_module.dart';
 import 'package:app_tl_land_3212/feature/auth/presentation/auth_module.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -27,24 +26,28 @@ class _LoginPageState extends State<LoginPage> {
     _formKey.currentState?.dispose();
     _usernameCon.dispose();
     _passwordCon.dispose();
-  _usernameNode.dispose();
+    _usernameNode.dispose();
     _passwordNode.dispose();
     super.dispose();
   }
 
-  void _onRegister(BuildContext context) {
+  void _unFocus(BuildContext context) => FocusScope.of(context).unfocus();
+
+  void _onRegister() {
     _unFocus(context);
     context.push('/auth/signup');
   }
 
-  void _onForgot(BuildContext context) {
+  void _onForgot() {
     _unFocus(context);
     context.push('/auth/forgot-pass');
   }
 
-  void _unFocus(BuildContext context) => FocusScope.of(context).unfocus();
-
   void _onLoginListener(BuildContext context, AuthState state) async {
+    if (state.actionType != AuthActionType.login) {
+      return;
+    }
+
     if (state.isLoading) {
       if (context.mounted) {
         showAppLoading(
@@ -58,22 +61,27 @@ class _LoginPageState extends State<LoginPage> {
       await _popAnimation(context);
       if (context.mounted) {
         context.go('/');
-        sl<AuthBloc>().add(const AuthEvent.resetState());
+        // Reset lại state
+        sl<AuthBloc>().add(AuthEvent.resetState());
       }
     } else if (state.failure != null) {
+      print("✅✅✅✅ LỖI ${state.failure!.err}");
       sl<MultiLoadingStateService>().fireError();
       await _popAnimation(context);
       if (context.mounted && state.failure?.type != null) {
-        displayErrorDialog(context, failure: state.failure!);
-        sl<AuthBloc>().add(const AuthEvent.resetState());
+        DisplayError.handle(
+            context: context,
+            errerrType: state.failure!.type,
+            apiMessage: state.failure!.err);
       }
     }
   }
 
-  void _onLogin(BuildContext context) {
+  void _onLogin() {
     if (_formKey.currentState?.validate() == true) {
       _unFocus(context);
-      final email = _usernameCon.text.trim();
+      final email = _usernameCon.text.trim().replaceAll(" ", "");
+      // final email = _usernameCon.text.trim();
       final pass = _passwordCon.text.trim();
 
       sl<AuthBloc>().add(
@@ -98,11 +106,6 @@ class _LoginPageState extends State<LoginPage> {
     final double deviceHeight = MediaQuery.of(context).size.height;
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) {
-        if (!didPop) {
-          SystemNavigator.pop();
-        }
-      },
       child: UnfocusWidget(
         child: BackgroundWidget(
           appBar: null,
@@ -160,12 +163,12 @@ class _LoginPageState extends State<LoginPage> {
                               usernameNode: _usernameNode,
                               passwordNode: _passwordNode,
                               passwordCon: _passwordCon,
-                              onLogin: () => _onLogin(context),
-                              onForgotThePass: () => _onForgot(context),
+                              onLogin: _onLogin,
+                              onForgotThePass: _onForgot,
                             ),
                             const Spacer(),
                             AuthEndText(
-                              onPressed: () => _onRegister(context),
+                              onPressed: _onRegister,
                               firstText: 'Không có tài khoản? ',
                               secondText: 'Đăng kí',
                             ),

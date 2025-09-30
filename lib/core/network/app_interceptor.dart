@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:app_tl_land_3212/common/enums/shared_prefs_key.dart';
 import 'package:dio/dio.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
 
 import '../constants/api_urls.dart';
 import '../di/service_locator.dart';
@@ -13,7 +12,9 @@ class AppInterceptor extends Interceptor {
   final Set<String> _noAuthUrls = {
     ApiUrls.login,
     ApiUrls.signup,
-    ApiUrls.resetPassword,
+    ApiUrls.forgotPassword,
+    ApiUrls.resendOtp,
+    ApiUrls.verifyOtp,
   };
 
   @override
@@ -32,19 +33,23 @@ class AppInterceptor extends Interceptor {
       );
     }
 
+    final bool isPublicApi = _noAuthUrls.any((publicUrl) {
+      if (options.path.startsWith(publicUrl) && publicUrl != options.path) {
+        return true;
+      }
+      return publicUrl == options.path;
+    });
+
     // Main thread
-    if (!_noAuthUrls.contains(options.path)) {
-      final token = sl<SharedPrefsService>().getString(
-        SharedPrefsKey.accessToken,
-      );
-      // If token is expire or null then handling
-      if (token == null || JwtDecoder.isExpired(token)) {
-        return handler.reject(
-          DioException(
-            requestOptions: options,
-            type: DioExceptionType.badResponse, //!
-          ),
-        );
+    if (!isPublicApi) {
+      final token =
+          sl<SharedPrefsService>().getString(SharedPrefsKey.accessToken);
+
+      if (token == null) {
+        return handler.reject(DioException(
+          requestOptions: options,
+          type: DioExceptionType.badResponse,
+        ));
       } else {
         options.headers[HttpHeaders.authorizationHeader] = 'Bearer $token';
         return handler.next(options);

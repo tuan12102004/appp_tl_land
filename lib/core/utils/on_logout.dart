@@ -13,9 +13,6 @@ void onLogout(BuildContext context) async {
       SharedPrefsKey.lang,
       languageCode ?? 'vi',
     );
-    // sl<LanguageBloc>().add(
-    //   SelectLanguage(locale: Locale(languageCode ?? 'vi')),
-    // );
 
     // Navigate to the login page
     context.go('/auth/login');

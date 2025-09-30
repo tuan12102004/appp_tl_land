@@ -1,15 +1,17 @@
-part of 'auth_bloc.dart';
+  part of 'auth_bloc.dart';
 
-@freezed
-sealed class AuthState with _$AuthState {
-  const factory AuthState({
-    @Default(false) bool isLoading,
-    @Default(false) bool isSuccess,
-    @Default(null) Failure? failure,
-    @Default(AuthActionType.none) AuthActionType actionType,
-    bool? isAuthenticated,
-    // UserModel? userModel,
-    UserEntity? userModel,
-
-  }) = _AuthState;  
-}
+  @freezed
+  sealed class AuthState with _$AuthState {
+    const factory AuthState({
+      @Default(false) bool isLoading,
+      @Default(false) bool isSuccess,
+      @Default(null) Failure? failure,
+      @Default(AuthActionType.none) AuthActionType actionType,
+      bool? isAuthenticated,
+      bool? otpVerified,
+      bool? otpResent,
+      bool? otpSend,
+      UserEntity? userModel,
+      @Default([]) List<ContactSignupEntity> contactToSignup,
+    }) = _AuthState;
+  }

@@ -1,1 +1,9 @@
-enum AuthActionType { none, verifyOtp, resendOtp, login }
+enum AuthActionType {
+  none,
+  verifyOtp,
+  resendOtp,
+  sendOtp,
+  login,
+  resetPass,
+  logout
+}
