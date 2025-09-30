@@ -80,36 +80,54 @@ class _ResetPassPageState extends State<ResetPassPage> {
   @override
   Widget build(BuildContext context) {
     return UnfocusWidget(
-      child: Scaffold(
-          appBar: CustomAuthAppbar(),
-          body: BlocListener<AuthBloc, AuthState>(
-            bloc: sl<AuthBloc>(),
-            listener: _onResetPassListener,
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  Text(
-                    'Cập nhật mật khẩu mới',
-                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                          fontWeight: FontWeight.w700,
-                        ),
-                  ),
-                  SizedBox(
-                    height: 24.h,
-                  ),
-                  ResetPassForm(
-                    formKey: _formKey,
-                    passCon: _passCon,
-                    confirmPassCon: _confirmPassCon,
-                    passNode: _passNode,
-                    confirmPassNode: _confirmPassNode,
-                    onPressed: _onConfirmPass,
-                  ),
-                ],
+      child: PopScope(
+        canPop: false,
+        onPopInvoked: (didPop) {
+          if (!didPop) {
+            showAppDialog(
+              context,
+              title: 'Xác nhận thoát',
+              content:
+                  'Các thay đổi của bạn sẽ không được lưu. Bạn có chắc chắn muốn thoát?',
+              type: DialogType.okCancel,
+              onConfirm: () {
+                context.pop();
+              },
+            );
+          }
+        },
+        child: Scaffold(
+            appBar: CustomAuthAppbar(),
+            body: BlocListener<AuthBloc, AuthState>(
+              bloc: sl<AuthBloc>(),
+              listener: _onResetPassListener,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    Text(
+                      'Cập nhật mật khẩu mới',
+                      style:
+                          Theme.of(context).textTheme.headlineMedium!.copyWith(
+                                fontWeight: FontWeight.w700,
+                              ),
+                    ),
+                    SizedBox(
+                      height: 24.h,
+                    ),
+                    ResetPassForm(
+                      formKey: _formKey,
+                      passCon: _passCon,
+                      confirmPassCon: _confirmPassCon,
+                      passNode: _passNode,
+                      confirmPassNode: _confirmPassNode,
+                      onPressed: _onConfirmPass,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          )),
+            )),
+      ),
     );
   }
 }

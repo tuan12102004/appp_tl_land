@@ -8,12 +8,15 @@ class ForgotPassForm extends StatelessWidget {
   final FocusNode _emailNode;
   final TextEditingController _emailCon;
   final VoidCallback onEnterEmail;
+  final bool isLoading;
+
   const ForgotPassForm({
     super.key,
     required GlobalKey<FormState> formKey,
     required FocusNode emailNode,
     required TextEditingController emailCon,
     required this.onEnterEmail,
+    required this.isLoading,
   })  : _formKey = formKey,
         _emailNode = emailNode,
         _emailCon = emailCon;
@@ -25,7 +28,7 @@ class ForgotPassForm extends StatelessWidget {
       child: Column(
         children: [
           CustomInputField(
-              hintText: "Email của bạn", 
+              hintText: "Email của bạn",
               focusNode: _emailNode,
               controller: _emailCon,
               textInputAction: TextInputAction.next,
@@ -35,8 +38,11 @@ class ForgotPassForm extends StatelessWidget {
           SizedBox(height: 16.h),
           CustomAdaptiveButton(
             width: double.infinity,
-            onPressed: onEnterEmail,
+            onPressed: isLoading ? () {} : onEnterEmail,
             text: 'Tiếp tục',
+            backgroundColor: isLoading
+                ? BackgroundColors.backgroundButtonDisabled
+                : BackgroundColors.backgroundButtonPrimary,
           ),
         ],
       ),

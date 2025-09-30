@@ -1,7 +1,6 @@
 import 'package:app_tl_land_3212/core/core_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 
 import 'custom_adaptive_tap_effect.dart';
 import 'custom_appbar.dart';
@@ -20,7 +19,7 @@ class CustomAuthAppbar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           CustomAdaptiveTapEffect(
             isOpacity: true,
-            onPressed: () => context.pop(),
+            onPressed: () => Navigator.of(context).maybePop(),
             child: Row(
               children: [
                 Icon(
