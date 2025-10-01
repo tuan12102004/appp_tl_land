@@ -30,10 +30,10 @@ class _CustomOtpcodeFieldState extends State<CustomOtpcodeField> {
       textStyle: Theme.of(context).textTheme.titleMedium,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.r),
-        color: AppColors.backgroundDefaultPrimary,
+        color: BackgroundColors.backgroundDefaultPrimary,
         border: Border.all(
           width: 1.w,
-          color: AppColors.borderSeparatorNonOpaque,
+          color: BorderColors.borderSeparatorNonOpaque,
         ),
       ),
     );
@@ -77,7 +77,7 @@ class _CustomOtpcodeFieldState extends State<CustomOtpcodeField> {
       width: 1.5.w,
       height: 20.h,
       decoration: BoxDecoration(
-        color: AppColors.borderInputFieldDefault,
+        color: BorderColors.borderInputFieldDefault,
         borderRadius: BorderRadius.circular(2.r),
       ),
     );

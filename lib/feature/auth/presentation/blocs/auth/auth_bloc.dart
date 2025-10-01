@@ -285,8 +285,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       actionType: AuthActionType.sendOtp,
     ));
     // gọi api
-    final res =
-        await _sendOtpUsecase.call(SendOtpParams(email: event.email));
+    final res = await _sendOtpUsecase.call(SendOtpParams(email: event.email));
     res.fold(
         (failure) => emit(state.copyWith(
               failure: failure,
@@ -343,6 +342,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         (failure) => emit(state.copyWith(
               failure: failure,
               isLoading: false,
+              actionType: AuthActionType.verifyOtp,
             )), (_) {
       print('✅ OTP VERIFIED');
       emit(state.copyWith(

@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 class EnterOtpPage extends StatefulWidget {
   final String email;
   // final void Function(BuildContext context) onCompleted;
+
   const EnterOtpPage({
     super.key,
     required this.email,
@@ -24,6 +25,7 @@ class _EnterOtpPageState extends State<EnterOtpPage> {
   final _otpCodeCon = TextEditingController();
   final _otpCodeNode = FocusNode();
   String? _errorText;
+
   @override
   void initState() {
     super.initState();
@@ -59,33 +61,57 @@ class _EnterOtpPageState extends State<EnterOtpPage> {
   }
 
   void _onEnterOtpListener(BuildContext context, AuthState state) async {
+    if (state.actionType != AuthActionType.verifyOtp &&
+        state.actionType != AuthActionType.resendOtp) {
+      return;
+    }
+
+    if (state.isLoading && state.actionType == AuthActionType.verifyOtp) {
+      showAppLoading(
+        context,
+        riveAnimationPath: AppRiveAnimations.multiLoadingState,
+        onInit: sl<MultiLoadingStateService>().init,
+      );
+      return;
+    }
+
+    if (state.actionType == AuthActionType.verifyOtp) {
+      _popAnimation(context);
+    }
+
     if (state.actionType == AuthActionType.verifyOtp) {
       if (state.otpVerified == true) {
+        sl<MultiLoadingStateService>().fireCheck();
+        await Future.delayed(const Duration(seconds: 2));
         if (context.mounted) {
           context.replace('/auth/reset-pass', extra: widget.email);
         }
         sl<AuthBloc>().add(const AuthEvent.resetState());
       } else if (state.failure != null) {
+        sl<MultiLoadingStateService>().fireError();
+        await Future.delayed(const Duration(seconds: 2));
         if (context.mounted) {
-          setState(() {
-            _errorText = 'Mã chưa chính xác, xin vui lòng thử lại!';
-          });
-          _otpCodeCon.clear();
-          // _countDownBloc.add(const CountDownEvent.cancelCountdown());
-          _otpCodeNode.requestFocus();
+          final errorMessage = state.failure!.err.toLowerCase();
+
+          if (errorMessage.contains('otp does not exist')) {
+            setState(() {
+              _errorText = 'Mã chưa chính xác, xin vui lòng thử lại!';
+            });
+            _otpCodeCon.clear();
+            _otpCodeNode.requestFocus();
+          } else {
+            DisplayError.handle(
+              context: context,
+              errerrType: state.failure!.type,
+              apiMessage: state.failure!.err,
+            );
+          }
         }
         sl<AuthBloc>().add(const AuthEvent.resetState());
       }
     } else if (state.actionType == AuthActionType.resendOtp) {
       if (state.otpResent == true) {
-        if (context.mounted) {
-          setState(() {
-            _errorText = null;
-          });
-          sl<CountDownBloc>().add(CountDownEvent.cancelCountdown());
-          _countDownBloc.add(const CountDownEvent.startCountdown(second: 59));
-          _otpCodeNode.requestFocus();
-        }
+        if (context.mounted) {}
         sl<AuthBloc>().add(const AuthEvent.resetState());
       } else if (state.failure != null) {
         if (context.mounted) {
@@ -100,118 +126,109 @@ class _EnterOtpPageState extends State<EnterOtpPage> {
     }
   }
 
-  void _resendOtp() {
+  Future<void> _popAnimation(BuildContext context) async {
+    await Future.delayed(Duration(seconds: 2), () {
+      if (context.mounted) {
+        context.pop();
+      }
+    });
+  }
+
+  void _resendOtp(BuildContext context) {
+    if (context.mounted) {
+      setState(() {
+        _errorText = null;
+      });
+      sl<CountDownBloc>().add(CountDownEvent.cancelCountdown());
+      _countDownBloc.add(const CountDownEvent.startCountdown(second: 59));
+    }
     sl<AuthBloc>().add(AuthEvent.resendOtp(email: widget.email));
   }
 
   @override
   Widget build(BuildContext context) {
     return UnfocusWidget(
-      child: PopScope(
-        canPop: false,
-        onPopInvoked: (didPop) {
-          if (!didPop) {
-            showAppDialog(
-              context,
-              title: 'Xác nhận thoát',
-              content:
-                  'Bạn có chắc chắn muốn hủy quá trình đặt lại mật khẩu và quay lại không?',
-              type: DialogType.okCancel,
-              onConfirm: () {
-                context.pop();
-              },
-            );
-          }
-        },
-        child: Scaffold(
-          appBar: CustomAuthAppbar(),
-          body: BlocConsumer<AuthBloc, AuthState>(
-            bloc: sl<AuthBloc>(),
-            listener: _onEnterOtpListener,
-            buildWhen: (previous, current) =>
-                previous.isLoading != current.isLoading,
-            builder: (context, state) {
-              return SafeArea(
-                child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
-                  child: Column(
-                    children: [
-                      Text(
-                        'Nhập mã xác thực',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineMedium!
-                            .copyWith(
-                              fontWeight: FontWeight.w700,
-                            ),
-                      ),
-                      SizedBox(height: 8.h),
-                      Text(
-                        'Một mã xác thực đã được gửi đến email ${formatHiddenEmail(widget.email)}, vui lòng kiểm tra tin nhắn của bạn. ',
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                      SizedBox(height: 16.h),
-                      EnterOtpForm(
-                        controller: _otpCodeCon,
-                        focusNode: _otpCodeNode,
-                        errorText: _errorText,
-                        onCompleted: (otpCode) => _onEnterOtp(otpCode),
-                      ),
-                      SizedBox(height: 24.h),
-                      BlocBuilder<CountDownBloc, CountDownState>(
-                        bloc: _countDownBloc,
-                        builder: (context, countDownState) {
-                          return countDownState.maybeWhen(
-                            remainingTime: (time, isActive) {
-                              if (isActive) {
-                                return RichText(
-                                  text: TextSpan(children: [
-                                    TextSpan(
-                                      text: 'Bạn có thể yêu cầu gửi lại sau ',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyLarge!
-                                          .copyWith(
-                                              color: TextColors
-                                                  .textDefaultSecondary),
-                                    ),
-                                    TextSpan(
-                                      text: '00:$time',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .copyWith(
-                                              color:
-                                                  TextColors.textBrandPrimary,
-                                              fontWeight: FontWeight.w600),
-                                    ),
-                                  ]),
-                                );
-                              } else {
-                                return CustomAdaptiveButton(
-                                  width: double.infinity,
-                                  onPressed:
-                                      state.isLoading ? () {} : _resendOtp,
-                                  text: 'Gửi lại mã mới',
-                                  backgroundColor: state.isLoading
-                                      ? BackgroundColors
-                                          .backgroundButtonDisabled
-                                      : BackgroundColors
-                                          .backgroundButtonPrimary,
-                                );
-                              }
-                            },
-                            orElse: () => const SizedBox.shrink(),
-                          );
-                        },
-                      ),
-                    ],
+      child: Scaffold(
+        appBar: CustomAuthAppbar(),
+        body: MultiBlocListener(
+          listeners: [
+            BlocListener<AuthBloc, AuthState>(
+              bloc: sl<AuthBloc>(),
+              listener: _onEnterOtpListener,
+            ),
+            BlocListener<CountDownBloc, CountDownState>(
+              bloc: sl<CountDownBloc>(),
+              listener: (context, state) {},
+            ),
+          ],
+          child: SafeArea(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
+              child: Column(
+                children: [
+                  Text(
+                    'Nhập mã xác thực',
+                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
                   ),
-                ),
-              );
-            },
+                  SizedBox(height: 8.h),
+                  Text(
+                    'Một mã xác thực đã được gửi đến email ${formatHiddenEmail(widget.email)}, vui lòng kiểm tra tin nhắn của bạn. ',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  SizedBox(height: 16.h),
+                  EnterOtpForm(
+                    controller: _otpCodeCon,
+                    focusNode: _otpCodeNode,
+                    errorText: _errorText,
+                    onCompleted: (otpCode) => _onEnterOtp(otpCode),
+                  ),
+                  SizedBox(height: 24.h),
+                  BlocBuilder<CountDownBloc, CountDownState>(
+                    bloc: _countDownBloc,
+                    builder: (context, state) {
+                      return state.maybeWhen(
+                        remainingTime: (time, isActive) {
+                          if (isActive) {
+                            return RichText(
+                              text: TextSpan(children: [
+                                TextSpan(
+                                  text: 'Bạn có thể yêu cầu gửi lại sau ',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .copyWith(
+                                          color:
+                                              TextColors.textDefaultSecondary),
+                                ),
+                                TextSpan(
+                                  text: '00:$time',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(
+                                          color: TextColors.textBrandPrimary,
+                                          fontWeight: FontWeight.w600),
+                                ),
+                              ]),
+                            );
+                          } else {
+                            return CustomAdaptiveButton(
+                              width: double.infinity,
+                              onPressed: () => _resendOtp(context),
+                              text: 'Gửi lại mã mới',
+                            );
+                          }
+                        },
+                        orElse: () => const SizedBox.shrink(),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),

@@ -156,6 +156,7 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
       throw ServerException(err: e.toString());
     }
   }
+
 // Lấy mã otp
   @override
   Future<String> sendOtp({required String email}) async {
@@ -215,7 +216,9 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
       if (message?.toLowerCase().contains('false') == true ||
           message?.toLowerCase().contains('resule false') == true ||
           message?.toLowerCase().trim() == 'resule false.') {
-        throw ServerException(err: 'Mã OTP không đúng hoặc đã hết hạn');
+        throw ServerException(
+          err: 'Mã OTP không đúng hoặc đã hết hạn',
+        );
       }
 
       final dataParser = ApiResModel.fromJson(res.data, (json) => json);

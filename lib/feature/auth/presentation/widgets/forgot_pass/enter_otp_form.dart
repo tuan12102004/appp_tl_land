@@ -37,7 +37,7 @@ class EnterOtpForm extends StatelessWidget {
                 style: Theme.of(context)
                     .textTheme
                     .labelMedium!
-                    .copyWith(color: AppColors.textErrorPrimary),
+                    .copyWith(color: TextColors.textErrorPrimary),
               ),
             ],
           ),

@@ -34,29 +34,14 @@ class _ForgotPassPageState extends State<ForgotPassPage> {
   void _onEnterEmail() {
     if (_formKey.currentState?.validate() == true) {
       _unFocus(context);
-      sl<AuthBloc>().add(AuthEvent.sendOtp(email: _emailCon.text.trim()));
-    }
-  }
+      final email = _emailCon.text.trim();
 
-  void _onEnterEmailListener(BuildContext context, AuthState state) async {
-    final email = _emailCon.text.trim();
-    if (state.actionType == AuthActionType.sendOtp) {
-      if (state.otpSend == true) {
-        if (context.mounted) {
-          context.push(
-            '/auth/enter-otp',
-            extra: email,
-          );
-        }
-        sl<AuthBloc>().add(const AuthEvent.resetState());
-      } else if (state.failure != null) {
-        if (context.mounted) {
-          DisplayError.handle(
-              context: context,
-              errerrType: state.failure!.type,
-              apiMessage: state.failure!.err);
-        }
-        sl<AuthBloc>().add(const AuthEvent.resetState());
+      sl<AuthBloc>().add(AuthEvent.sendOtp(email: email));
+      if (context.mounted) {
+        context.push(
+          '/auth/enter-otp',
+          extra: email,
+        );
       }
     }
   }
@@ -65,58 +50,64 @@ class _ForgotPassPageState extends State<ForgotPassPage> {
   Widget build(BuildContext context) {
     return UnfocusWidget(
       child: Scaffold(
-        appBar: CustomAuthAppbar(),
-        body: BlocConsumer<AuthBloc, AuthState>(
+        appBar: CustomAuthAppbar(), 
+        body: BlocListener<AuthBloc, AuthState>(
             bloc: sl<AuthBloc>(),
-            listener: _onEnterEmailListener,
-            buildWhen: (previous, current) =>
-                previous.isLoading != current.isLoading,
-            builder: (context, state) {
-              return Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 64.h),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(8.w, 0.h, 8.w, 24.h),
-                        child: Column(
-                          children: [
-                            Text(
-                              'Quên mật khẩu',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineMedium!
-                                  .copyWith(
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                            ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            Text(
-                              'Cung cấp email đã đăng ký để lấy lại mật khẩu của bạn',
-                              textAlign: TextAlign.center,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleLarge!
-                                  .copyWith(
-                                      fontSize: 20.sp,
-                                      color: TextColors.textDefaultSecondary),
-                            )
-                          ],
-                        ),
+            listener: (context, state) {
+              if (state.actionType == AuthActionType.sendOtp) {
+                if (state.failure != null) {
+                  if (context.mounted) {
+                    DisplayError.handle(
+                        context: context,
+                        errerrType: state.failure!.type,
+                        apiMessage: state.failure!.err);
+                  }
+                  sl<AuthBloc>().add(const AuthEvent.resetState());
+                }
+              }
+            },
+            child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 64.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(8.w, 0.h, 8.w, 24.h),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Quên mật khẩu',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineMedium!
+                                .copyWith(
+                                  fontWeight: FontWeight.w700,
+                                ),
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Text(
+                            'Cung cấp email đã đăng ký để lấy lại mật khẩu của bạn',
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge!
+                                .copyWith(
+                                    fontSize: 20.sp,
+                                    color: TextColors.textDefaultSecondary),
+                          )
+                        ],
                       ),
-                      ForgotPassForm(
-                        formKey: _formKey,
-                        emailNode: _emailNode,
-                        emailCon: _emailCon,
-                        onEnterEmail: _onEnterEmail,
-                        isLoading: state.isLoading,
-                      ),
-                    ],
-                  ));
-            }),
+                    ),
+                    ForgotPassForm(
+                      formKey: _formKey,
+                      emailNode: _emailNode,
+                      emailCon: _emailCon,
+                      onEnterEmail: _onEnterEmail,
+                    ),
+                  ],
+                ))),
       ),
     );
   }
