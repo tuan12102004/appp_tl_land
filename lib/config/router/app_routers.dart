@@ -1,4 +1,5 @@
 import 'package:app_tl_land_3212/config/config_router_module.dart';
+import 'package:app_tl_land_3212/config/router/post_routers.dart';
 import 'package:app_tl_land_3212/config/router/search_routers.dart';
 import 'package:app_tl_land_3212/core/constants/app_globals.dart';
 import 'package:app_tl_land_3212/core/navigation/app_navigations.dart';
@@ -29,6 +30,8 @@ class AppRouters {
 
       // Router vào trang chủ
       HomeRouters.routers,
+      // Router vào tạo bđs
+      PostRouters.routers,
       // Router vào trang thông báo
       NotificationRouters.routers,
       // Router vào trang cá nhân

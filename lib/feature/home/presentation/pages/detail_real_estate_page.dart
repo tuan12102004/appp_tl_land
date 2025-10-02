@@ -19,7 +19,7 @@ class DetailRealEstatePage extends StatefulWidget {
 }
 
 class _DetailRealEstatePageState extends State<DetailRealEstatePage> {  
-  bool showAllParty = false;
+  bool showAllowner = false;
   bool showAllDecription = false;
 
   // Mở trang chỉnh sửa
@@ -30,9 +30,9 @@ class _DetailRealEstatePageState extends State<DetailRealEstatePage> {
   @override
   Widget build(BuildContext context) {
     final item = widget.item;
-    final displayList = showAllParty
-        ? item.partyA
-        : item.partyA.take(3).toList();
+    final displayList = showAllowner
+        ? item.ownerA
+        : item.ownerA.take(3).toList();
     return Scaffold(
       appBar: CustomAppbar(
         automaticallyImplyLeading: false,
@@ -122,24 +122,24 @@ class _DetailRealEstatePageState extends State<DetailRealEstatePage> {
                       separatorBuilder: (context, index) => SizedBox(height: 12.h,),
                       itemCount: displayList.length,
                       itemBuilder: (context, index) {
-                        final partyItem = displayList[index];
+                        final ownerItem = displayList[index];
                         return CustomExpansionInfor(
-                          partyItem: partyItem,
+                          ownerItem: ownerItem,
                         );
                       }
                     ),
                      // Buttom see more
-                    if (item.partyA.length > 3) ...[
+                    if (item.ownerA.length > 3) ...[
                       SizedBox(height: 12.h),
                       CustomAdaptiveButton(
                         isOpacity: true,
                         width: double.infinity,
                         textColor: TextColors.textButtonPlain,
                         backgroundColor: Colors.transparent,
-                        text: showAllParty ? 'Thu gọn' :'Xem thêm',
+                        text: showAllowner ? 'Thu gọn' :'Xem thêm',
                         onPressed: () {
                           setState(() {
-                            showAllParty = !showAllParty;
+                            showAllowner = !showAllowner;
                           });
                         },
                       ),

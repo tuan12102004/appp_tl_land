@@ -64,6 +64,8 @@ dependencies:
   shimmer: ^3.0.0
   socket_io_client: ^3.1.2
   url_launcher: ^6.3.2
+  smooth_page_indicator: ^1.2.1
+  flutter_quill: ^11.4.2
 
 dev_dependencies:
   flutter_test:
@@ -142,7 +144,7 @@ flutter:
     #       weight: 400
     #     - asset: assets/fonts/SF-Pro-Display-Bold.ttf
     #       weight: 700
-          
+
     - family: Great Vibes
       fonts:
         - asset: assets/fonts/GreatVibes-Regular.ttf

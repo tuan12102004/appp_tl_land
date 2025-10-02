@@ -30,7 +30,7 @@ class RealEstateEntity {
   final List<String> images;
   final String direction;
   final PropertyInfoEntity info;
-  final List<PartyEntity> partyA;
+  final List<OwnerEntity> ownerA;
   final String description;
   final DateTime createdAt;
 
@@ -44,7 +44,7 @@ class RealEstateEntity {
     required this.images,
     required this.direction,
     required this.info,
-    required this.partyA,
+    required this.ownerA,
     required this.description,
     required this.createdAt,
   });
@@ -62,22 +62,40 @@ class PropertyInfoEntity {
   });
 }
 
-class PartyEntity {
+class OwnerEntity {
   final String name;
-  final String? phone;
-  final String? email;
-  final String? address;
-  final DateTime? startDate;
-  final DateTime? endDate;
+  final String phone;
+  final String email;
+  final String address;
+  final DateTime startDate;
+  final DateTime endDate;
 
-  const PartyEntity({
+  const OwnerEntity({
     required this.name,
-    this.phone,
-    this.email,
-    this.address,
-    this.startDate,
-    this.endDate,
+    required this.phone,
+    required this.email,
+    required this.address,
+    required this.startDate,
+    required this.endDate,
   });
+
+  OwnerEntity copyWith({
+    String? name,
+    String? phone,
+    String? email,
+    String? address,
+    DateTime? startDate,
+    DateTime? endDate,
+  }) {
+    return OwnerEntity(
+      name: name ?? this.name,
+      phone: phone ?? this.phone,
+      email: email ?? this.email,
+      address: address ?? this.address,
+      startDate: startDate ?? this.startDate,
+      endDate: endDate ?? this.endDate,
+    );
+  }
 }
 
 class HomePage extends StatefulWidget {
@@ -124,9 +142,9 @@ class _HomePageState extends State<HomePage> {
         bedrooms: 2 + (index % 3),
         bathrooms: 1 + (index % 2),
       ),
-      partyA: List.generate(
+      ownerA: List.generate(
         4,
-        (index) => PartyEntity(
+        (index) => OwnerEntity(
           name: 'Nguyễn Văn ${String.fromCharCode(65 + index)}',
           phone: '03333${index.toString().padLeft(5, '0')}',
           email: 'user$index@gmail.com',

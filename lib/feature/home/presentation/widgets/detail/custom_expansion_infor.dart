@@ -1,3 +1,4 @@
+import 'package:app_tl_land_3212/common/widgets/custom_adaptive_button.dart';
 import 'package:app_tl_land_3212/core/constants/app_colors.dart';
 import 'package:app_tl_land_3212/core/utils/format_date_time.dart';
 import 'package:app_tl_land_3212/feature/home/presentation/pages/home_page.dart';
@@ -5,10 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomExpansionInfor extends StatelessWidget {
-  final PartyEntity partyItem;
+  final OwnerEntity ownerItem;
+  final bool? isEdit;
+  final VoidCallback? onEdit;
   const CustomExpansionInfor({
     super.key, 
-    required this.partyItem
+    required this.ownerItem,
+    this.isEdit = false,
+    this.onEdit
   });
 
   @override
@@ -31,7 +36,7 @@ class CustomExpansionInfor extends StatelessWidget {
               ),
               SizedBox(width: 2.w),
               Text(
-                partyItem.name,
+                ownerItem.name,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w400,
                   fontSize: 17.sp,
@@ -49,26 +54,37 @@ class CustomExpansionInfor extends StatelessWidget {
             _buildLineInfo(
               context: context,
               icon: Icons.phone,
-              title: partyItem.phone ?? 'Chưa có số điện thoại',
+              title: ownerItem.phone ?? 'Chưa có số điện thoại',
             ),
             SizedBox(height: 8.h),
             _buildLineInfo(
               context: context,
               icon: Icons.email,
-              title: partyItem.email ?? 'Chưa có email',
+              title: ownerItem.email ?? 'Chưa có email',
             ),
             SizedBox(height: 8.h),
             _buildLineInfo(
               context: context,
               icon: Icons.place,
-              title: partyItem.phone ?? 'Chưa có địa chỉ',
+              title: ownerItem.phone ?? 'Chưa có địa chỉ',
             ),
             SizedBox(height: 8.h),
             _buildLineInfo(
               context: context,
               icon: Icons.date_range,
-              title: '${formatDate(partyItem.startDate ?? DateTime.now())} - ${formatDate(partyItem.endDate ?? DateTime.now())}',
+              title: '${formatDate(ownerItem.startDate ?? DateTime.now())} - ${formatDate(ownerItem.endDate ?? DateTime.now())}',
             ),
+            SizedBox(height: 6.h),
+            if(isEdit == true) ...[
+              CustomAdaptiveButton(
+                text: 'Chỉnh sửa',
+                isOpacity: true,
+                textColor: TextColors.textButtonPlain,
+                backgroundColor: Colors.transparent,
+                width: double.infinity,
+                onPressed: onEdit ?? (){},
+              ),
+            ],
             SizedBox(height: 8.h),
           ],
         ),
