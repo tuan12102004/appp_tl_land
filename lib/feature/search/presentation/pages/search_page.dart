@@ -16,7 +16,8 @@ class SearchPage extends StatefulWidget {
   State<SearchPage> createState() => _SearchPageState();
 }
 
-class _SearchPageState extends State<SearchPage> {
+class _SearchPageState extends State<SearchPage>
+    with AutomaticKeepAliveClientMixin {
   final _searchController = TextEditingController();
   final _debouncer = Debouncer(seconds: 1);
   late final PaginatorBloc<RealEstateEntity, SearchFilterParam>
@@ -24,7 +25,7 @@ class _SearchPageState extends State<SearchPage> {
   late final SearchFilterBloc _searchFilterBloc;
   late final ScrollController _scrollController;
   bool _isSortButtonVisible = true;
-  final int _limit = 10;
+  final int _limit = 5;
 
   @override
   void initState() {
@@ -154,6 +155,7 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(
@@ -174,103 +176,106 @@ class _SearchPageState extends State<SearchPage> {
             automaticallyImplyLeading: true,
             isDivider: false,
           ),
-          body: Column(
-            children: [
-              Row(
-                spacing: 12.w,
-                children: [
-                  Expanded(
-                    child: CustomSearchBar(
-                      controller: _searchController,
-                      hintText: 'Tìm tên bất động sản',
-                      onChanged: _onSearchChanged,
-                    ),
-                  ),
-                  CustomIconButton(
-                    onPressed: _navigateToFilterPage,
-                    icon: Icons.filter_alt,
-                    label: 'Lọc',
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 16.h,
-              ),
-              BlocBuilder<SearchFilterBloc, SearchFilterState>(
-                builder: (context, filterState) {
-                  final currentSort = filterState.filter.priceSort;
-                  IconData sortIcon;
-
-                  if (currentSort == null) {
-                    sortIcon = Icons.north;
-                  } else if (currentSort == 'asc') {
-                    sortIcon = Icons.south;
-                  } else {
-                    // currentSort == 'desc'
-                    sortIcon = Icons.swap_vert;
-                  }
-                  return AnimatedContainer(
-                    alignment: Alignment.centerRight,
-                    duration: const Duration(milliseconds: 200),
-                    height: _isSortButtonVisible ? 50.h : 0,
-                    child: Visibility(
-                      visible: _isSortButtonVisible,
-                      child: Padding(
-                        padding:
-                            EdgeInsets.only(top: 16.h, left: 16.w, right: 16.w),
-                        child: CustomIconButton(
-                          label: "Sắp xếp theo giá",
-                          icon: sortIcon,
-                          iconPosition: IconPosition.right,
-                          backgroundColor:
-                              BackgroundColors.backgroundDefaultSecondary,
-                          textColor: TextColors.textDefaultPrimary,
-                          iconColor: IconColors.iconDefaultPrimary,
-                          onPressed: _onSortPressed,
-                        ),
+          body: SafeArea(
+            minimum: EdgeInsets.all(16.w),
+            child: Column(
+              children: [
+                Row(
+                  spacing: 12.w,
+                  children: [
+                    Expanded(
+                      child: CustomSearchBar(
+                        controller: _searchController,
+                        hintText: 'Tìm tên bất động sản',
+                        onChanged: _onSearchChanged,
                       ),
                     ),
-                  );
-                },
-              ),
-              Expanded(
-                child: BlocConsumer<
-                    PaginatorBloc<RealEstateEntity, SearchFilterParam>,
-                    PaginatorState<RealEstateEntity>>(
-                  bloc: _searchPaginatorBloc,
-                  listener: (context, state) {
-                    final dialogObserver = sl<DialogObserverBloc>();
+                    CustomIconButton(
+                      onPressed: _navigateToFilterPage,
+                      icon: Icons.filter_alt,
+                      label: 'Lọc',
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 16.h,
+                ),
+                BlocBuilder<SearchFilterBloc, SearchFilterState>(
+                  builder: (context, filterState) {
+                    final currentSort = filterState.filter.priceSort;
+                    IconData sortIcon;
 
-                    if (state.failure?.type != null &&
-                        !dialogObserver.state.isDialogOpen) {
-                      DisplayError.handle(
-                        context: context,
-                        errerrType: state.failure!.type,
-                        apiMessage: state.failure!.err,
-                      );
+                    if (currentSort == null) {
+                      sortIcon = Icons.north;
+                    } else if (currentSort == 'asc') {
+                      sortIcon = Icons.south;
+                    } else {
+                      // currentSort == 'desc'
+                      sortIcon = Icons.swap_vert;
                     }
-                    if (state.isLoaded) {
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        if (mounted) _onLoadMoreWhenNotScrollable();
-                      });
-                    }
-                  },
-                  builder: (context, state) {
-                    return RefreshIndicator.adaptive(
-                      onRefresh: () async {
-                        _searchPaginatorBloc.add(
-                            LoadInitial<RealEstateEntity, SearchFilterParam>(
-                          usecase: sl<SearchRealEstatesUsecase>(),
-                          limit: _limit,
-                          param: _searchFilterBloc.state.filter,
-                        ));
-                      },
-                      child: _buildBody(state),
+                    return AnimatedContainer(
+                      alignment: Alignment.centerRight,
+                      duration: const Duration(milliseconds: 200),
+                      height: _isSortButtonVisible ? 50.h : 0,
+                      child: Visibility(
+                        visible: _isSortButtonVisible,
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              top: 16.h, left: 16.w, right: 16.w),
+                          child: CustomIconButton(
+                            label: "Sắp xếp theo giá",
+                            icon: sortIcon,
+                            iconPosition: IconPosition.right,
+                            backgroundColor:
+                                BackgroundColors.backgroundDefaultSecondary,
+                            textColor: TextColors.textDefaultPrimary,
+                            iconColor: IconColors.iconDefaultPrimary,
+                            onPressed: _onSortPressed,
+                          ),
+                        ),
+                      ),
                     );
                   },
                 ),
-              ),
-            ],
+                Expanded(
+                  child: BlocConsumer<
+                      PaginatorBloc<RealEstateEntity, SearchFilterParam>,
+                      PaginatorState<RealEstateEntity>>(
+                    bloc: _searchPaginatorBloc,
+                    listener: (context, state) {
+                      final dialogObserver = sl<DialogObserverBloc>();
+
+                      if (state.failure?.type != null &&
+                          !dialogObserver.state.isDialogOpen) {
+                        DisplayError.handle(
+                          context: context,
+                          errerrType: state.failure!.type,
+                          apiMessage: state.failure!.err,
+                        );
+                      }
+                      if (state.isLoaded) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          if (mounted) _onLoadMoreWhenNotScrollable();
+                        });
+                      }
+                    },
+                    builder: (context, state) {
+                      return RefreshIndicator.adaptive(
+                        onRefresh: () async {
+                          _searchPaginatorBloc.add(
+                              LoadInitial<RealEstateEntity, SearchFilterParam>(
+                            usecase: sl<SearchRealEstatesUsecase>(),
+                            limit: _limit,
+                            param: _searchFilterBloc.state.filter,
+                          ));
+                        },
+                        child: _buildBody(state),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -293,4 +298,7 @@ class _SearchPageState extends State<SearchPage> {
         scrollController: _scrollController,
         isLoadMore: state.isLoadMore);
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
