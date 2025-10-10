@@ -12,45 +12,65 @@ Future<Uint8List?> pickImage(
   ImageSource imageSource = ImageSource.gallery,
 }) async {
   try {
-    late PermissionStatus result;
-    if (Platform.isAndroid) {
-      final androidInfo = await DeviceInfoPlugin().androidInfo;
-      if (androidInfo.version.sdkInt <= 32) {
-        result = await Permission.storage.request();
+    final ImagePicker picker = ImagePicker();
+    XFile? pickedFile;
+
+    if (imageSource == ImageSource.gallery) {
+      late PermissionStatus result;
+      if (Platform.isAndroid) {
+        final androidInfo = await DeviceInfoPlugin().androidInfo;
+        if (androidInfo.version.sdkInt <= 32) {
+          result = await Permission.storage.request();
+        } else {
+          result = await Permission.photos.request();
+        }
       } else {
         result = await Permission.photos.request();
       }
-    } else {
-      result = await Permission.photos.request();
-    }
 
-    if (context.mounted) {
-      switch (result) {
-        case PermissionStatus.denied:
-        case PermissionStatus.restricted:
-        case PermissionStatus.limited:
-        case PermissionStatus.permanentlyDenied:
-        case PermissionStatus.provisional:
-          showAppDialog(
-            context,
-            title: 'Thông báo',
-            content: 'Bạn cần cấp quyền để truy cập thư viện',
-            onConfirm: () async => await openAppSettings(),
-          );
-        case PermissionStatus.granted:
-          final ImagePicker picker = ImagePicker();
-          XFile? pickedFile;
-
-          if (imageSource == ImageSource.gallery) {
+      if (context.mounted) {
+        switch (result) {
+          case PermissionStatus.denied:
+          case PermissionStatus.restricted:
+          case PermissionStatus.limited:
+          case PermissionStatus.permanentlyDenied:
+          case PermissionStatus.provisional:
+            showAppDialog(
+              context,
+              title: 'Thông báo',
+              content: 'Bạn cần cấp quyền để truy cập thư viện',
+              onConfirm: () async => await openAppSettings(),
+            );
+          case PermissionStatus.granted:
             // Pick an image.
             pickedFile = await picker.pickImage(source: ImageSource.gallery);
-          } else {
+            return await pickedFile?.readAsBytes();
+        }
+      }
+    } else if (imageSource == ImageSource.camera) {
+      PermissionStatus result = await Permission.camera.request();
+
+      if (context.mounted) {
+        switch (result) {
+          case PermissionStatus.denied:
+          case PermissionStatus.restricted:
+          case PermissionStatus.limited:
+          case PermissionStatus.permanentlyDenied:
+          case PermissionStatus.provisional:
+            showAppDialog(
+              context,
+              title: 'Thông báo',
+              content: 'Bạn cần cấp quyền để truy cập máy ảnh',
+              onConfirm: () async => await openAppSettings(),
+            );
+          case PermissionStatus.granted:
             // Capture a photo.
             pickedFile = await picker.pickImage(source: ImageSource.camera);
-          }
-          return await pickedFile?.readAsBytes();
+            return await pickedFile?.readAsBytes();
+        }
       }
     }
+
     return null;
   } catch (e) {
     return null;
