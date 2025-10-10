@@ -56,7 +56,7 @@ class _BasicInfoSectionState extends State<BasicInfoSection> {
                     Icon(Icons.maps_home_work,
                         color: IconColors.iconDefaultPrimary, size: 24.sp),
                     SizedBox(width: 8.w),
-                    LabelForm(label: widget.nameCon.text),
+                    Expanded(child: LabelForm(label: widget.nameCon.text)),
                   ],
                 ),
               SizedBox(height: 8.h),

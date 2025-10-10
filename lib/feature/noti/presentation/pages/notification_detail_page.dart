@@ -22,51 +22,53 @@ class _NotificationDetailPageState extends State<NotificationDetailPage> {
         titleLeading: 'Chi tiết',
       ),
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Image.asset(
-              AppImages.logo,
-              fit: BoxFit.contain,
-              width: double.infinity,
-              height: 200.h,
-            ),
-            Padding(
-              padding: EdgeInsets.all(16.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                      noti.title,
-                      style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                      fontWeight: FontWeight.w700, 
-                      fontSize: 22.sp, 
-                      color: TextColors.textDefaultPrimary,
-                    ),
-                  ),
-                  SizedBox(height: 8.h),
-                  Text(
-                    "${noti.createdAt.hour}:${noti.createdAt.minute}, ${noti.createdAt.day}/${noti.createdAt.month}/${noti.createdAt.year}",
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                      fontWeight: FontWeight.w400, 
-                      fontStyle: FontStyle.italic,
-                      fontSize: 15.sp, 
-                      color: TextColors.textDefaultSecondary.withValues(alpha: 0.5),
-                    ),
-                  ),
-                  SizedBox(height: 12.h),
-                  Text(
-                    noti.content,
-                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                      fontWeight: FontWeight.w400, 
-                      fontSize: 17.sp, 
-                      color: TextColors.textDefaultPrimary,
-                    ),
-                  ),
-                ],
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Image.asset(
+                AppImages.logo,
+                fit: BoxFit.contain,
+                width: double.infinity,
+                height: 200.h,
               ),
-            )
-          ]
+              Padding(
+                padding: EdgeInsets.all(16.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                        noti.title,
+                        style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                        fontWeight: FontWeight.w700, 
+                        fontSize: 22.sp, 
+                        color: TextColors.textDefaultPrimary,
+                      ),
+                    ),
+                    SizedBox(height: 8.h),
+                    Text(
+                      "${noti.createdAt.hour}:${noti.createdAt.minute}, ${noti.createdAt.day}/${noti.createdAt.month}/${noti.createdAt.year}",
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        fontWeight: FontWeight.w400, 
+                        fontStyle: FontStyle.italic,
+                        fontSize: 15.sp, 
+                        color: TextColors.textDefaultSecondary.withValues(alpha: 0.5),
+                      ),
+                    ),
+                    SizedBox(height: 12.h),
+                    Text(
+                      noti.content,
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        fontWeight: FontWeight.w400, 
+                        fontSize: 17.sp, 
+                        color: TextColors.textDefaultPrimary,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ]
+          ),
         ),
       ),
     );

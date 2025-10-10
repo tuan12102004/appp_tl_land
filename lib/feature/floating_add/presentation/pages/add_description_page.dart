@@ -75,15 +75,19 @@ class _AddDecriptionPageState extends State<AddDescriptionPage> {
           centerTitle: false,
           isDivider: false,
           actions: [
-            CustomAdaptiveButton(
-              isOpacity: true,
-              backgroundColor: BackgroundColors.backgroundDefaultPrimary,
-              textColor: TextColors.textBrandPrimary,
-              text: 'Lưu',
-              onPressed: (){
-                // TODO: Save decription
-                _onSaveDecription();
-              },
+            GestureDetector(
+              onTap: _onSaveDecription,
+              child: Padding(
+                padding: EdgeInsets.only(right: 16.w),
+                child: Text(
+                  "Lưu",
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 17.sp,
+                    color: TextColors.textNavigationBarEnabled
+                  ),
+                ),
+              ),
             )
           ],
         ),

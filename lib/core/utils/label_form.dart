@@ -10,6 +10,8 @@ class LabelForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       label,
+      maxLines: 3,
+      overflow: TextOverflow.ellipsis,
       style: Theme.of(context).textTheme.titleMedium?.copyWith(
         fontSize: 17.sp,
         fontWeight: FontWeight.w400,

@@ -84,9 +84,9 @@ class _CustomExpansionTitleState extends State<CustomExpansionTitle> {
                                   ? widget.selectText!
                                   : "Chưa có thông tin",
                           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            color: (selectedValue == null || selectedValue!.isEmpty)
-                                ? TextColors.textDefaultSecondary.withValues(alpha: 0.5)
-                                : TextColors.textDefaultPrimary,
+                            color: widget.selectText != null && widget.selectText!.isNotEmpty
+                                ? TextColors.textDefaultPrimary
+                                : TextColors.textDefaultPrimary.withValues(alpha: 0.5),
                             fontWeight: FontWeight.w400,
                             fontSize: 17.sp,
                           ),

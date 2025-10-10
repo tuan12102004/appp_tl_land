@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:app_tl_land_3212/common/widgets/custom_adaptive_button.dart';
 import 'package:app_tl_land_3212/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +49,7 @@ class CustomBottomBarButton extends StatelessWidget {
             text: title,
             preffixWidget: icon,
             backgroundColor: backgroundColor,
-            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: Platform.isAndroid ? 20.h : 14.h),
             onPressed: onPressed,
           ),
         ),

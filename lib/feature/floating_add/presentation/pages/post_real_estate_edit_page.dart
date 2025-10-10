@@ -71,6 +71,33 @@ class _PostRealEstateEditPageState extends State<PostRealEstateEditPage> {
   final FocusNode _descriptionNode = FocusNode();
 
   @override
+  void initState() {
+    super.initState();
+
+    final realEstate = widget.realEstate;
+
+    _nameCon.text = realEstate.title ;
+    _addressCon.text = realEstate.address ;
+    _priceCon.text = realEstate.price.toString();
+    _acreageCon.text = realEstate.info.area.toString();
+    _descriptionCon.text = realEstate.description ;
+
+    selectedValueCategory = realEstate.category;
+
+    selectedValueStatus = realEstate.status;
+
+    selectedValueDirection = realEstate.direction;
+
+    quatityBedroom = realEstate.info.bedrooms;
+    quatityToilet = realEstate.info.bathrooms;
+
+    if (realEstate.address.isNotEmpty) {
+      selectedValueCity = getPartAddress(realEstate.address)[0];
+      selectedValueWard = getPartAddress(realEstate.address)[1];
+    }
+  }
+
+  @override
   void dispose() {
     _addressCon.dispose();
     _nameCon.dispose();
@@ -107,6 +134,11 @@ class _PostRealEstateEditPageState extends State<PostRealEstateEditPage> {
       return null;
     }
     return '${_addressCon.text.trim()}, ${selectedValueWard!}, Thành phố ${selectedValueCity!}';
+  }
+
+  List<String> getPartAddress(String address) {
+    final parts = address.split(', ');
+    return parts;
   }
 
   // TODO: Open add owner page
@@ -223,7 +255,8 @@ class _PostRealEstateEditPageState extends State<PostRealEstateEditPage> {
       context.push(
         '/post/add-images',
         extra: {
-          'realEstateEntity' : realEstateEntity
+          'realEstateEntity' : realEstateEntity,
+          'isEdit' : true
         }
       );
     }
@@ -233,7 +266,7 @@ class _PostRealEstateEditPageState extends State<PostRealEstateEditPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar : CustomAppbarSub(
-        titleLeading: 'Đăng tin',
+        titleLeading: 'Chỉnh sửa đăng tin',
       ),
       body: UnfocusWidget(
         child: DecoratedBox(
@@ -336,18 +369,15 @@ class _PostRealEstateEditPageState extends State<PostRealEstateEditPage> {
           ),
         ),
       ),
-      bottomNavigationBar: Container(
-        margin: EdgeInsets.only(bottom: 40.h),
-        child: CustomBottomBarButton(
-          onPressed: (){
-            // TODO: Open add images
-            _onOpenAddImages();
-          }, 
-          title: 'Tiếp tục', 
-          backgroundColor: BackgroundColors.backgroundBrandPrimary,
-          isBorderTop: false,
-          isBoxShadowTop: false,
-        ),
+      bottomNavigationBar: CustomBottomBarButton(
+        onPressed: (){
+          // TODO: Open add images
+          _onOpenAddImages();
+        }, 
+        title: 'Tiếp tục', 
+        backgroundColor: BackgroundColors.backgroundBrandPrimary,
+        isBorderTop: false,
+        isBoxShadowTop: false,
       ),
     );
   }

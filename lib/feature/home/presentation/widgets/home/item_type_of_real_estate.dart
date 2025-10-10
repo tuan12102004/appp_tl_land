@@ -46,7 +46,7 @@ class ItemTypeOfRealEstate extends StatelessWidget {
                   Stack(
                     children: [
                       Image.asset(
-                        item.images[0], // Lấy ảnh đầu tiên
+                        item.images.first.image, // Lấy ảnh đầu tiên
                         height: 154.h,
                         fit: BoxFit.cover,
                       ),

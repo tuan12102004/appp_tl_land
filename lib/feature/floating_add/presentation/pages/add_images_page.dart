@@ -20,9 +20,11 @@ import 'package:path_provider/path_provider.dart';
 
 class AddImagesPage extends StatefulWidget {
   final RealEstateEntity realEstateEntity;
+  final bool isEdit;
   const AddImagesPage({
     super.key,
-    required this.realEstateEntity,
+    required this.realEstateEntity, 
+    required this.isEdit,
   });
 
   @override
@@ -54,12 +56,26 @@ class _AddImagesPageState extends State<AddImagesPage> {
       );
       return;
     }
-    // context.go('/');
+    RealEstateEntity realEstateEntity = RealEstateEntity(
+      id: widget.realEstateEntity.id,
+      title: widget.realEstateEntity.title,
+      category: widget.realEstateEntity.category,
+      status: widget.realEstateEntity.status,
+      price: widget.realEstateEntity.price,
+      address: widget.realEstateEntity.address,
+      images: _images.map((file) => SliderEntity(image: file.path)).toList(),
+      direction: widget.realEstateEntity.direction,
+      info: widget.realEstateEntity.info,
+      ownerA: widget.realEstateEntity.ownerA,
+      description: widget.realEstateEntity.description,
+      state: widget.realEstateEntity.state,
+      createdAt: widget.realEstateEntity.createdAt,
+    );
     
     context.push(
       '/home/detail', 
       extra: {
-        'item': widget.realEstateEntity
+        'item': realEstateEntity
       }
     );
   }
@@ -259,7 +275,11 @@ class _AddImagesPageState extends State<AddImagesPage> {
           // TODO: Post real estate
           _onPostRealEstate();
         },
-        title: _images.isEmpty ? "Đăng tin" : "Gửi yêu cầu đăng tin",
+        title: widget.isEdit 
+          ? "Cập nhập"
+          : _images.isEmpty 
+            ? "Đăng tin" 
+            : "Gửi yêu cầu đăng tin",
         backgroundColor: BackgroundColors.backgroundBrandPrimary,
         isBorderTop: false,
         isBoxShadowTop: false,

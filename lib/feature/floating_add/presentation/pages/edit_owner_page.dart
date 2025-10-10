@@ -136,8 +136,8 @@ class _EditOwnerPageState extends State<EditOwnerPage> {
         startDate: DateFormat('dd/MM/yyyy').parse(_dateStayCon.text.trim()),
         endDate: DateFormat('dd/MM/yyyy').parse(_dateLeaveCon.text.trim()),
       );
-      sl<CitySelectBloc>().add(SelectEvent.select(_selectedValueCity!));
-      sl<WardSelectBloc>().add(SelectEvent.select(_selectedValueWard!));
+      // sl<CitySelectBloc>().add(SelectEvent.select(_selectedValueCity!));
+      // sl<WardSelectBloc>().add(SelectEvent.select(_selectedValueWard!));
 
       WidgetsBinding.instance.addPostFrameCallback((_) {
         context.pop(updatedOwner);
@@ -162,6 +162,7 @@ class _EditOwnerPageState extends State<EditOwnerPage> {
   }
 
   @override
+
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,

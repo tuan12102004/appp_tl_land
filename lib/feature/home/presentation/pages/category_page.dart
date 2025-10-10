@@ -16,8 +16,14 @@ class CategoryPage extends StatefulWidget {
 
 class _CategoryPageState extends State<CategoryPage> {
 
-  void _onRealEstateByCategory(){
+  void _onRealEstateByCategory(CategoriesEntity categories){
     // TODO: Qua trang với danh mục tương ứng
+    // context.push(
+    //   '/search',
+    //   extra: {
+    //     'filterCategory': categories.name
+    //   }
+    // );
   }
   @override
   Widget build(BuildContext context) {
@@ -80,7 +86,7 @@ class _CategoryPageState extends State<CategoryPage> {
                 return Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.w ,vertical: 12.h),
                   child: GestureDetector(
-                    onTap: _onRealEstateByCategory,
+                    onTap: () => _onRealEstateByCategory(category),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [

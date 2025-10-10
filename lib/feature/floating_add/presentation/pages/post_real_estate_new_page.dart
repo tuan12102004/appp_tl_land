@@ -221,7 +221,8 @@ class _PostRealEstateNewPageState extends State<PostRealEstateNewPage> {
       context.push(
         '/post/add-images',
         extra: {
-          'realEstateEntity' : realEstateEntity
+          'realEstateEntity' : realEstateEntity,
+          'isEdit' : false
         }
       );
     }

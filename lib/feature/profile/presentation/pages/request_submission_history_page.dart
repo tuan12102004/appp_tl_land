@@ -28,11 +28,10 @@ class _RequestSubmissionHistoryPageState extends State<RequestSubmissionHistoryP
       price: 10 + (index * 5),
       address:'${10 + index}/23 Đinh Trọng Phúc, Quận ${index + 1}, TP. Hồ Chí Minh',
       images: [
-        AppImages.imgRealEstate,
-        AppImages.imgRealEstate,
-        AppImages.imgRealEstate,
-        AppImages.imgRealEstate,
-        AppImages.imgRealEstate
+        SliderEntity(image: AppImages.banner1),
+        SliderEntity(image: AppImages.banner2),
+        SliderEntity(image: AppImages.banner3),
+        SliderEntity(image: AppImages.banner4),
       ],
       direction: 'Nam',
       info: PropertyInfoEntity(

@@ -95,9 +95,11 @@ class PostRouters {
         pageBuilder: (context, state) {
           final extraData = state.extra as Map<String, dynamic>;
           final realEstateEntity = extraData['realEstateEntity'];
+          final isEdit = extraData['isEdit'];
           return buildPageWithSlideTransition(
             AddImagesPage(
-              realEstateEntity: realEstateEntity
+              realEstateEntity: realEstateEntity,
+              isEdit: isEdit,
             ),
             state
           );

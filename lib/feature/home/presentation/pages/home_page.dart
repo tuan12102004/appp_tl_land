@@ -27,7 +27,7 @@ class RealEstateEntity {
   final String status; 
   final int price;
   final String address;
-  final List<String> images;
+  final List<SliderEntity> images;
   final String direction;
   final PropertyInfoEntity info;
   final List<OwnerEntity> ownerA;
@@ -127,17 +127,16 @@ class _HomePageState extends State<HomePage> {
       id: index,
       title:
           'Căn hộ số $index - Nhận nhà ngay, hỗ trợ vay 0% lãi suất 18 tháng',
-      category: 'Danh mục',
-      status: index % 2 == 0 ? 'Đang bán' : 'Cho thuê',
+      category: index % 2 == 0 ? 'Nhà đất' : 'Chung cư',
+      status: index % 2 == 0 ? 'Đang mở' : 'Sắp đóng',
       state: index > 3 ? 'Chờ duyệt' : (index > 7 ? 'Đã duyệt' : "Từ chối"),
       price: 10 + (index * 5),
       address:'${10 + index}/23 Đinh Trọng Phúc, Quận ${index + 1}, TP. Hồ Chí Minh',
       images: [
-        AppImages.imgRealEstate,
-        AppImages.imgRealEstate,
-        AppImages.imgRealEstate,
-        AppImages.imgRealEstate,
-        AppImages.imgRealEstate
+        SliderEntity(image: AppImages.banner1),
+        SliderEntity(image: AppImages.banner2),
+        SliderEntity(image: AppImages.banner3),
+        SliderEntity(image: AppImages.banner4),
       ],
       direction: 'Nam',
       info: PropertyInfoEntity(

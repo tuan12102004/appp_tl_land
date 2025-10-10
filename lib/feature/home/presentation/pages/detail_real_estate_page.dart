@@ -27,7 +27,8 @@ class _DetailRealEstatePageState extends State<DetailRealEstatePage> {
     context.push(
       '/post/edit', 
       extra: {
-        'realEstate': widget.realEstate
+        'realEstate': widget.realEstate,
+        'isEdit' : true
       }
     );
   }
@@ -46,7 +47,7 @@ class _DetailRealEstatePageState extends State<DetailRealEstatePage> {
           children: [
             SizedBox(width: 8.w),
             GestureDetector(
-              onTap: () => context.pop(),
+              onTap: () => context.go('/'),
               child: Icon(
                 getAdaptiveBackIcon(context,),
                 color: IconColors.iconNavigationBarEnabled,
