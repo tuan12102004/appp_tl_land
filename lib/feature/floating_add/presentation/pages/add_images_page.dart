@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:app_tl_land_3212/core/utils/pick_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -14,6 +16,7 @@ import 'package:app_tl_land_3212/core/constants/app_colors.dart';
 import 'package:app_tl_land_3212/core/utils/show_app_snackbar.dart';
 import 'package:app_tl_land_3212/feature/floating_add/presentation/widgets/shared/custom_appbar_sub.dart';
 import 'package:app_tl_land_3212/feature/home/presentation/pages/home_page.dart';
+import 'package:path_provider/path_provider.dart';
 
 class AddImagesPage extends StatefulWidget {
   final RealEstateEntity realEstateEntity;
@@ -27,26 +30,17 @@ class AddImagesPage extends StatefulWidget {
 }
 
 class _AddImagesPageState extends State<AddImagesPage> {
-  final ImagePicker _picker = ImagePicker();
   List<File> _images = [];
 
-  // TODO: Open camera 
-  Future<void> _onPickImageFromCamera() async {
-    final XFile? pickedFile = await _picker.pickImage(source: ImageSource.camera);
-    if (pickedFile != null) {
-      setState(() {
-        _images.add(File(pickedFile.path));
-      });
-    }
-  }
+  // TODO: Open camera or gallery
+  Future<void> _onPickImage(ImageSource source) async {
+    final Uint8List? bytes = await pickImage(context, imageSource: source);
+    if (bytes != null) {
+      final tempDir = await getTemporaryDirectory();
+      final file = File('${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg');
+      await file.writeAsBytes(bytes);
 
-  // TODO: Open gallery
-  Future<void> _onPickImageFromGallery() async {
-    final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        _images.add(File(pickedFile.path));
-      });
+      setState(() => _images.add(file));
     }
   }
 
@@ -232,7 +226,7 @@ class _AddImagesPageState extends State<AddImagesPage> {
                   backgroundColor: BackgroundColors.backgroundButtonSecondary,
                   onPressed: (){
                     // TODO: Open camera
-                    _onPickImageFromCamera();
+                    _onPickImage(ImageSource.camera);
                   }
                 ),
                 CustomAdaptiveButton(
@@ -246,7 +240,7 @@ class _AddImagesPageState extends State<AddImagesPage> {
                   backgroundColor: BackgroundColors.backgroundButtonSecondary,
                   onPressed: (){
                     // TODO: Open gallery
-                    _onPickImageFromGallery();
+                    _onPickImage(ImageSource.gallery);
                   }
                 )
               ],
