@@ -23,7 +23,7 @@ class NavigationPage extends StatefulWidget {
 
 class _NavigationPageState extends State<NavigationPage> {
   final listPages = [
-HomePage(),
+    HomePage(),
     SearchPage(),
     FloatingAddPage(),
     NotificationPage(),
@@ -46,7 +46,7 @@ HomePage(),
   }
 
   void _onNavItemPressed(BuildContext context, int index) {
-    context.read<SelectBloc<int>>().add(SelectEvent.select(index));
+    context.read<SelectBloc<int>>().add(SelectEvent.select(value: index));
     _pageController.jumpToPage(index);
   }
 
@@ -54,7 +54,7 @@ HomePage(),
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          sl<SelectBloc<int>>()..add(const SelectEvent.select(0)),
+          sl<SelectBloc<int>>()..add(const SelectEvent.select(value: 0)),
       child: BlocBuilder<SelectBloc<int>, SelectState<int>>(
         builder: (context, state) {
           return Scaffold(
@@ -62,7 +62,7 @@ HomePage(),
             body: PageView.builder(
               controller: _pageController,
               onPageChanged: (index) {
-                context.read<SelectBloc<int>>().add(SelectEvent.select(index));
+                context.read<SelectBloc<int>>().add(SelectEvent.select(value: index));
               },
               itemCount: listPages.length,
               itemBuilder: (context, index) => listPages[index],

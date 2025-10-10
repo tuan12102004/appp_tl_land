@@ -212,7 +212,7 @@ extension SelectEventPatterns<T> on SelectEvent<T> {
 /// @nodoc
 
 class _Select<T> implements SelectEvent<T> {
-  const _Select(this.value);
+  const _Select({required this.value});
 
   final T value;
 
@@ -264,7 +264,7 @@ class __$SelectCopyWithImpl<T, $Res> implements _$SelectCopyWith<T, $Res> {
     Object? value = freezed,
   }) {
     return _then(_Select<T>(
-      freezed == value
+      value: freezed == value
           ? _self.value
           : value // ignore: cast_nullable_to_non_nullable
               as T,
@@ -417,7 +417,7 @@ extension SelectStatePatterns<T> on SelectState<T> {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(T value)? selected,
+    TResult Function(T? value)? selected,
     required TResult orElse(),
   }) {
     final _that = this;
@@ -447,7 +447,7 @@ extension SelectStatePatterns<T> on SelectState<T> {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(T value) selected,
+    required TResult Function(T? value) selected,
   }) {
     final _that = this;
     switch (_that) {
@@ -475,7 +475,7 @@ extension SelectStatePatterns<T> on SelectState<T> {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function(T value)? selected,
+    TResult? Function(T? value)? selected,
   }) {
     final _that = this;
     switch (_that) {
@@ -512,9 +512,9 @@ class InitialSelect<T> implements SelectState<T> {
 /// @nodoc
 
 class Selected<T> implements SelectState<T> {
-  const Selected({required this.value});
+  const Selected({this.value});
 
-  final T value;
+  final T? value;
 
   /// Create a copy of SelectState
   /// with the given fields replaced by the non-null parameter values.
@@ -548,7 +548,7 @@ abstract mixin class $SelectedCopyWith<T, $Res>
           Selected<T> value, $Res Function(Selected<T>) _then) =
       _$SelectedCopyWithImpl;
   @useResult
-  $Res call({T value});
+  $Res call({T? value});
 }
 
 /// @nodoc
@@ -568,7 +568,7 @@ class _$SelectedCopyWithImpl<T, $Res> implements $SelectedCopyWith<T, $Res> {
       value: freezed == value
           ? _self.value
           : value // ignore: cast_nullable_to_non_nullable
-              as T,
+              as T?,
     ));
   }
 }

@@ -7,10 +7,9 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   final bool automaticallyImplyLeading;
   final List<Widget>? actions;
   final Color? backgroundColor;
-  final bool visibleBottom;
   final Widget? leading;
+  final bool? isDivider;
   final PreferredSizeWidget? bottom;
-
   final double? leadingWidth;
 
   const CustomAppbar({
@@ -19,37 +18,33 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
     this.automaticallyImplyLeading = true,
     this.actions,
     this.backgroundColor,
-    this.visibleBottom = true,
+    this.isDivider = true,
     this.leading,
-    this.bottom,
     this.leadingWidth,
+    this.bottom,
   });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: backgroundColor,
-      automaticallyImplyLeading: automaticallyImplyLeading,
-      surfaceTintColor: backgroundColor,
-      forceMaterialTransparency: true,
-      title: title,
-      actions: actions,
-      leading: leading,
-      bottom: _getAppbarBottom(),
-      leadingWidth: leadingWidth,
-    );
-  }
-
-  PreferredSize? _getAppbarBottom() {
-    return visibleBottom
-        ? PreferredSize(
-            preferredSize: preferredSize,
-            child: Divider(
-              height: 0.3.h,
-              color: BorderColors.borderDefaultDefault.withValues(alpha: 0.1),
-            ),
-          )
-        : null;
+        backgroundColor: backgroundColor,
+        automaticallyImplyLeading: automaticallyImplyLeading,
+        surfaceTintColor: backgroundColor,
+        forceMaterialTransparency: true,
+        title: title,
+        actions: actions,
+        leading: leading,
+        leadingWidth: leadingWidth,
+        scrolledUnderElevation: 4,
+        bottom: isDivider == true
+            ? PreferredSize(
+                preferredSize: const Size.fromHeight(1),
+                child: Divider(
+                    height: 0.3.h,
+                    color: BorderColors.borderDefaultDefault
+                        .withValues(alpha: 0.1)),
+              )
+            : null);
   }
 
   @override

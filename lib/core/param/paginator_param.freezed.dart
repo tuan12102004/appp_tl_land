@@ -16,6 +16,7 @@ T _$identity<T>(T value) => value;
 mixin _$PaginatorParam<T> {
   int get limit;
   int get page;
+  String? get keyword;
   T? get param;
 
   /// Create a copy of PaginatorParam
@@ -33,16 +34,17 @@ mixin _$PaginatorParam<T> {
             other is PaginatorParam<T> &&
             (identical(other.limit, limit) || other.limit == limit) &&
             (identical(other.page, page) || other.page == page) &&
+            (identical(other.keyword, keyword) || other.keyword == keyword) &&
             const DeepCollectionEquality().equals(other.param, param));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, limit, page, const DeepCollectionEquality().hash(param));
+  int get hashCode => Object.hash(runtimeType, limit, page, keyword,
+      const DeepCollectionEquality().hash(param));
 
   @override
   String toString() {
-    return 'PaginatorParam<$T>(limit: $limit, page: $page, param: $param)';
+    return 'PaginatorParam<$T>(limit: $limit, page: $page, keyword: $keyword, param: $param)';
   }
 }
 
@@ -52,7 +54,7 @@ abstract mixin class $PaginatorParamCopyWith<T, $Res> {
           PaginatorParam<T> value, $Res Function(PaginatorParam<T>) _then) =
       _$PaginatorParamCopyWithImpl;
   @useResult
-  $Res call({int limit, int page, T? param});
+  $Res call({int limit, int page, String? keyword, T? param});
 }
 
 /// @nodoc
@@ -70,6 +72,7 @@ class _$PaginatorParamCopyWithImpl<T, $Res>
   $Res call({
     Object? limit = null,
     Object? page = null,
+    Object? keyword = freezed,
     Object? param = freezed,
   }) {
     return _then(_self.copyWith(
@@ -81,6 +84,10 @@ class _$PaginatorParamCopyWithImpl<T, $Res>
           ? _self.page
           : page // ignore: cast_nullable_to_non_nullable
               as int,
+      keyword: freezed == keyword
+          ? _self.keyword
+          : keyword // ignore: cast_nullable_to_non_nullable
+              as String?,
       param: freezed == param
           ? _self.param
           : param // ignore: cast_nullable_to_non_nullable
@@ -180,13 +187,14 @@ extension PaginatorParamPatterns<T> on PaginatorParam<T> {
 
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(int limit, int page, T? param)? $default, {
+    TResult Function(int limit, int page, String? keyword, T? param)?
+        $default, {
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
       case _PaginatorParam() when $default != null:
-        return $default(_that.limit, _that.page, _that.param);
+        return $default(_that.limit, _that.page, _that.keyword, _that.param);
       case _:
         return orElse();
     }
@@ -207,12 +215,12 @@ extension PaginatorParamPatterns<T> on PaginatorParam<T> {
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(int limit, int page, T? param) $default,
+    TResult Function(int limit, int page, String? keyword, T? param) $default,
   ) {
     final _that = this;
     switch (_that) {
       case _PaginatorParam():
-        return $default(_that.limit, _that.page, _that.param);
+        return $default(_that.limit, _that.page, _that.keyword, _that.param);
     }
   }
 
@@ -230,12 +238,12 @@ extension PaginatorParamPatterns<T> on PaginatorParam<T> {
 
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(int limit, int page, T? param)? $default,
+    TResult? Function(int limit, int page, String? keyword, T? param)? $default,
   ) {
     final _that = this;
     switch (_that) {
       case _PaginatorParam() when $default != null:
-        return $default(_that.limit, _that.page, _that.param);
+        return $default(_that.limit, _that.page, _that.keyword, _that.param);
       case _:
         return null;
     }
@@ -245,12 +253,15 @@ extension PaginatorParamPatterns<T> on PaginatorParam<T> {
 /// @nodoc
 
 class _PaginatorParam<T> implements PaginatorParam<T> {
-  _PaginatorParam({required this.limit, required this.page, this.param});
+  _PaginatorParam(
+      {required this.limit, required this.page, this.keyword, this.param});
 
   @override
   final int limit;
   @override
   final int page;
+  @override
+  final String? keyword;
   @override
   final T? param;
 
@@ -269,16 +280,17 @@ class _PaginatorParam<T> implements PaginatorParam<T> {
             other is _PaginatorParam<T> &&
             (identical(other.limit, limit) || other.limit == limit) &&
             (identical(other.page, page) || other.page == page) &&
+            (identical(other.keyword, keyword) || other.keyword == keyword) &&
             const DeepCollectionEquality().equals(other.param, param));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, limit, page, const DeepCollectionEquality().hash(param));
+  int get hashCode => Object.hash(runtimeType, limit, page, keyword,
+      const DeepCollectionEquality().hash(param));
 
   @override
   String toString() {
-    return 'PaginatorParam<$T>(limit: $limit, page: $page, param: $param)';
+    return 'PaginatorParam<$T>(limit: $limit, page: $page, keyword: $keyword, param: $param)';
   }
 }
 
@@ -290,7 +302,7 @@ abstract mixin class _$PaginatorParamCopyWith<T, $Res>
       __$PaginatorParamCopyWithImpl;
   @override
   @useResult
-  $Res call({int limit, int page, T? param});
+  $Res call({int limit, int page, String? keyword, T? param});
 }
 
 /// @nodoc
@@ -308,6 +320,7 @@ class __$PaginatorParamCopyWithImpl<T, $Res>
   $Res call({
     Object? limit = null,
     Object? page = null,
+    Object? keyword = freezed,
     Object? param = freezed,
   }) {
     return _then(_PaginatorParam<T>(
@@ -319,6 +332,10 @@ class __$PaginatorParamCopyWithImpl<T, $Res>
           ? _self.page
           : page // ignore: cast_nullable_to_non_nullable
               as int,
+      keyword: freezed == keyword
+          ? _self.keyword
+          : keyword // ignore: cast_nullable_to_non_nullable
+              as String?,
       param: freezed == param
           ? _self.param
           : param // ignore: cast_nullable_to_non_nullable

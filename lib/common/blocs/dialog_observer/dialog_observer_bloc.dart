@@ -16,15 +16,22 @@ class DialogObserverBloc
   void _onOpenTheDialog(
     OpenTheDialog event,
     Emitter<DialogObserverState> emit,
-  ) => emit(state.copyWith(dialogQuantity: state.dialogQuantity + 1));
+  ) {
+    if (!state.isDialogOpen) {
+      emit(state.copyWith(
+          isDialogOpen: true));
+    }
+  }
 
   // Close the dialog
   void _onCloseTheDialog(
     CloseTheDialog event,
     Emitter<DialogObserverState> emit,
-  ) => emit(
-    state.copyWith(
-      dialogQuantity: state.dialogQuantity > 0 ? state.dialogQuantity - 1 : 0,
-    ),
-  );
+  ) {
+    emit(
+      state.copyWith(
+        isDialogOpen: false
+      ),
+    );
+  }
 }

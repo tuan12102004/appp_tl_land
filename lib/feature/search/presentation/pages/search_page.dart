@@ -1,10 +1,11 @@
-import 'package:app_tl_land_3212/common/widgets/app_main_app_bar.dart';
-import 'package:app_tl_land_3212/common/widgets/custom_search_bar.dart';
-import 'package:app_tl_land_3212/core/constants/app_colors.dart';
-import 'package:app_tl_land_3212/feature/search/presentation/widgets/custom_icon_button.dart';
-import 'package:app_tl_land_3212/feature/search/presentation/widgets/item_search.dart';
-import 'package:app_tl_land_3212/feature/search/presentation/widgets/unfocus_scaffold.dart';
+import 'package:app_tl_land_3212/common/common_module.dart';
+import 'package:app_tl_land_3212/core/core_module.dart';
+import 'package:app_tl_land_3212/feature/search/domain/search_domain_module.dart';
+import 'package:app_tl_land_3212/feature/search/presentation/blocs/search_filter_bloc.dart';
+import 'package:app_tl_land_3212/feature/search/presentation/widgets/search_widget_module.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
@@ -12,52 +13,168 @@ class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
 
   @override
-State<SearchPage> createState() => _SearchPageState();
+  State<SearchPage> createState() => _SearchPageState();
 }
 
 class _SearchPageState extends State<SearchPage> {
-  late final List<Map<String, dynamic>> datas = List.generate(10, (index) {
-    return {
-      'status': 'Đang bán',
-      'name':
-          '570tr nhận nhà trước tết, HTLS 0% 18 tháng, căn 1PN+1 full đồ S2.17 Vinhhomes',
-      'price': 19000000 + index * 1000000,
-      'category': 'Hướng Đông',
-      'address': 'Gia Lâm, Hà Nội',
-      'image': List.generate(
-        index + 1, // số lượng ảnh sẽ bằng index + 1
-        (i) =>
-            'https://blog.onhome.asia/hs-fs/hubfs/1000%20m%E1%BA%ABu%20nh%C3%A0%20%C4%91%E1%BA%B9p/M%E1%BB%9Bi%20-%20M%E1%BA%ABu%20nh%C3%A0%20%C4%91%E1%BA%B9p/M%20-%20Nh%C3%A0%20m%C3%A1i%20Th%C3%A1i/2%20t%E1%BA%A7ng/nha-mai-thai-2-tang-14.jpg?width=1000&height=657&name=nha-mai-thai-2-tang-14.jpg',
-      ),
-    };
-  }).toList();
+  final _searchController = TextEditingController();
+  final _debouncer = Debouncer(seconds: 1);
+  late final PaginatorBloc<RealEstateEntity, SearchFilterParam>
+      _searchPaginatorBloc;
+  late final SearchFilterBloc _searchFilterBloc;
+  late final ScrollController _scrollController;
+  bool _isSortButtonVisible = true;
+  final int _limit = 10;
 
-  final TextEditingController _searchController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    _searchPaginatorBloc =
+        sl<PaginatorBloc<RealEstateEntity, SearchFilterParam>>();
+    _searchFilterBloc = sl<SearchFilterBloc>();
+    _searchPaginatorBloc.add(LoadInitial<RealEstateEntity, SearchFilterParam>(
+      usecase: sl<SearchRealEstatesUsecase>(),
+      limit: _limit,
+      param: _searchFilterBloc.state.filter,
+    ));
+    _scrollController = ScrollController()
+      ..addListener(() {
+        if (_scrollController.position.pixels >=
+                _scrollController.position.maxScrollExtent &&
+            !_searchPaginatorBloc.state.isLastPage) {
+          _searchPaginatorBloc
+              .add(LoadMore<RealEstateEntity, SearchFilterParam>(
+            usecase: sl<SearchRealEstatesUsecase>(),
+            limit: _limit,
+            param: _searchFilterBloc.state.filter,
+          ));
+        }
+        _handleScroll();
+      });
+  }
 
   @override
   void dispose() {
     _searchController.dispose();
+    _debouncer.dispose();
+    _scrollController.dispose();
+    _searchPaginatorBloc.close();
     super.dispose();
+  }
+
+  void _handleScroll() {
+    final direction = _scrollController.position.userScrollDirection;
+    if (direction == ScrollDirection.reverse && _isSortButtonVisible) {
+      setState(() => _isSortButtonVisible = false);
+    } else if (direction == ScrollDirection.forward && !_isSortButtonVisible) {
+      setState(() => _isSortButtonVisible = true);
+    }
+  }
+
+  void _onLoadMoreWhenNotScrollable() {
+    if (!_scrollController.hasClients ||
+        _scrollController.position.maxScrollExtent > 0) {
+      return;
+    }
+
+    if (_scrollController.position.pixels == 0 &&
+        !_searchPaginatorBloc.state.isLoadMore &&
+        !_searchPaginatorBloc.state.isLoading &&
+        !_searchPaginatorBloc.state.isLastPage) {
+      _searchPaginatorBloc.add(LoadMore<RealEstateEntity, SearchFilterParam>(
+        usecase: sl<SearchRealEstatesUsecase>(),
+        limit: _limit,
+        param: _searchFilterBloc.state.filter,
+      ));
+    }
+  }
+
+  void _onSearchChanged(String keyword) {
+    _debouncer.run(() {
+      final newFilter =
+          _searchFilterBloc.state.filter.copyWith(keyword: keyword);
+      _searchFilterBloc.add(SearchFilterEvent.filterChanged(newFilter));
+
+      _searchPaginatorBloc.add(LoadInitial<RealEstateEntity, SearchFilterParam>(
+        usecase: sl<SearchRealEstatesUsecase>(),
+        limit: _limit,
+        param: newFilter,
+      ));
+    });
+  }
+
+  Future<void> _navigateToFilterPage() async {
+    final result = await context.push<bool>('/search/filter');
+    if (result == true && mounted) {
+      _searchPaginatorBloc.add(LoadInitial<RealEstateEntity, SearchFilterParam>(
+        usecase: sl<SearchRealEstatesUsecase>(),
+        limit: _limit,
+        param: _searchFilterBloc.state.filter,
+      ));
+    }
+  }
+
+  void _onSortPressed() {
+    final currentFilter = _searchFilterBloc.state.filter;
+    String? newSortValue;
+
+    if (currentFilter.priceSort == null) {
+      // Từ mặc định -> Tăng dần
+      newSortValue = 'asc';
+    } else if (currentFilter.priceSort == 'asc') {
+      // Từ Tăng dần -> Giảm dần
+      newSortValue = 'desc';
+    } else {
+      // Từ Giảm dần -> Về mặc định
+      newSortValue = null;
+    }
+
+    // 3. Tạo bộ lọc mới với giá trị sắp xếp đã cập nhật
+    final newFilter = SearchFilterParam(
+      keyword: currentFilter.keyword,
+      provinceId: currentFilter.provinceId,
+      wardId: currentFilter.wardId,
+      status: currentFilter.status,
+      minPrice: currentFilter.minPrice,
+      maxPrice: currentFilter.maxPrice,
+      categoryIds: currentFilter.categoryIds,
+      featured: currentFilter.featured,
+      priceSort: newSortValue,
+    );
+    // 4. Cập nhật state của bộ lọc
+    _searchFilterBloc.add(SearchFilterEvent.filterChanged(newFilter));
+
+    // 5. Gọi lại API từ đầu với bộ lọc mới
+    _searchPaginatorBloc.add(LoadInitial<RealEstateEntity, SearchFilterParam>(
+      usecase: sl<SearchRealEstatesUsecase>(),
+      limit: _limit,
+      param: newFilter,
+    ));
   }
 
   @override
   Widget build(BuildContext context) {
-    return UnfocusScaffold(
-      appBar: AppMainAppBar(
-        title: 'Tìm kiếm',
-        automaticallyImplyLeading: true,
-        showNotificationIcon: true,
-        showFilterIcon: true,
-        badgeCount: 1,
-        showLargeTitle: false,
-        showBorder: true,
-        onNotificationPressed: () => context.push('/noti'),
-      ),
-      body: SafeArea(
-        top: false,
-        child: Padding(
-          padding: EdgeInsets.all(16.sp),
-          child: Column(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(
+          value: _searchPaginatorBloc,
+        ),
+        BlocProvider.value(
+          value: _searchFilterBloc,
+        ),
+      ],
+      child: UnfocusWidget(
+        child: Scaffold(
+          appBar: CustomAppbar(
+            title: Text('Tìm kiếm',
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium
+                    ?.copyWith(fontWeight: FontWeight.w600)),
+            automaticallyImplyLeading: true,
+            isDivider: false,
+          ),
+          body: Column(
             children: [
               Row(
                 spacing: 12.w,
@@ -66,12 +183,11 @@ class _SearchPageState extends State<SearchPage> {
                     child: CustomSearchBar(
                       controller: _searchController,
                       hintText: 'Tìm tên bất động sản',
+                      onChanged: _onSearchChanged,
                     ),
                   ),
                   CustomIconButton(
-                    onPressed: () {
-                      context.push('/search/filter');
-                    },
+                    onPressed: _navigateToFilterPage,
                     icon: Icons.filter_alt,
                     label: 'Lọc',
                   )
@@ -80,39 +196,76 @@ class _SearchPageState extends State<SearchPage> {
               SizedBox(
                 height: 16.h,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Padding(
-                    padding: EdgeInsetsGeometry.symmetric(vertical: 8.h),
-                    child: CustomIconButton(
-                      label: "Sắp xếp theo giá",
-                      icon: Icons.north,
-                      iconPosition: IconPosition.right,
-                      backgroundColor: AppColors.backgroundDefaultSecondary,
-                      textColor: Colors.black,
-                      iconColor: Colors.black,
+              BlocBuilder<SearchFilterBloc, SearchFilterState>(
+                builder: (context, filterState) {
+                  final currentSort = filterState.filter.priceSort;
+                  IconData sortIcon;
+
+                  if (currentSort == null) {
+                    sortIcon = Icons.north;
+                  } else if (currentSort == 'asc') {
+                    sortIcon = Icons.south;
+                  } else {
+                    // currentSort == 'desc'
+                    sortIcon = Icons.swap_vert;
+                  }
+                  return AnimatedContainer(
+                    alignment: Alignment.centerRight,
+                    duration: const Duration(milliseconds: 200),
+                    height: _isSortButtonVisible ? 50.h : 0,
+                    child: Visibility(
+                      visible: _isSortButtonVisible,
+                      child: Padding(
+                        padding:
+                            EdgeInsets.only(top: 16.h, left: 16.w, right: 16.w),
+                        child: CustomIconButton(
+                          label: "Sắp xếp theo giá",
+                          icon: sortIcon,
+                          iconPosition: IconPosition.right,
+                          backgroundColor:
+                              BackgroundColors.backgroundDefaultSecondary,
+                          textColor: TextColors.textDefaultPrimary,
+                          iconColor: IconColors.iconDefaultPrimary,
+                          onPressed: _onSortPressed,
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+                  );
+                },
               ),
               Expanded(
-                child: ListView.separated(
-                  separatorBuilder: (_, __) => SizedBox(
-                    height: 16.h,
-                  ),
-                  itemCount: datas.length,
-                  padding: EdgeInsets.symmetric(vertical: 8.h),
-                  itemBuilder: (context, index) {
-                    final data = datas[index];
-                    return ItemSearch(
-                      status: data['status'],
-                      name: data['name'],
-                      price: data['price'],
-                      category: data['category'],
-                      address: data['address'],
-                      images: List<String>.from(
-                          data['image']), // ép kiểu sang List<String>
+                child: BlocConsumer<
+                    PaginatorBloc<RealEstateEntity, SearchFilterParam>,
+                    PaginatorState<RealEstateEntity>>(
+                  bloc: _searchPaginatorBloc,
+                  listener: (context, state) {
+                    final dialogObserver = sl<DialogObserverBloc>();
+
+                    if (state.failure?.type != null &&
+                        !dialogObserver.state.isDialogOpen) {
+                      DisplayError.handle(
+                        context: context,
+                        errerrType: state.failure!.type,
+                        apiMessage: state.failure!.err,
+                      );
+                    }
+                    if (state.isLoaded) {
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        if (mounted) _onLoadMoreWhenNotScrollable();
+                      });
+                    }
+                  },
+                  builder: (context, state) {
+                    return RefreshIndicator.adaptive(
+                      onRefresh: () async {
+                        _searchPaginatorBloc.add(
+                            LoadInitial<RealEstateEntity, SearchFilterParam>(
+                          usecase: sl<SearchRealEstatesUsecase>(),
+                          limit: _limit,
+                          param: _searchFilterBloc.state.filter,
+                        ));
+                      },
+                      child: _buildBody(state),
                     );
                   },
                 ),
@@ -122,5 +275,22 @@ class _SearchPageState extends State<SearchPage> {
         ),
       ),
     );
+  }
+
+  Widget _buildBody(PaginatorState<RealEstateEntity> state) {
+    if (state.isLoading && state.items.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    if (state.isLoaded && state.items.isEmpty) {
+      return Center(
+          child: Text('Không có thông tin nào.',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: TextColors.textDefaultSecondary,
+                  )));
+    }
+    return SearchList(
+        searchRealEstates: state.items,
+        scrollController: _scrollController,
+        isLoadMore: state.isLoadMore);
   }
 }

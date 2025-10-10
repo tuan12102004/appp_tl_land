@@ -14,10 +14,10 @@ class SearchRouters {
     routes: [
       // Nhập
       GoRoute(
-        path: '/filter',
+        path: 'filter',
         pageBuilder: (context, state) {
           return buildPageWithSlideTransition(
-              SearchFilterPage(title: 'Search Filter'), state);
+              SearchFilterPage(title: 'Bộ lọc'), state);
         },
         routes: [],
       ),

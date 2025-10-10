@@ -28,13 +28,10 @@ Future<void> _common() async {
   // Notification
   _notification();
 
-  // Work
-  _work();
+  // search
+  _search();
 
-// Numerology
-  _numerology();
-
-// Profile
+  // Profile
   _profile();
 }
 
@@ -67,11 +64,24 @@ void _auth() {
 // Notification
 void _notification() {}
 
-// Work
-void _work() {}
-
-// Numerology
-void _numerology() {}
+// search
+void _search() {
+  sl
+    ..registerFactory<SearchRemoteDatasource>(
+        () => SearchRemoteDatasourceImpl(dioClient: sl()))
+    ..registerFactory<SearchRepo>(
+        () => SearchRepoImpl(searchRemoteDatasource: sl()))
+    ..registerFactory(() => SearchRealEstatesUsecase(searchRepo: sl()))
+    ..registerFactory(() => GetRealEstateCategoriesUsecase(searchRepo: sl()))
+    ..registerFactory(() => GetProvinceListUsecase(searchRepo: sl()))
+    ..registerFactory(() => GetWardListByProvinceUsecase(searchRepo: sl()))
+    ..registerLazySingleton(() => SearchFilterBloc(
+        getCategoriesUsecase: sl<GetRealEstateCategoriesUsecase>(),
+        getProvinceListUsecase: sl<GetProvinceListUsecase>(),
+        getWardListByProvinceUsecase: sl<GetWardListByProvinceUsecase>()))
+    ..registerFactory(
+        () => PaginatorBloc<RealEstateEntity, SearchFilterParam>());
+}
 
 // Profile
 void _profile() {}

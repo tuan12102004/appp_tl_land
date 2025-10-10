@@ -252,7 +252,7 @@ class CloseTheDialog implements DialogObserverEvent {
 
 /// @nodoc
 mixin _$DialogObserverState {
-  int get dialogQuantity;
+  bool get isDialogOpen;
 
   /// Create a copy of DialogObserverState
   /// with the given fields replaced by the non-null parameter values.
@@ -267,16 +267,16 @@ mixin _$DialogObserverState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is DialogObserverState &&
-            (identical(other.dialogQuantity, dialogQuantity) ||
-                other.dialogQuantity == dialogQuantity));
+            (identical(other.isDialogOpen, isDialogOpen) ||
+                other.isDialogOpen == isDialogOpen));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, dialogQuantity);
+  int get hashCode => Object.hash(runtimeType, isDialogOpen);
 
   @override
   String toString() {
-    return 'DialogObserverState(dialogQuantity: $dialogQuantity)';
+    return 'DialogObserverState(isDialogOpen: $isDialogOpen)';
   }
 }
 
@@ -286,7 +286,7 @@ abstract mixin class $DialogObserverStateCopyWith<$Res> {
           DialogObserverState value, $Res Function(DialogObserverState) _then) =
       _$DialogObserverStateCopyWithImpl;
   @useResult
-  $Res call({int dialogQuantity});
+  $Res call({bool isDialogOpen});
 }
 
 /// @nodoc
@@ -302,13 +302,13 @@ class _$DialogObserverStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? dialogQuantity = null,
+    Object? isDialogOpen = null,
   }) {
     return _then(_self.copyWith(
-      dialogQuantity: null == dialogQuantity
-          ? _self.dialogQuantity
-          : dialogQuantity // ignore: cast_nullable_to_non_nullable
-              as int,
+      isDialogOpen: null == isDialogOpen
+          ? _self.isDialogOpen
+          : isDialogOpen // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -404,13 +404,13 @@ extension DialogObserverStatePatterns on DialogObserverState {
 
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(int dialogQuantity)? $default, {
+    TResult Function(bool isDialogOpen)? $default, {
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
       case _DialogObserverState() when $default != null:
-        return $default(_that.dialogQuantity);
+        return $default(_that.isDialogOpen);
       case _:
         return orElse();
     }
@@ -431,12 +431,12 @@ extension DialogObserverStatePatterns on DialogObserverState {
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(int dialogQuantity) $default,
+    TResult Function(bool isDialogOpen) $default,
   ) {
     final _that = this;
     switch (_that) {
       case _DialogObserverState():
-        return $default(_that.dialogQuantity);
+        return $default(_that.isDialogOpen);
     }
   }
 
@@ -454,12 +454,12 @@ extension DialogObserverStatePatterns on DialogObserverState {
 
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(int dialogQuantity)? $default,
+    TResult? Function(bool isDialogOpen)? $default,
   ) {
     final _that = this;
     switch (_that) {
       case _DialogObserverState() when $default != null:
-        return $default(_that.dialogQuantity);
+        return $default(_that.isDialogOpen);
       case _:
         return null;
     }
@@ -469,11 +469,11 @@ extension DialogObserverStatePatterns on DialogObserverState {
 /// @nodoc
 
 class _DialogObserverState implements DialogObserverState {
-  const _DialogObserverState({this.dialogQuantity = 0});
+  const _DialogObserverState({this.isDialogOpen = false});
 
   @override
   @JsonKey()
-  final int dialogQuantity;
+  final bool isDialogOpen;
 
   /// Create a copy of DialogObserverState
   /// with the given fields replaced by the non-null parameter values.
@@ -489,16 +489,16 @@ class _DialogObserverState implements DialogObserverState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _DialogObserverState &&
-            (identical(other.dialogQuantity, dialogQuantity) ||
-                other.dialogQuantity == dialogQuantity));
+            (identical(other.isDialogOpen, isDialogOpen) ||
+                other.isDialogOpen == isDialogOpen));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, dialogQuantity);
+  int get hashCode => Object.hash(runtimeType, isDialogOpen);
 
   @override
   String toString() {
-    return 'DialogObserverState(dialogQuantity: $dialogQuantity)';
+    return 'DialogObserverState(isDialogOpen: $isDialogOpen)';
   }
 }
 
@@ -510,7 +510,7 @@ abstract mixin class _$DialogObserverStateCopyWith<$Res>
       __$DialogObserverStateCopyWithImpl;
   @override
   @useResult
-  $Res call({int dialogQuantity});
+  $Res call({bool isDialogOpen});
 }
 
 /// @nodoc
@@ -526,13 +526,13 @@ class __$DialogObserverStateCopyWithImpl<$Res>
   @override
   @pragma('vm:prefer-inline')
   $Res call({
-    Object? dialogQuantity = null,
+    Object? isDialogOpen = null,
   }) {
     return _then(_DialogObserverState(
-      dialogQuantity: null == dialogQuantity
-          ? _self.dialogQuantity
-          : dialogQuantity // ignore: cast_nullable_to_non_nullable
-              as int,
+      isDialogOpen: null == isDialogOpen
+          ? _self.isDialogOpen
+          : isDialogOpen // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }

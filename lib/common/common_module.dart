@@ -48,5 +48,6 @@ export 'widgets/custom_shimmer.dart';
 export 'widgets/custom_social_icon_button.dart';
 export 'widgets/logo_widget.dart';
 export 'widgets/prototype_height.dart';
+export 'widgets/shimmer_box.dart';
 export 'widgets/unfocus_widget.dart';
 export 'widgets/user_avatar.dart';

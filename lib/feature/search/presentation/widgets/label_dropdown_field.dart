@@ -4,64 +4,70 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class LabelDropdownField extends StatelessWidget {
+class LabelDropdownField extends StatefulWidget {
   final String label;
   final String hintText;
   final Map<int, String> items;
-  final TextInputType? keyboardType;
-  final TextInputAction? textInputAction;
-  final void Function()? onEditingComplete;
-
+  final int? value;
+  final ValueChanged<int?> onChanged;
+  final SelectBloc<int?> selectBloc;
   const LabelDropdownField({
     super.key,
     required this.label,
     required this.items,
     required this.hintText,
-    this.keyboardType = TextInputType.phone,
-    this.textInputAction,
-    this.onEditingComplete,
+    this.value,
+    required this.onChanged,
+    required this.selectBloc,
   });
+  @override
+  State<LabelDropdownField> createState() => _LabelDropdownFieldState();
+}
+
+class _LabelDropdownFieldState extends State<LabelDropdownField> {
+  @override
+  void initState() {
+    super.initState();
+    if (widget.value != null) {
+      widget.selectBloc.add(SelectEvent.select(value: widget.value));
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant LabelDropdownField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Nếu SearchFilterPage build lại với value mới => đồng bộ state của SelectBLoC
+    if (widget.value != oldWidget.value) {
+      widget.selectBloc.add(SelectEvent.select(value: widget.value));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => SelectBloc<int>(),
-      child: BlocBuilder<SelectBloc<int>, SelectState<int>>(
+    return BlocProvider.value(
+      value: widget.selectBloc,
+      child: BlocBuilder<SelectBloc<int?>, SelectState<int?>>(
         builder: (context, state) {
-          // final gender = state;
-
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                label,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 17.sp,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w400,
-                  height: 1.29.sp,
-                  letterSpacing: -0.43.sp,
-                ),
-              ),
+              Text(widget.label,
+                  style: Theme.of(context).textTheme.titleMedium),
               SizedBox(height: 8.h),
               CustomDropdown<int>(
+                maxHeightDropdown: 250.h,
                 paddingButton: EdgeInsets.symmetric(
                   horizontal: 16.w,
                   vertical: 11.h,
                 ),
-                items: items,
+                items: widget.items,
                 onChanged: (value) {
-                  context.read<SelectBloc<int>>().add(
-                        SelectEvent.select(value!),
-                      );
+                  widget.selectBloc.add(SelectEvent.select(value: value));
+                  widget.onChanged(value);
                 },
-                value: state.maybeWhen(
-                  selected: (value) => value,
-                  orElse: () => null,
-                ),
-                hintText: hintText,
+                value: widget.value,
+                hintText: widget.hintText,
               ),
             ],
           );

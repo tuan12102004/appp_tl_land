@@ -4,44 +4,61 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class DropdownField extends StatelessWidget {
+class DropdownField extends StatefulWidget {
   final String hintText;
   final Map<int, String> items;
-  final TextInputType? keyboardType;
-  final TextInputAction? textInputAction;
-  final void Function()? onEditingComplete;
+  final int? value;
+  final ValueChanged<int?> onChanged;
+  final SelectBloc<int?> selectBloc;
 
   const DropdownField({
     super.key,
     required this.items,
     required this.hintText,
-    this.keyboardType = TextInputType.phone,
-    this.textInputAction,
-    this.onEditingComplete,
+    this.value,
+    required this.onChanged,
+    required this.selectBloc,
   });
+  @override
+  State<DropdownField> createState() => _DropdownFieldState();
+}
+
+class _DropdownFieldState extends State<DropdownField> {
+  @override
+  void initState() {
+    super.initState();
+    if (widget.value != null) {
+      widget.selectBloc.add(SelectEvent.select(value: widget.value));
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant DropdownField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.value != oldWidget.value) {
+      widget.selectBloc.add(SelectEvent.select(value: widget.value));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => SelectBloc<int>(),
-      child: BlocBuilder<SelectBloc<int>, SelectState<int>>(
+    return BlocProvider.value(
+      value: widget.selectBloc,
+      child: BlocBuilder<SelectBloc<int?>, SelectState<int?>>(
         builder: (context, state) {
           return CustomDropdown<int>(
+            maxHeightDropdown: 250.h,
             paddingButton: EdgeInsets.symmetric(
               horizontal: 16.w,
               vertical: 11.h,
             ),
-            items: items,
+            items: widget.items,
             onChanged: (value) {
-              context.read<SelectBloc<int>>().add(
-                    SelectEvent.select(value!),
-                  );
+              widget.selectBloc.add(SelectEvent.select(value: value));
+              widget.onChanged(value); 
             },
-            value: state.maybeWhen(
-              selected: (value) => value,
-              orElse: () => null,
-            ),
-            hintText: hintText,
+            value: widget.value,
+            hintText: widget.hintText,
           );
         },
       ),

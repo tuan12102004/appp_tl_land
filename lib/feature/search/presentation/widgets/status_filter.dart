@@ -7,6 +7,7 @@ class StatusFilter extends StatefulWidget {
   final ValueChanged<Map<String, bool>> onSelected; // Trả về map thay vì list
   final VoidCallback? onActionAll;
   final bool isMultiSelect;
+  final int maxVisibleItems;
 
   const StatusFilter({
     super.key,
@@ -14,6 +15,7 @@ class StatusFilter extends StatefulWidget {
     required this.options,
     required this.onSelected,
     this.isMultiSelect = false,
+    this.maxVisibleItems = 8,
   });
 
   @override
@@ -22,7 +24,6 @@ class StatusFilter extends StatefulWidget {
 
 class _StatusFilterState extends State<StatusFilter> {
   late Map<String, bool> selectedMap;
-  final int maxVisible = 8;
 
   @override
   void initState() {
@@ -55,9 +56,9 @@ class _StatusFilterState extends State<StatusFilter> {
   @override
   Widget build(BuildContext context) {
     final keys = widget.options.keys.toList();
-    final bool showMore = keys.length > maxVisible;
+    final bool showMore = keys.length > widget.maxVisibleItems;
     final List<String> visibleOptions =
-        showMore ? keys.take(maxVisible).toList() : keys;
+        showMore ? keys.take(widget.maxVisibleItems).toList() : keys;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

@@ -26,11 +26,11 @@ class CustomPassField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SelectBloc<bool>()..add(SelectEvent.select(true)),
+      create: (context) => SelectBloc<bool>()..add(SelectEvent.select(value: true)),
       child: BlocBuilder<SelectBloc<bool>, SelectState<bool>>(
         builder: (context, state) {
           return CustomInputField(
-            obscureText: _getStateVal(state),
+            obscureText: _getStateVal(state)!,
             hintText: hintText,
             controller: _controller,
             focusNode: _focusNode,
@@ -40,10 +40,10 @@ class CustomPassField extends StatelessWidget {
             validator: validator,
             suffixIcon: CustomAdaptiveTapEffect(
               onPressed: () => context.read<SelectBloc<bool>>().add(
-                SelectEvent.select(!_getStateVal(state)),
+                SelectEvent.select(value: !_getStateVal(state)!),
               ),
               child: Icon(
-                _getStateVal(state) ? Icons.visibility : Icons.visibility_off,
+                _getStateVal(state)! ? Icons.visibility : Icons.visibility_off,
                 color: AppColors.iconDefaultSecondary,
                 size: 22.sp,
               ),
@@ -54,6 +54,6 @@ class CustomPassField extends StatelessWidget {
     );
   }
 
-  bool _getStateVal(SelectState<bool> state) =>
+  bool? _getStateVal(SelectState<bool> state) =>
       state is Selected<bool> ? state.value : true;
 }

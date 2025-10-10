@@ -31,7 +31,7 @@ class PriceRangeSlider extends StatelessWidget {
             values: values, // 👈 dùng giá trị từ ngoài
             min: min,
             max: max,
-            divisions: 100,
+            divisions: (max - min) > 0 ? (max - min).toInt() : 1,
             labels: RangeLabels(
               values.start.toInt().toString(),
               values.end.toInt().toString(),

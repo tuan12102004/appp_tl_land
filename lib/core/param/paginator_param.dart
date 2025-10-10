@@ -7,6 +7,7 @@ sealed class PaginatorParam<T> with _$PaginatorParam<T> {
   factory PaginatorParam({
     required int limit,
     required int page,
+    String? keyword,
     T? param,
   }) = _PaginatorParam<T>;
 }

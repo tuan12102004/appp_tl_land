@@ -15,6 +15,7 @@ class CustomAdaptiveButton extends StatelessWidget {
   final Color borderColor;
   final double? borderWidth;
   final Widget? preffixWidget;
+  final Widget? suffixWidget;
   final AlignmentGeometry? alignment;
 
   const CustomAdaptiveButton({
@@ -30,6 +31,7 @@ class CustomAdaptiveButton extends StatelessWidget {
     this.borderColor = Colors.transparent,
     this.borderWidth,
     this.preffixWidget,
+    this.suffixWidget,
     this.alignment,
   });
 
@@ -67,6 +69,7 @@ class CustomAdaptiveButton extends StatelessWidget {
                         color: textColor ?? TextColors.textButtonPrimary,
                       ),
                 ),
+              if (suffixWidget != null) suffixWidget!,
             ],
           ),
         ),
@@ -103,6 +106,7 @@ class CustomAdaptiveButton extends StatelessWidget {
                       color: textColor ?? TextColors.textButtonPrimary,
                     ),
               ),
+            if (suffixWidget != null) suffixWidget!,
           ],
         ),
       ),

@@ -15,7 +15,7 @@ Future<void> showAppDialog(
   Color? cancelColor,
   Color? confirmColor,
 }) async {
-  sl<DialogObserverBloc>().add(OpenTheDialog());
+  sl<DialogObserverBloc>().add(const OpenTheDialog());
   await showAdaptiveDialog(
     barrierDismissible: false,
     context: context,

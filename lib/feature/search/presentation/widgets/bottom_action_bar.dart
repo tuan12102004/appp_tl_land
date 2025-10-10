@@ -6,13 +6,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class BottomActionBar extends StatelessWidget {
   final String actionLabel;
   final void Function() onActionPressed;
-  final void Function() onCancelPressed;
+  final void Function() onResetPressed;
 
   const BottomActionBar({
     super.key,
     required this.actionLabel,
     required this.onActionPressed,
-    required this.onCancelPressed,
+    required this.onResetPressed,
   });
 
   @override
@@ -33,10 +33,10 @@ class BottomActionBar extends StatelessWidget {
           children: [
             Expanded(
               child: CustomAdaptiveButton(
-                onPressed: () {},
-                text: 'Đăt lại',
-                backgroundColor: const Color(0xFFF1F9FE),
-                textColor: BasicColors.blueZodiac500,
+                onPressed: onResetPressed,
+                text: 'Đặt lại',
+                backgroundColor: BackgroundColors.backgroundButtonSecondary,
+                textColor: TextColors.textBrandPrimary,
               ),
             ),
             Expanded(

@@ -53,11 +53,40 @@ class CustomDropdown<T> extends StatefulWidget {
 class _CustomizeDropdownState<T> extends State<CustomDropdown<T>> {
   final LayerLink _layerLink = LayerLink();
   OverlayEntry? _overlayEntry;
+  late final SelectBloc<bool> _toggleBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _toggleBloc = SelectBloc<bool>();
+  }
+
+  @override
+  void didUpdateWidget(covariant CustomDropdown<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    final bool itemsChanged =
+        widget.items.toString() != oldWidget.items.toString();
+
+    if (itemsChanged && _overlayEntry != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _rebuildDropdown();
+      });
+    }
+  }
+
+  void _rebuildDropdown() {
+    if (mounted) {
+      _removeDropdown();
+      _showDropdown(context);
+    }
+  }
 
   @override
   void dispose() {
     _overlayEntry?.remove();
     _overlayEntry = null;
+    _toggleBloc.close();
     super.dispose();
   }
 
@@ -66,7 +95,7 @@ class _CustomizeDropdownState<T> extends State<CustomDropdown<T>> {
     if (_overlayEntry == null) {
       _showDropdown(context);
     } else {
-      _removeDropdown(context);
+      _removeDropdown();
     }
   }
 
@@ -81,7 +110,7 @@ class _CustomizeDropdownState<T> extends State<CustomDropdown<T>> {
     _overlayEntry = OverlayEntry(
       builder: (_) => GestureDetector(
         behavior: HitTestBehavior.translucent,
-        onTap: () => _removeDropdown(context),
+        onTap: _removeDropdown,
         child: Stack(
           children: [
             Positioned(
@@ -90,96 +119,107 @@ class _CustomizeDropdownState<T> extends State<CustomDropdown<T>> {
                 link: _layerLink,
                 offset: widget.offset ?? Offset(0, size.height + 12.h),
                 showWhenUnlinked: false,
-                child: AnimatedContainer(
-                  duration: Duration(milliseconds: 400),
-                  height: widget.maxHeightDropdown,
-                  decoration: BoxDecoration(
-                    borderRadius: widget.borderRadiusButton ??
-                        BorderRadius.circular(12.r),
-                    border: Border.all(
-                      width: 1.w,
-                      color: AppColors.borderSeparatorOpaque,
-                    ),
-                    boxShadow: [
-                      BoxShadow(color: widget.shadowColor, blurRadius: 12.r),
-                    ],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: widget.borderRadiusButton ??
-                        BorderRadius.circular(12.r),
-                    child: Scrollbar(
-                      child: ListView.separated(
-                        padding: EdgeInsets.zero,
-                        shrinkWrap: true,
-                        physics: BouncingScrollPhysics(),
-                        separatorBuilder: (_, index) => Divider(
-                          height: 1.h,
-                          color: AppColors.borderSeparatorOpaque,
+                child: BlocProvider.value(
+                  value: _toggleBloc,
+                  child: BlocBuilder<SelectBloc<bool>, SelectState<bool>>(
+                    builder: (context, state) {
+                      return AnimatedContainer(
+                        duration: Duration(milliseconds: 400),
+                        height: widget.maxHeightDropdown,
+                        decoration: BoxDecoration(
+                          color: BackgroundColors.backgroundDefaultPrimary,
+                          borderRadius: widget.borderRadiusButton ??
+                              BorderRadius.circular(12.r),
+                          border: Border.all(
+                            width: 1.w,
+                            color: AppColors.borderSeparatorOpaque,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                                color: widget.shadowColor, blurRadius: 12.r),
+                          ],
                         ),
-                        itemBuilder: (_, index) {
-                          final bool isSelected =
-                              convertItems[index].key == widget.value;
-                          return CupertinoButton(
-                            color: isSelected
-                                ? BasicColors.blueZodiac500
-                                : TextColors.textButtonPrimary,
-                            minSize: 0,
-                            borderRadius: BorderRadius.zero,
-                            padding: widget.paddingDropdownItems ??
-                                EdgeInsets.symmetric(
-                                  horizontal: 16.w,
-                                  vertical: 11.h,
-                                ),
-                            alignment: Alignment.centerLeft,
-                            onPressed: () {
-                              widget.onChanged(convertItems[index].key);
-                              _removeDropdown(context);
-                            },
-                            child: Row(
-                              spacing: 6.w,
-                              children: [
-                                SizedBox(
-                                  width: 16.w,
-                                  child: Visibility(
-                                    visible: isSelected,
-                                    child: Icon(
-                                      Icons.check,
-                                      color: TextColors
-                                          .textComboBoxMenuItemOnselected,
-                                      size: 20.sp,
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    convertItems[index].value,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium!
-                                        .copyWith(
-                                          color: isSelected
-                                              ? TextColors
-                                                  .textComboBoxMenuItemOnselected
-                                              : TextColors
-                                                  .textComboBoxMenuItemDefault,
+                        child: ClipRRect(
+                          borderRadius: widget.borderRadiusButton ??
+                              BorderRadius.circular(12.r),
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          child: Scrollbar(
+                            child: ListView.separated(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              physics: BouncingScrollPhysics(),
+                              separatorBuilder: (_, index) => Divider(
+                                height: 1.h,
+                                color: AppColors.borderSeparatorOpaque,
+                              ),
+                              itemBuilder: (_, index) {
+                                final bool isSelected =
+                                    convertItems[index].key == widget.value;
+                                return CupertinoButton(
+                                  color: isSelected
+                                      ? BasicColors.blueZodiac500
+                                      : TextColors.textButtonPrimary,
+                                  minSize: 0,
+                                  borderRadius: BorderRadius.zero,
+                                  padding: widget.paddingDropdownItems ??
+                                      EdgeInsets.symmetric(
+                                        horizontal: 16.w,
+                                        vertical: 11.h,
+                                      ),
+                                  alignment: Alignment.centerLeft,
+                                  onPressed: () {
+                                    widget.onChanged(convertItems[index].key);
+                                    _removeDropdown();
+                                  },
+                                  child: Row(
+                                    spacing: 6.w,
+                                    children: [
+                                      SizedBox(
+                                        width: 16.w,
+                                        child: Visibility(
+                                          visible: isSelected,
+                                          child: Icon(
+                                            Icons.check,
+                                            color: TextColors
+                                                .textComboBoxMenuItemOnselected,
+                                            size: 20.sp,
+                                          ),
                                         ),
-                                  ),
-                                ),
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          convertItems[index].value,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium!
+                                              .copyWith(
+                                                color: isSelected
+                                                    ? TextColors
+                                                        .textComboBoxMenuItemOnselected
+                                                    : TextColors
+                                                        .textComboBoxMenuItemDefault,
+                                              ),
+                                        ),
+                                      ),
 
-                                // Trailing
-                                if (widget.trailingWidgets.isNotEmpty &&
-                                    widget.trailingWidgets.elementAtOrNull(
-                                          index,
-                                        ) !=
-                                        null)
-                                  widget.trailingWidgets[index],
-                              ],
+                                      // Trailing
+                                      if (widget.trailingWidgets.isNotEmpty &&
+                                          widget.trailingWidgets
+                                                  .elementAtOrNull(
+                                                index,
+                                              ) !=
+                                              null)
+                                        widget.trailingWidgets[index],
+                                    ],
+                                  ),
+                                );
+                              },
+                              itemCount: convertItems.length,
                             ),
-                          );
-                        },
-                        itemCount: convertItems.length,
-                      ),
-                    ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),
@@ -191,15 +231,15 @@ class _CustomizeDropdownState<T> extends State<CustomDropdown<T>> {
 
     if (_overlayEntry != null) {
       Overlay.of(context).insert(_overlayEntry!);
-      context.read<SelectBloc<bool>>().add(SelectEvent.select(true));
+      _toggleBloc.add(const SelectEvent.select(value: true));
     }
   }
 
   // This function is used to remove dopdown
-  void _removeDropdown(BuildContext context) {
+  void _removeDropdown() {
     _overlayEntry?.remove();
     _overlayEntry = null;
-    context.read<SelectBloc<bool>>().add(SelectEvent.select(false));
+    _toggleBloc.add(const SelectEvent.select(value: false));
   }
 
   // Get value or hint text
@@ -271,7 +311,7 @@ class _CustomizeDropdownState<T> extends State<CustomDropdown<T>> {
                           ? (widget.suffixIconActive ?? Icons.expand_less)
                           : (widget.suffixIconInActive ?? Icons.expand_more),
                       size: 22.sp,
-                      color: currentState
+                      color: currentState == true
                           ? AppColors.iconNavigationBarEnabled
                           : AppColors.iconNavigationBarDefault,
                     ),

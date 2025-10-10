@@ -18,7 +18,7 @@ class _NotificationPageState extends State<NotificationPage> {
     return Scaffold(
       appBar: CustomAppbar(
         automaticallyImplyLeading: false,
-        visibleBottom: true,
+        isDivider: true,
         title: Text(
           'Thông báo',
           style: Theme.of(context).appBarTheme.titleTextStyle!.copyWith(

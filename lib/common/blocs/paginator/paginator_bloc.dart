@@ -111,5 +111,6 @@ class PaginatorBloc<T, Param>
   void _onUpdateItems(
     UpdateItems<T, Param> event,
     Emitter<PaginatorState<T>> emit,
-  ) => emit(state.copyWith(items: event.newItems));
+  ) =>
+      emit(state.copyWith(items: event.newItems));
 }

@@ -102,7 +102,7 @@ class BottomNav extends StatelessWidget {
   }
 
   void onNavItemPressed(BuildContext context, int index) {
-    context.read<SelectBloc<int>>().add(SelectEvent.select(index));
+    context.read<SelectBloc<int>>().add(SelectEvent.select(value: index));
     sl<PageController>().jumpToPage(index);
   }
 }

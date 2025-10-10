@@ -13,7 +13,7 @@ class CustomAuthAppbar extends StatelessWidget implements PreferredSizeWidget {
     return CustomAppbar(
       automaticallyImplyLeading: false,
       backgroundColor: Colors.transparent,
-      visibleBottom: true,
+      isDivider: true,
       title: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [

@@ -10,6 +10,13 @@ class ApiUrls {
   static const String resendOtp = '/auth/resend-otp';
   static const String verifyOtp = '/auth/verification-otp';
 
+  // Search & filter
+  static const String searchRealEstates = '/real-estates';
+  static const String realEstateCategory= '/real-estate-catalogs';
+
+  static const String provinces = '/address/provinces';
+  static const String wards = '/address/wards/';
+
   // Home
 
   // Notification

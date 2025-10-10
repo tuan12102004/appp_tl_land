@@ -1,83 +1,92 @@
+import 'package:app_tl_land_3212/common/common_module.dart';
 import 'package:app_tl_land_3212/common/enums/validate_type.dart';
 import 'package:app_tl_land_3212/common/widgets/app_main_app_bar.dart';
-import 'package:app_tl_land_3212/core/constants/app_colors.dart';
-import 'package:app_tl_land_3212/feature/search/presentation/cubits/category_cubit.dart';
-import 'package:app_tl_land_3212/feature/search/presentation/cubits/range_cubit.dart';
-import 'package:app_tl_land_3212/feature/search/presentation/pages/bottom_sheet_filter.dart';
-import 'package:app_tl_land_3212/feature/search/presentation/widgets/bottom_action_bar.dart';
-import 'package:app_tl_land_3212/feature/search/presentation/widgets/dropdown_field.dart';
-import 'package:app_tl_land_3212/feature/search/presentation/widgets/label_child_filter.dart';
-import 'package:app_tl_land_3212/feature/search/presentation/widgets/label_dropdown_field.dart';
-import 'package:app_tl_land_3212/feature/search/presentation/widgets/label_input_field.dart';
-import 'package:app_tl_land_3212/feature/search/presentation/widgets/price_range_slider.dart';
-import 'package:app_tl_land_3212/feature/search/presentation/widgets/status_filter.dart';
-import 'package:app_tl_land_3212/feature/search/presentation/widgets/unfocus_scaffold.dart';
+import 'package:app_tl_land_3212/core/core_module.dart';
+import 'package:app_tl_land_3212/feature/search/presentation/widgets/search_widget_module.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 class SearchFilter extends StatelessWidget {
   final String title;
   final bool isIncrease;
+  final String actionLabel;
+
   final VoidCallback onBottomActionPressed;
-  final VoidCallback onBottomCancelPressed;
+  final VoidCallback onBottomResetPressed;
+
   final TextEditingController minPriceController;
   final TextEditingController maxPriceController;
+
   final FocusNode minPriceNode;
   final FocusNode maxPriceNode;
+
+  final RangeValues priceRange;
+  final String priceUnit;
+  final Map<int, String> itemPrices;
+  final int selectedPriceUnit;
+  final ValueChanged<RangeValues> onPriceRangeChanged;
+  final ValueChanged<int?> onPriceUnitChanged;
+
+  final Map<String, bool> statusOptions;
+  final Function(Map<String, bool>) onStatusSelected;
+
+  final Map<String, bool> categoryOptions;
+  final Function(Map<String, bool>) onCategorySelected;
+  final VoidCallback onCategoryActionAll;
+
+  final Map<int, String> provinceOptions;
+  final int? selectedProvinceId;
+  final Function(int?) onProvinceSelected;
+
+  final Map<int, String> wardOptions;
+  final int? selectedWardId;
+  final Function(int?) onWardSelected;
+
+  final SelectBloc<int?> provinceBloc;
+  final SelectBloc<int?> wardBloc;
+  final SelectBloc<int?> priceUnitBloc;
+
   const SearchFilter({
     super.key,
     required this.title,
     required this.isIncrease,
     required this.onBottomActionPressed,
-    required this.onBottomCancelPressed,
+    required this.onBottomResetPressed,
     required this.minPriceController,
     required this.maxPriceController,
     required this.minPriceNode,
     required this.maxPriceNode,
+    required this.statusOptions,
+    required this.onStatusSelected,
+    required this.categoryOptions,
+    required this.onCategorySelected,
+    required this.onCategoryActionAll,
+    required this.provinceOptions,
+    required this.onProvinceSelected,
+    required this.wardOptions,
+    required this.onWardSelected,
+    this.selectedProvinceId,
+    this.selectedWardId,
+    required this.priceRange,
+    required this.priceUnit,
+    required this.itemPrices,
+    required this.selectedPriceUnit,
+    required this.onPriceRangeChanged,
+    required this.onPriceUnitChanged,
+    required this.actionLabel,
+    required this.provinceBloc,
+    required this.wardBloc,
+    required this.priceUnitBloc,
   });
+
+  String _formatNumber(double number) {
+    return NumberFormat('#,##0', 'vi_VN').format(number);
+  }
 
   @override
   Widget build(BuildContext context) {
-    late final Map<int, String> itemProvinces = {
-      1: 'Hà Nội',
-      2: 'Hồ Chí Minh',
-      3: 'Đà Nẵng',
-      4: 'Hải Phòng',
-      5: 'Cần Thơ',
-    };
-    late final Map<int, String> itemWards = {
-      1: 'Phường 1',
-      2: 'Phường 2',
-      3: 'Phường 3',
-      4: 'Phường 4',
-      5: 'Phường 5',
-    };
-    late final Map<int, String> itemPrices = {
-      1: 'Đơn vị: Nghìn đồng',
-      2: 'Đơn vị: Triệu đồng',
-      3: 'Đơn vị: Tỷ đồng',
-    };
-    late final Map<String, bool> itemStatus = {
-      "Tất cả": false,
-      "Đã bán": false,
-      "Đang bán": false,
-      "Đã thuê": false,
-      "Đang thuê": false,
-    };
-    late final Map<String, bool> itemCategorys = {
-      "Nhà bán": false,
-      "Nhà thuê": false,
-      "Nhà trọ": false,
-      "Văn phòng": false,
-      "Đất nền": false,
-      "Khách sạn": false,
-      "Đất trống": false,
-      "Biệt thự liền kề": false,
-      "Trang trại, khu nghỉ dưỡng": false,
-      "Nhà xưởng, kho bãi": false,
-      "Shophouse": false,
-    };
     return UnfocusScaffold(
       appBar: AppMainAppBar(
         title: title,
@@ -106,193 +115,162 @@ class SearchFilter extends StatelessWidget {
                       spacing: 12.h,
                       children: [
                         LabelDropdownField(
-                            label: 'Thành phố',
-                            items: itemProvinces,
-                            hintText: 'Chọn thành phố'),
+                          label: 'Thành phố',
+                          items: provinceOptions,
+                          hintText: 'Chọn thành phố',
+                          onChanged: onProvinceSelected,
+                          value: selectedProvinceId,
+                          selectBloc: provinceBloc,
+                        ),
                         LabelDropdownField(
-                            label: 'Phường',
-                            items: itemWards,
-                            hintText: 'Chọn phường'),
+                          label: 'Phường',
+                          items: selectedProvinceId == null
+                              ? {}
+                              : wardOptions,
+                          hintText: selectedProvinceId == null
+                              ? 'Vui lòng chọn thành phố'
+                              : 'Chọn phường',
+                          onChanged: (selectedId) {
+                            if (selectedProvinceId != null) {
+                              onWardSelected(selectedId);
+                            }
+                          },
+                          value: selectedWardId,
+                          selectBloc: wardBloc,
+                        ),
                       ],
                     ),
                   ),
                   LabelChildFilter(
                     label: 'Trạng thái',
                     child: StatusFilter(
-                      options: itemStatus,
-                      onSelected: (values) {
-                        print("Chọn 1: ${values}");
-                      },
-                    ),
+                        options: statusOptions,
+                        onSelected: onStatusSelected,
+                        maxVisibleItems: 8),
                   ),
-                  BlocProvider(
-                    create: (_) => CategoryCubit()..init(values: itemCategorys),
-                    child: BlocBuilder<CategoryCubit, Map<String, bool>>(
-                      builder: (context, categorystate) {
-                        return LabelChildFilter(
-                          label: 'Loại bất động sản',
-                          child: StatusFilter(
-                            options: categorystate,
-                            isMultiSelect: true,
-                            onSelected: (values) {
-                              values.forEach((key, value) {
-                                context
-                                    .read<CategoryCubit>()
-                                    .checkBox(key, value);
-                              });
-                            },
-                            onActionAll: () async {
-                              final parentContext =
-                                  context; // lấy context ở trong BlocBuilder
-
-                              final result =
-                                  await showModalBottomSheet<Map<String, bool>>(
-                                context: parentContext,
-                                isScrollControlled: true,
-                                constraints:
-                                    BoxConstraints(maxWidth: double.infinity),
-                                builder: (_) => BlocProvider.value(
-                                  value: parentContext.read<
-                                      CategoryCubit>(), // truyền lại Cubit sẵn có
-                                  child: SizedBox(
-                                    height: 659.h,
-                                    child: BottomSheetFilter(
-                                      values: categorystate,
-                                    ),
-                                  ),
+                  LabelChildFilter(
+                    label: 'Loại bất động sản',
+                    child: StatusFilter(
+                        options: categoryOptions,
+                        isMultiSelect: true,
+                        onSelected: onCategorySelected,
+                        onActionAll: onCategoryActionAll,
+                        maxVisibleItems: 2),
+                  ),
+                  LabelChildFilter(
+                    customLable: true,
+                    label: '',
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      spacing: 16.h,
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w600,
                                 ),
-                              );
-
-                              if (result != null && parentContext.mounted) {
-                                parentContext
-                                    .read<CategoryCubit>()
-                                    .init(values: result);
-                              }
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  BlocProvider(
-                    create: (context) => RangeCubit(),
-                    child: BlocBuilder<RangeCubit, RangeValues>(
-                      builder: (context, state) {
-                        minPriceController.text =
-                            state.start.toInt().toString();
-                        maxPriceController.text = state.end.toInt().toString();
-                        return LabelChildFilter(
-                          customLable: true,
-                          label: '',
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            spacing: 16.h,
                             children: [
-                              RichText(
-                                text: TextSpan(
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 17.sp,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w600,
-                                    height: 1.29.sp,
-                                    letterSpacing: -0.43.sp,
-                                  ),
-                                  children: [
-                                    const TextSpan(text: 'Mức giá: '),
-                                    TextSpan(
-                                      text:
-                                          '${minPriceController.text} - ${maxPriceController.text}',
-                                      style: TextStyle(
-                                        color: BasicColors.blueZodiac500,
-                                        fontSize: 17.sp,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w600,
-                                        height: 1.29.sp,
-                                        letterSpacing: -0.43.sp,
-                                      ),
+                              const TextSpan(text: 'Mức giá: '),
+                              TextSpan(
+                                text:
+                                    '${_formatNumber(priceRange.start)} - ${_formatNumber(priceRange.end)} $priceUnit',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      color: TextColors.textBrandPrimary,
                                     ),
-                                  ],
-                                ),
                               ),
-                              Row(
-                                spacing: 8.w,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: LabelInputField(
-                                      label: 'Thấp nhất',
-                                      hintText: 'Từ',
-                                      controller: minPriceController,
-                                      focusNode: minPriceNode,
-                                      inputFieldType: InputFieldType.phone,
-                                      textInputAction: TextInputAction.next,
-                                      onChanged: (value) {
-                                        final min = double.tryParse(value) ??
-                                            state.start;
-                                        context
-                                            .read<RangeCubit>()
-                                            .updateMin(min);
-                                      },
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 24.h),
-                                    child: Icon(
-                                      Icons.arrow_forward,
-                                      size: 24.sp,
-                                      color: BasicColors.black400,
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: LabelInputField(
-                                      label: 'Cao nhất',
-                                      hintText: 'Đến',
-                                      controller: maxPriceController,
-                                      focusNode: maxPriceNode,
-                                      inputFieldType: InputFieldType.phone,
-                                      textInputAction: TextInputAction.done,
-                                      onChanged: (value) {
-                                        final max =
-                                            double.tryParse(value) ?? state.end;
-                                        context
-                                            .read<RangeCubit>()
-                                            .updateMax(max);
-                                      },
-                                    ),
-                                  )
-                                ],
-                              ),
-                              // Đơn vị: Triệu VNĐ
-                              DropdownField(
-                                items: itemPrices,
-                                hintText: 'Chọn đơn vị tiền',
-                              ),
-
-                              // PriceRangeSlider
-                              PriceRangeSlider(
-                                values: state,
-                                onChanged: (range) {
-                                  context.read<RangeCubit>().select(range);
-                                  print(
-                                      "MinPrice: ${range.start}, MaxPrice: ${range.end}");
-                                },
-                              )
                             ],
                           ),
-                        );
-                      },
+                        ),
+                        Row(
+                          spacing: 8.w,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: LabelInputField(
+                                label: 'Thấp nhất',
+                                hintText: 'Từ',
+                                maxLength: 6,
+                                controller: minPriceController,
+                                focusNode: minPriceNode,
+                                inputFieldType: InputFieldType.phone,
+                                textInputAction: TextInputAction.next,
+                                onChanged: (value) {
+                                  final newMin = double.tryParse(
+                                          value.replaceAll('.', '')) ??
+                                      0;
+                                  if (newMin > priceRange.end) {
+                                    onPriceRangeChanged(
+                                        RangeValues(newMin, newMin));
+                                  } else {
+                                    onPriceRangeChanged(RangeValues(
+                                        newMin, priceRange.end));
+                                  }
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 24.h),
+                              child: Icon(
+                                Icons.arrow_forward,
+                                size: 24.sp,
+                                color: IconColors.iconDefaultSecondary,
+                              ),
+                            ),
+                            Expanded(
+                              child: LabelInputField(
+                                label: 'Cao nhất',
+                                hintText: 'Đến',
+                                maxLength: 6,
+                                controller: maxPriceController,
+                                focusNode: maxPriceNode,
+                                inputFieldType: InputFieldType.phone,
+                                textInputAction: TextInputAction.done,
+                                onChanged: (value) {
+                                  final newMax = double.tryParse(
+                                          value.replaceAll('.', '')) ??
+                                      0;
+                                  if (newMax < priceRange.start) {
+                                    onPriceRangeChanged(
+                                        RangeValues(newMax, newMax));
+                                  } else {
+                                    onPriceRangeChanged(RangeValues(
+                                        priceRange.start, newMax));
+                                  }
+                                },
+                              ),
+                            )
+                          ],
+                        ),
+                        // Đơn vị
+                        DropdownField(
+                          items: itemPrices,
+                          hintText: 'Chọn đơn vị tiền',
+                          onChanged: onPriceUnitChanged,
+                          value: selectedPriceUnit,
+                          selectBloc: priceUnitBloc,
+                        ),
+
+                        PriceRangeSlider(
+                            values: priceRange,
+                            onChanged: onPriceRangeChanged)
+                      ],
                     ),
-                  ),
+                  )
                 ],
               ),
             ),
           )),
       bottomNavigationBar: BottomActionBar(
-        actionLabel: 'Áp dụng (1)',
+        actionLabel: actionLabel,
         onActionPressed: onBottomActionPressed,
-        onCancelPressed: onBottomCancelPressed,
+        onResetPressed: onBottomResetPressed,
       ),
     );
   }
