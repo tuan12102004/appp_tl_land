@@ -10,19 +10,21 @@ import 'package:app_tl_land_3212/feature/floating_add/presentation/widgets/post_
 import 'package:app_tl_land_3212/feature/floating_add/presentation/widgets/post_real_estate/decription_selector.dart';
 import 'package:app_tl_land_3212/feature/floating_add/presentation/widgets/post_real_estate/owner_section.dart';
 import 'package:app_tl_land_3212/feature/floating_add/presentation/widgets/post_real_estate/status_selector.dart';
+import 'package:app_tl_land_3212/feature/floating_add/presentation/widgets/shared/custom_appbar_sub.dart';
 import 'package:app_tl_land_3212/feature/home/presentation/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-class PostRealEstateNewPage extends StatefulWidget {
-  const PostRealEstateNewPage({super.key});
+class PostRealEstateEditPage extends StatefulWidget {
+  final RealEstateEntity realEstate;
+  const PostRealEstateEditPage({super.key, required this.realEstate});
 
   @override
-  State<PostRealEstateNewPage> createState() => _PostRealEstateNewPageState();
+  State<PostRealEstateEditPage> createState() => _PostRealEstateEditPageState();
 }
 
-class _PostRealEstateNewPageState extends State<PostRealEstateNewPage> {
+class _PostRealEstateEditPageState extends State<PostRealEstateEditPage> {
   // Fake dữ liệu
   final List<String> _category = ["Nhà đất", "Căn hộ", "Đất nền","Chung cư"];
   final List<String> _status = ["Cho thuê", "Chưa bán"];
@@ -230,110 +232,105 @@ class _PostRealEstateNewPageState extends State<PostRealEstateNewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: BackgroundColors.backgroundButtonTertiary.withValues(alpha: 0.04),
-      appBar: CustomAppbar(
-        automaticallyImplyLeading: false,
-        titleSpacing: 0,
-        title: Text(
-          'Đăng tin',
-          style: Theme.of(context).textTheme.titleMedium!.copyWith(
-            fontWeight: FontWeight.w600,
-            fontSize: 17.sp,
-            color: TextColors.textNavigationBarDefault
-          ),
-        ),
+      appBar : CustomAppbarSub(
+        titleLeading: 'Đăng tin',
       ),
       body: UnfocusWidget(
-        child: SafeArea(
-          child: Form(
-            key: _formKey,
-            child: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              padding: EdgeInsets.all(16.w),
-              child: Column(
-                spacing: 16.h,
-                children: [
-                  // TODO: Category real estate
-                  CategorySelector(
-                    selectedValueCategory: selectedValueCategory,
-                    categories: _category,
-                    onChanged: (value) => setState(() {
-                      selectedValueCategory = value;
-                    }),
-                  ),
-
-                  // TODO: Status
-                  StatusSelector(
-                    selectedValueStatus: selectedValueStatus,
-                    statusList: _status,
-                    onChanged: (value) => setState(() {
-                      selectedValueStatus = value;
-                    }),
-                  ),
-
-                  // TODO: Owner
-                  OwnerSection(
-                    owners: _owners,
-                    onAddOwner: _onOpenAddOwner,
-                    onEditOwner: _onOpenEditOwners,
-                  ),
-
-                  // TODO: Address
-                  AddressSection(
-                    cities: _city,
-                    wards: _ward,
-                    selectedCity: selectedValueCity,
-                    selectedWard: selectedValueWard,
-                    addressCon: _addressCon,
-                    addressNode: _addressNode,
-                    onCityChanged: (value) {
-                      setState(() { selectedValueCity = value; });
-                    },
-                    onWardChanged: (value) {
-                      setState(() { selectedValueWard = value; });
-                    },
-                    onAddressChanged: (fullAddress) {
-                      setState(() {});
-                    },
-                  ),
-                  
-                  // TODO: Basic info
-                  BasicInfoSection(
-                    nameCon: _nameCon,
-                    nameNode: _nameNode,
-                    addressCon: _addressCon,
-                    addressNode: _addressNode,
-                    priceCon: _priceCon,
-                    priceNode: _priceNode,
-                    directions: _directions,
-                    selectedDirection: selectedValueDirection,
-                    onDirectionChanged: (value) {
-                      setState(() {
-                        selectedValueDirection = value;
-                      });
-                    },
-                  ),
-
-                  // TODO: Advanced info
-                  AdvancedInfoSection(
-                    acreageCon: _acreageCon,
-                    acreageNode: _acreageNode,
-                    quantityBedroom: quatityBedroom,
-                    quantityToilet: quatityToilet,
-                    onBedroomChanged: (val) {
-                      setState(() => quatityBedroom = val);
-                    },
-                    onToiletChanged: (val) {
-                      setState(() => quatityToilet = val);
-                    },
-                  ),
-                  // TODO: Decription 
-                  DescriptionSelector(
-                    descriptionController: _descriptionCon,
-                    descriptionFocusNode: _descriptionNode,
-                    onTapOpenPage: _openDescriptionPage,
-                  ),
-                ],
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: BackgroundColors.backgroundButtonTertiary.withValues(alpha: 0.04),
+          ),
+          child: SafeArea(
+            child: Form(
+              key: _formKey,
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: EdgeInsets.all(16.w),
+                child: Column(
+                  spacing: 16.h,
+                  children: [
+                    // TODO: Category real estate
+                    CategorySelector(
+                      selectedValueCategory: selectedValueCategory,
+                      categories: _category,
+                      onChanged: (value) => setState(() {
+                        selectedValueCategory = value;
+                      }),
+                    ),
+          
+                    // TODO: Status
+                    StatusSelector(
+                      selectedValueStatus: selectedValueStatus,
+                      statusList: _status,
+                      onChanged: (value) => setState(() {
+                        selectedValueStatus = value;
+                      }),
+                    ),
+          
+                    // TODO: Owner
+                    OwnerSection(
+                      owners: _owners,
+                      onAddOwner: _onOpenAddOwner,
+                      onEditOwner: _onOpenEditOwners,
+                    ),
+          
+                    // TODO: Address
+                    AddressSection(
+                      cities: _city,
+                      wards: _ward,
+                      selectedCity: selectedValueCity,
+                      selectedWard: selectedValueWard,
+                      addressCon: _addressCon,
+                      addressNode: _addressNode,
+                      onCityChanged: (value) {
+                        setState(() { selectedValueCity = value; });
+                      },
+                      onWardChanged: (value) {
+                        setState(() { selectedValueWard = value; });
+                      },
+                      onAddressChanged: (fullAddress) {
+                        setState(() {});
+                      },
+                    ),
+                    
+                    // TODO: Basic info
+                    BasicInfoSection(
+                      nameCon: _nameCon,
+                      nameNode: _nameNode,
+                      addressCon: _addressCon,
+                      addressNode: _addressNode,
+                      priceCon: _priceCon,
+                      priceNode: _priceNode,
+                      directions: _directions,
+                      selectedDirection: selectedValueDirection,
+                      onDirectionChanged: (value) {
+                        setState(() {
+                          selectedValueDirection = value;
+                        });
+                      },
+                    ),
+          
+                    // TODO: Advanced info
+                    AdvancedInfoSection(
+                      acreageCon: _acreageCon,
+                      acreageNode: _acreageNode,
+                      quantityBedroom: quatityBedroom,
+                      quantityToilet: quatityToilet,
+                      onBedroomChanged: (val) {
+                        setState(() => quatityBedroom = val);
+                      },
+                      onToiletChanged: (val) {
+                        setState(() => quatityToilet = val);
+                      },
+                    ),
+                    // TODO: Decription 
+                    DescriptionSelector(
+                      descriptionController: _descriptionCon,
+                      descriptionFocusNode: _descriptionNode,
+                      onTapOpenPage: _openDescriptionPage,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

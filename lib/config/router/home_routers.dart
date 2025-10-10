@@ -33,7 +33,7 @@ class HomeRouters {
           final item = extra['item'];
           return buildPageWithSlideTransition(
             DetailRealEstatePage(
-              item: item
+              realEstate: item
             ), 
             state
           );

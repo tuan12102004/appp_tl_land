@@ -1,4 +1,5 @@
 import 'package:app_tl_land_3212/common/common_module.dart';
+import 'package:app_tl_land_3212/config/router/post_routers.dart';
 import 'package:app_tl_land_3212/core/constants/app_colors.dart';
 import 'package:app_tl_land_3212/core/services/formatter_service.dart';
 import 'package:app_tl_land_3212/core/utils/input_validators.dart';
@@ -8,6 +9,7 @@ import 'package:app_tl_land_3212/core/utils/show_app_snackbar.dart';
 import 'package:app_tl_land_3212/feature/floating_add/presentation/widgets/shared/custom_appbar_sub.dart';
 import 'package:app_tl_land_3212/feature/floating_add/presentation/widgets/shared/custom_combobox.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -198,26 +200,34 @@ class _AddOwnerPageState extends State<AddOwnerPage> {
                   ),
                   SizedBox(height: 16.h,),
         
-                  CustomCombobox<String>(
-                    label: 'Thành phố',
-                    hintText: 'Chọn thành phố',
-                    items: _city,
-                    itemLabel: (item) => item,
-                    value: selectedValueCity,
-                    onChanged: (value) {
-                      setState(() {selectedValueCity = value;});
+                  BlocBuilder<CitySelectBloc, SelectState<String>>(
+                    builder: (context, selectedCityState) {
+                      return CustomCombobox<String>(
+                        label: 'Thành phố',
+                        hintText: 'Chọn thành phố',
+                        items: _city,
+                        itemLabel: (item) => item,
+                        value: selectedValueCity,
+                        onChanged: (value) {
+                          context.read<CitySelectBloc>().add(SelectEvent.select(value));
+                        },
+                      );
                     },
                   ),
                   SizedBox(height: 16.h,),
         
-                   CustomCombobox<String>(
-                    label: 'Phường',
-                    hintText: 'Chọn phường',
-                    items: _ward,
-                    itemLabel: (item) => item,
-                    value: selectedValueWard,
-                    onChanged: (value) {
-                      setState(() {selectedValueWard = value;});
+                  BlocBuilder<WardSelectBloc, SelectState<String>>(
+                    builder: (context, state) {
+                      return CustomCombobox<String>(
+                        label: 'Phường',
+                        hintText: 'Chọn phường',
+                        items: _ward,
+                        itemLabel: (item) => item,
+                        value: selectedValueWard,
+                        onChanged: (value) {
+                          context.read<WardSelectBloc>().add(SelectEvent.select(value));
+                        },
+                      );
                     },
                   ),
                   SizedBox(height: 16.h,),

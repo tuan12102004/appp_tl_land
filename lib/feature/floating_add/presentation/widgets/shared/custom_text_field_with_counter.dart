@@ -63,7 +63,12 @@ class _CustomTextFieldWithCounterState extends State<CustomTextFieldWithCounter>
               fontWeight: FontWeight.w400,
               color: TextColors.textDefaultTertiary.withValues(alpha: 0.5),
             ),
-            contentPadding: EdgeInsets.zero,
+            contentPadding: EdgeInsets.only(
+              left: 0,
+              right: 0,
+              top: 8.h,
+              bottom: 30.h, // Chừa chỗ cho counter
+            ),
             border: InputBorder.none,
             enabledBorder: InputBorder.none,
             focusedBorder: InputBorder.none,

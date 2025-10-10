@@ -32,6 +32,7 @@ class RealEstateEntity {
   final PropertyInfoEntity info;
   final List<OwnerEntity> ownerA;
   final String description;
+  final String state;
   final DateTime createdAt;
 
   const RealEstateEntity({
@@ -46,6 +47,7 @@ class RealEstateEntity {
     required this.info,
     required this.ownerA,
     required this.description,
+    required this.state,
     required this.createdAt,
   });
 }
@@ -127,6 +129,7 @@ class _HomePageState extends State<HomePage> {
           'Căn hộ số $index - Nhận nhà ngay, hỗ trợ vay 0% lãi suất 18 tháng',
       category: 'Danh mục',
       status: index % 2 == 0 ? 'Đang bán' : 'Cho thuê',
+      state: index > 3 ? 'Chờ duyệt' : (index > 7 ? 'Đã duyệt' : "Từ chối"),
       price: 10 + (index * 5),
       address:'${10 + index}/23 Đinh Trọng Phúc, Quận ${index + 1}, TP. Hồ Chí Minh',
       images: [

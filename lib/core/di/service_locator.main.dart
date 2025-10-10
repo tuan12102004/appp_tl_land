@@ -19,9 +19,12 @@ Future<void> _common() async {
     ..registerFactory(() => SelectBloc<bool>())
     ..registerFactory(() => SelectBloc<double>())
     ..registerFactory(() => SelectBloc<int>())
+    ..registerFactory(() => SelectBloc<String>())
     ..registerFactory(() => CountDownBloc())
-    ..registerLazySingleton(() => DialogObserverBloc());
-
+    ..registerLazySingleton(() => DialogObserverBloc())
+    ..registerFactory(() => CitySelectBloc())
+    ..registerLazySingleton(() => WardSelectBloc());
+    
 
   // Auth
   _auth();

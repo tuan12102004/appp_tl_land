@@ -17,6 +17,7 @@ class CustomAdaptiveButton extends StatelessWidget {
   final Widget? preffixWidget;
   final AlignmentGeometry? alignment;
   final bool? isOpacity;
+  final double? fontSize;
 
   const CustomAdaptiveButton({
     super.key,
@@ -33,6 +34,7 @@ class CustomAdaptiveButton extends StatelessWidget {
     this.preffixWidget,
     this.alignment,
     this.isOpacity,
+    this.fontSize,
   });
 
   @override
@@ -54,7 +56,7 @@ class CustomAdaptiveButton extends StatelessWidget {
           alignment: alignment ?? Alignment.center,
           minSize: 0,
           padding:
-              padding ?? EdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
+              padding ?? EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
           borderRadius: BorderRadius.circular(radius ?? 12.r),
           onPressed: onPressed,
           child: Row(
@@ -87,7 +89,7 @@ class CustomAdaptiveButton extends StatelessWidget {
           backgroundColor:
               backgroundColor ?? BackgroundColors.backgroundButtonPrimary,
           padding:
-              padding ?? EdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
+              padding ?? EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(radius ?? 12.r),
             side: BorderSide(width: borderWidth ?? 1.w, color: borderColor),
@@ -104,8 +106,9 @@ class CustomAdaptiveButton extends StatelessWidget {
               Text(
                 text ?? '',
                 style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                      color: textColor ?? TextColors.textButtonPrimary,
-                    ),
+                  fontSize: fontSize ?? 16.sp,
+                  color: textColor ?? TextColors.textButtonPrimary,
+                ),
               ),
           ],
         ),

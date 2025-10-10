@@ -11,8 +11,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class DetailRealEstatePage extends StatefulWidget {
-  final RealEstateEntity item;
-  const DetailRealEstatePage({super.key, required this.item});
+  final RealEstateEntity realEstate;
+  const DetailRealEstatePage({super.key, required this.realEstate});
 
   @override
   State<DetailRealEstatePage> createState() => _DetailRealEstatePageState();
@@ -20,19 +20,24 @@ class DetailRealEstatePage extends StatefulWidget {
 
 class _DetailRealEstatePageState extends State<DetailRealEstatePage> {  
   bool showAllowner = false;
-  bool showAllDecription = false;
+  bool showAllDescription = false;
 
-  // Mở trang chỉnh sửa
+  // TODO: Qua trang chỉnh sửa
   void _onOpenEdit() {
-    // TODO: Qua trang chỉnh sửa
+    context.push(
+      '/post/edit', 
+      extra: {
+        'realEstate': widget.realEstate
+      }
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final item = widget.item;
+    final item = widget.realEstate;
     final displayList = showAllowner
-        ? item.ownerA
-        : item.ownerA.take(3).toList();
+      ? item.ownerA
+      : item.ownerA.take(3).toList();
     return Scaffold(
       appBar: CustomAppbar(
         automaticallyImplyLeading: false,
@@ -60,146 +65,162 @@ class _DetailRealEstatePageState extends State<DetailRealEstatePage> {
           ],
         ),
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Slider
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 16.h),
-                child: DetailSlider(sliderImages: widget.item.images),
-              ),
-              // Detail info
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: DetailInfor(item: item),
-              ),
-              SizedBox(
-                height: 12.h,
-                width: double.infinity,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: BasicColors.gray50
-                  )
-                ),
-              ),
-              // Infor area
-              Padding(
-                padding: EdgeInsets.all(16.h),
-                child: DetailAreaInfor(
-                  item: item.info,
-                ),
-              ),
-              
-              SizedBox(
-                height: 12.h,
-                width: double.infinity,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: BasicColors.gray50
-                  )
-                ),
-              ),
-              // Infor custom
-              Padding(
-                padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 12.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Bên đại diện',
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 17.sp,
-                      ),
-                    ),
-                    SizedBox(height: 12.h),
-                    ListView.separated(
-                      shrinkWrap: true,
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      padding: EdgeInsets.zero,
-                      separatorBuilder: (context, index) => SizedBox(height: 12.h,),
-                      itemCount: displayList.length,
-                      itemBuilder: (context, index) {
-                        final ownerItem = displayList[index];
-                        return CustomExpansionInfor(
-                          ownerItem: ownerItem,
-                        );
-                      }
-                    ),
-                     // Buttom see more
-                    if (item.ownerA.length > 3) ...[
-                      SizedBox(height: 12.h),
-                      CustomAdaptiveButton(
-                        isOpacity: true,
-                        width: double.infinity,
-                        textColor: TextColors.textButtonPlain,
-                        backgroundColor: Colors.transparent,
-                        text: showAllowner ? 'Thu gọn' :'Xem thêm',
-                        onPressed: () {
-                          setState(() {
-                            showAllowner = !showAllowner;
-                          });
-                        },
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 12.h,
-                width: double.infinity,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: BasicColors.gray50
-                  )
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(16.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Mô tả',
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 17.sp,
-                      ),
-                    ),
-                    SizedBox(height: 12.h),
-                    SizedBox(
-                      height: showAllDecription ? null : 320.h,
-                      child: Text(
-                        item.description,
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 16.sp,
-                        ),
-                        maxLines: showAllDecription ? null : 30, 
-                        overflow: showAllDecription ? TextOverflow.visible : TextOverflow.ellipsis,
-                      ),
-                    ),
-                    SizedBox(height: 12.h),
-                    CustomAdaptiveButton(
-                      isOpacity: true,
-                      width: double.infinity,
-                      backgroundColor: Colors.transparent,
-                      textColor: TextColors.textButtonPlain,
-                      text: showAllDecription ? 'Thu gọn' : 'Xem thêm',
-                      onPressed: (){
-                        setState(() {
-                          showAllDecription = !showAllDecription;
-                        });
-                      }, 
-                    )
-                  ],
-                ),
-              ),
-            ],
+      body: CustomScrollView(
+        slivers: [
+          // Slider
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 16.h),
+              child: DetailSlider(sliderImages: widget.realEstate.images),
+            ),
           ),
-        ),
+
+          // Detail info
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: DetailInfor(item: item),
+            ),
+          ),
+
+          // Divider
+          SliverToBoxAdapter(
+            child: Divider(
+              color: BasicColors.gray50,
+              thickness: 12.h,
+            ),
+          ),
+          
+          // Infor area
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.all(16.h),
+              child: DetailAreaInfor(item: item.info),
+            ),
+          ),
+
+          // Divider
+          SliverToBoxAdapter(
+            child: Divider(
+              color: BasicColors.gray50,
+              thickness: 12.h,
+            ),
+          ),
+
+          // Owners
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 12.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Bên đại diện',
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 17.sp,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                final ownerItem = displayList[index];
+                return Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(16.w, 0.h, 16.w, 12.h),
+                      child: CustomExpansionInfor(ownerItem: ownerItem),
+                    ),
+                  ],
+                );
+              },
+              childCount: displayList.length,
+            ),
+          ),
+
+          // Button show more owners
+          if (item.ownerA.length > 3)
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(16.w, 0.h, 16.w, 12.h),
+                child: CustomAdaptiveButton(
+                  isOpacity: true,
+                  width: double.infinity,
+                  textColor: TextColors.textButtonPlain,
+                  backgroundColor: Colors.transparent,
+                  text: showAllowner ? 'Thu gọn' :'Xem thêm',
+                  onPressed: () {
+                    setState(() {
+                      showAllowner = !showAllowner;
+                    });
+                  },
+                ),
+              ),
+            ),
+
+          // Divider
+          SliverToBoxAdapter(
+            child: Divider(
+              color: BasicColors.gray50,
+              thickness: 12.h,
+            ),
+          ),
+
+          // Description
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.all(16.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Mô tả',
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 17.sp,
+                    ),
+                  ),
+                  SizedBox(height: 12.h),
+                  AnimatedSize(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item.description,
+                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16.sp,
+                          ),
+                          maxLines: showAllDescription ? null : 10,
+                          overflow: showAllDescription ? TextOverflow.visible : TextOverflow.ellipsis,
+                        ),
+                        SizedBox(height: 12.h),
+                        CustomAdaptiveButton(
+                          isOpacity: true,
+                          width: double.infinity,
+                          backgroundColor: Colors.transparent,
+                          textColor: TextColors.textButtonPlain,
+                          text: showAllDescription ? 'Thu gọn' : 'Xem thêm',
+                          onPressed: () {
+                            setState(() {
+                              showAllDescription = !showAllDescription;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: CustomBottomBarButton(
         title: 'Chỉnh sửa',

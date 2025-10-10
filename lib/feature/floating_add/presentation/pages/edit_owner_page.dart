@@ -1,5 +1,7 @@
 import 'package:app_tl_land_3212/common/common_module.dart';
+import 'package:app_tl_land_3212/config/router/post_routers.dart';
 import 'package:app_tl_land_3212/core/constants/app_colors.dart';
+import 'package:app_tl_land_3212/core/core_module.dart';
 import 'package:app_tl_land_3212/core/services/formatter_service.dart';
 import 'package:app_tl_land_3212/core/utils/format_date_time.dart';
 import 'package:app_tl_land_3212/core/utils/input_validators.dart';
@@ -10,6 +12,7 @@ import 'package:app_tl_land_3212/feature/floating_add/presentation/widgets/share
 import 'package:app_tl_land_3212/feature/floating_add/presentation/widgets/shared/custom_combobox.dart';
 import 'package:app_tl_land_3212/feature/home/presentation/pages/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -133,6 +136,9 @@ class _EditOwnerPageState extends State<EditOwnerPage> {
         startDate: DateFormat('dd/MM/yyyy').parse(_dateStayCon.text.trim()),
         endDate: DateFormat('dd/MM/yyyy').parse(_dateLeaveCon.text.trim()),
       );
+      sl<CitySelectBloc>().add(SelectEvent.select(_selectedValueCity!));
+      sl<WardSelectBloc>().add(SelectEvent.select(_selectedValueWard!));
+
       WidgetsBinding.instance.addPostFrameCallback((_) {
         context.pop(updatedOwner);
       });
@@ -248,29 +254,38 @@ class _EditOwnerPageState extends State<EditOwnerPage> {
                     ),
                   ),
                   SizedBox(height: 16.h,),
-        
-                  CustomCombobox<String>(
-                    label: 'Thành phố',
-                    hintText: 'Chọn thành phố',
-                    items: _city,
-                    itemLabel: (item) => item,
-                    value: _selectedValueCity,
-                    onChanged: (value) {
-                      setState(() {_selectedValueCity = value;});
+
+                  BlocBuilder<CitySelectBloc, SelectState<String>>(
+                    builder: (context, selectedCityState) {
+                      return CustomCombobox<String>(
+                        label: 'Thành phố',
+                        hintText: 'Chọn thành phố',
+                        items: _city,
+                        itemLabel: (item) => item,
+                        value: _selectedValueCity,
+                        onChanged: (value) {
+                          context.read<CitySelectBloc>().add(SelectEvent.select(value));
+                        },
+                      );
                     },
                   ),
                   SizedBox(height: 16.h,),
-        
-                   CustomCombobox<String>(
-                    label: 'Phường',
-                    hintText: 'Chọn phường',
-                    items: _ward,
-                    itemLabel: (item) => item,
-                    value: _selectedValueWard,
-                    onChanged: (value) {
-                      setState(() {_selectedValueWard = value;});
+                  
+                  BlocBuilder<WardSelectBloc, SelectState<String>>(
+                    builder: (context, state) {
+                      return CustomCombobox<String>(
+                        label: 'Phường',
+                        hintText: 'Chọn phường',
+                        items: _ward,
+                        itemLabel: (item) => item,
+                        value: _selectedValueWard,
+                        onChanged: (value) {
+                          context.read<WardSelectBloc>().add(SelectEvent.select(value));
+                        },
+                      );
                     },
                   ),
+                  
                   SizedBox(height: 16.h,),
         
                   LabelForm(label: 'Địa chỉ cụ thể'),
