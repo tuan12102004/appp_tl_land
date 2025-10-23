@@ -15,7 +15,7 @@ class AppRouters {
     // initialLocation: '/intro/splash',
     // Dành cho đi thẳng vô home
     // initialLocation: '/auth/login',
-    initialLocation: '/',
+    initialLocation: '/intro/splash',
     // danh sách các route
     routes: [
       // Router của intro
