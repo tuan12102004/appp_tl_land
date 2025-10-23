@@ -67,12 +67,17 @@ class AppTheme {
     displaySmall: TextStyle(fontSize: 36.sp, fontWeight: FontWeight.w400),
     headlineLarge: TextStyle(fontSize: 32.sp, fontWeight: FontWeight.w400),
     headlineMedium: TextStyle(fontSize: 28.sp, fontWeight: FontWeight.w400),
-    headlineSmall: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w400, letterSpacing: -.26.sp),
-    titleLarge: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.w400, letterSpacing: -.45.sp),
-    titleMedium: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w400, letterSpacing: -.43.sp),
+    headlineSmall: TextStyle(
+        fontSize: 24.sp, fontWeight: FontWeight.w400, letterSpacing: -.26.sp),
+    titleLarge: TextStyle(
+        fontSize: 22.sp, fontWeight: FontWeight.w400, letterSpacing: -.45.sp),
+    titleMedium: TextStyle(
+        fontSize: 17.sp, fontWeight: FontWeight.w400, letterSpacing: -.43.sp),
     titleSmall: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400),
-    bodyLarge: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w400, letterSpacing: -.31.sp),
-    bodyMedium: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w400, letterSpacing: -.23.sp),
+    bodyLarge: TextStyle(
+        fontSize: 16.sp, fontWeight: FontWeight.w400, letterSpacing: -.31.sp),
+    bodyMedium: TextStyle(
+        fontSize: 15.sp, fontWeight: FontWeight.w400, letterSpacing: -.23.sp),
     bodySmall: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w400),
     labelLarge: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w400),
     labelMedium: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w400),
@@ -154,6 +159,8 @@ class AppTheme {
   static final ElevatedButtonThemeData _elevatedButtonThemeData =
       ElevatedButtonThemeData(
     style: ButtonStyle(
+      minimumSize: WidgetStatePropertyAll(Size.zero),
+      maximumSize: WidgetStatePropertyAll(Size.zero),
       shadowColor: WidgetStatePropertyAll(Colors.transparent),
       backgroundColor: WidgetStatePropertyAll(
         AppColors.backgroundButtonPrimary,

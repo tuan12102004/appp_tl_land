@@ -1,4 +1,5 @@
 import 'package:app_tl_land_3212/common/common_module.dart';
+import 'package:app_tl_land_3212/config/router/post_routers.dart';
 import 'package:app_tl_land_3212/core/core_module.dart';
 import 'package:app_tl_land_3212/feature/auth/data/auth_data_module.dart';
 import 'package:app_tl_land_3212/feature/auth/domain/auth_domain_module.dart';

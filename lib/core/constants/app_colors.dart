@@ -306,6 +306,7 @@ class TextColors {
   // Tab Bar Text
   static const Color textTabBarSelected = textBrandPrimary;
   static const Color textTabBarUnselected = BasicColors.gray600;
+
 }
 
 class IconColors {

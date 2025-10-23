@@ -26,6 +26,7 @@ class CustomInputField extends StatelessWidget {
   final int? maxLength;
   final String? suffixText;
   final TextStyle? style;
+  final TextStyle? hintStyle;
   final VoidCallback? onTap;
 
   const CustomInputField({
@@ -54,6 +55,7 @@ class CustomInputField extends StatelessWidget {
     this.suffixText,
     this.style,
     this.onTap,
+    this.hintStyle,
   });
 
   @override
@@ -82,6 +84,7 @@ class CustomInputField extends StatelessWidget {
           color: TextColors.textDefaultTertiary.withValues(alpha: 0.1),
         ),
         hintText: hintText,
+        hintStyle: hintStyle,
         suffixIcon: suffixIcon,
         prefixIcon: prefixIcon,
         fillColor: fillColor,

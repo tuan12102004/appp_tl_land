@@ -35,7 +35,6 @@ export 'widgets/custom_auth_appbar.dart';
 export 'widgets/custom_bottom_button.dart';
 export 'widgets/custom_cached_image.dart';
 export 'widgets/custom_dropdown.dart';
-export 'widgets/custom_expansion_title.dart';
 export 'widgets/custom_input_field.dart';
 export 'widgets/custom_list_tile.dart';
 export 'widgets/custom_ok_cancel_dialog.dart';

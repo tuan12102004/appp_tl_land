@@ -17,6 +17,8 @@ class CustomAdaptiveButton extends StatelessWidget {
   final Widget? preffixWidget;
   final Widget? suffixWidget;
   final AlignmentGeometry? alignment;
+  final bool? isOpacity;
+  final double? fontSize;
 
   const CustomAdaptiveButton({
     super.key,
@@ -33,6 +35,8 @@ class CustomAdaptiveButton extends StatelessWidget {
     this.preffixWidget,
     this.suffixWidget,
     this.alignment,
+    this.isOpacity,
+    this.fontSize,
   });
 
   @override
@@ -49,9 +53,10 @@ class CustomAdaptiveButton extends StatelessWidget {
           border: Border.all(width: borderWidth ?? 1.w, color: borderColor),
         ),
         child: CupertinoButton(
+          pressedOpacity: isOpacity == true ? 1.0 : null,
           color: backgroundColor ?? BackgroundColors.backgroundButtonPrimary,
           alignment: alignment ?? Alignment.center,
-          minSize: 0,
+          minimumSize: Size.zero,
           padding:
               padding ?? EdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
           borderRadius: BorderRadius.circular(radius ?? 12.r),
@@ -83,6 +88,7 @@ class CustomAdaptiveButton extends StatelessWidget {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           alignment: alignment,
+          overlayColor: isOpacity == true ? Colors.transparent : null,
           backgroundColor:
               backgroundColor ?? BackgroundColors.backgroundButtonPrimary,
           padding:
@@ -103,6 +109,7 @@ class CustomAdaptiveButton extends StatelessWidget {
               Text(
                 text ?? '',
                 style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                      fontSize: fontSize ?? 16.sp,
                       color: textColor ?? TextColors.textButtonPrimary,
                     ),
               ),

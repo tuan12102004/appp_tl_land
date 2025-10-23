@@ -9,7 +9,9 @@ class SearchRouters {
   static final GoRoute routers = GoRoute(
     path: '/search',
     pageBuilder: (context, state) {
-      return buildPageWithSlideTransition(SearchPage(), state);
+      final extra = state.extra as Map<String, dynamic>;
+      final filterCategory = extra['filterCategory'];
+      return buildPageWithSlideTransition(SearchPage(filterCategory: filterCategory,), state);
     },
     routes: [
       // Nhập

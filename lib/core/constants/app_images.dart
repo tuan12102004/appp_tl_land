@@ -13,5 +13,6 @@ class AppImages {
   static const String banner4 = "$_basePath/home/banner4.jpg";
   static const String fb = "$_basePath/signup/facebook.svg";
   static const String zalo = "$_basePath/signup/zalo.png";
+  static const String facebook = "$_basePath/facebook.png";
 
 }

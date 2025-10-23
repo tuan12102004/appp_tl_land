@@ -1,10 +1,10 @@
 import 'package:app_tl_land_3212/common/blocs/select/select_bloc.dart';
 import 'package:app_tl_land_3212/core/constants/app_colors.dart';
 import 'package:app_tl_land_3212/core/di/service_locator.dart';
-import 'package:app_tl_land_3212/feature/floating_add/presentation/pages/floating_add_page.dart';
+import 'package:app_tl_land_3212/feature/floating_add/presentation/pages/post_real_estate_new_page.dart';
 import 'package:app_tl_land_3212/feature/home/presentation/pages/home_page.dart';
-import 'package:app_tl_land_3212/feature/noti/presentation/pages/notification.dart';
-import 'package:app_tl_land_3212/feature/profile/presentation/pages/profile.dart';
+import 'package:app_tl_land_3212/feature/noti/presentation/pages/notification_page.dart';
+import 'package:app_tl_land_3212/feature/profile/presentation/pages/profile_page.dart';
 import 'package:app_tl_land_3212/feature/search/presentation/pages/search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,7 +25,7 @@ class _NavigationPageState extends State<NavigationPage> {
   final listPages = [
     HomePage(),
     SearchPage(),
-    FloatingAddPage(),
+    PostRealEstateNewPage(),
     NotificationPage(),
     ProfilePage(),
   ];

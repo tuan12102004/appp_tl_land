@@ -11,6 +11,8 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   final bool? isDivider;
   final PreferredSizeWidget? bottom;
   final double? leadingWidth;
+  final bool? centerTitle;
+  final double? titleSpacing;
 
   const CustomAppbar({
     super.key,
@@ -22,6 +24,8 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
     this.leading,
     this.leadingWidth,
     this.bottom,
+    this.centerTitle,
+    this.titleSpacing,
   });
 
   @override

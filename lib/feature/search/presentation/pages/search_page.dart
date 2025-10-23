@@ -10,7 +10,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({super.key});
+  final String? filterCategory;
+  const SearchPage({super.key, this.filterCategory});
 
   @override
   State<SearchPage> createState() => _SearchPageState();
