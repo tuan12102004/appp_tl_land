@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:app_tl_land_3212/common/common_module.dart';
 import 'package:app_tl_land_3212/core/core_module.dart';
@@ -80,7 +81,7 @@ class _NotificationPageState extends State<NotificationPage>
   void dispose() {
     _notificationPaginatorBloc.close();
     _notiScrollCon.dispose();
-  super.dispose();
+    super.dispose();
   }
 
   // TODO: _onLoadMoreWhenNotScrollable
@@ -195,13 +196,7 @@ class _NotificationPageState extends State<NotificationPage>
                         })
                   ],
                 ),
-                body: SafeArea(
-                    child: RefreshIndicator.adaptive(
-                  onRefresh: () async {
-                    await _onRefreshNotifications();
-                  },
-                  child: _buildBody(notiState),
-                )),
+                body: SafeArea(child: _buildBody(notiState)),
               ),
             );
           },
@@ -336,6 +331,7 @@ class _NotificationPageState extends State<NotificationPage>
       notiList: notiState.items,
       isLoadMore: notiState.isLoadMore,
       onItemDismissed: _onItemDismissed,
+      onRefresh: _onRefreshNotifications,
     );
   }
 
