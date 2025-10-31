@@ -6,6 +6,8 @@ sealed class AuthEvent with _$AuthEvent {
     required String email,
     required String pass,
   }) = _Login;
+  
+  const factory AuthEvent.profile() = _Profile;
 
   const factory AuthEvent.checkAuth() = _CheckAuth;
 

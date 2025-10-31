@@ -2,6 +2,7 @@ import 'package:app_tl_land_3212/common/common_module.dart';
 import 'package:app_tl_land_3212/common/models/api_res/api_res_model.dart';
 import 'package:app_tl_land_3212/core/core_module.dart';
 import 'package:app_tl_land_3212/feature/auth/data/auth_data_module.dart';
+import 'package:app_tl_land_3212/feature/profile/data/profile_data_module.dart';
 import 'package:dio/dio.dart';
 
 abstract interface class AuthRemoteDatasource {
@@ -9,7 +10,7 @@ abstract interface class AuthRemoteDatasource {
 
   Future<UserModel> profile();
 
-  Future<List<ContactSignupModel>> signup();
+  Future<List<ContactModel>> signup();
 
   Future<String> forgotPass({
     required String email,
@@ -103,14 +104,14 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
 
   // Signup
   @override
-  Future<List<ContactSignupModel>> signup() async {
+  Future<List<ContactModel>> signup() async {
     try {
-      final res = await _dioClient.request(ApiUrls.signup, DioMethod.get);
+      final res = await _dioClient.request(ApiUrls.contact, DioMethod.get);
 
-      final apiRes = ApiResModel<List<ContactSignupModel>>.fromJson(
+      final apiRes = ApiResModel<List<ContactModel>>.fromJson(
           res.data,
           (rawJson) => (rawJson as List<dynamic>)
-              .map((el) => ContactSignupModel.fromJson(el))
+              .map((el) => ContactModel.fromJson(el))
               .toList());
 
       if (res.statusCode != 200) {

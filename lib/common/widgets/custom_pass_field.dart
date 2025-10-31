@@ -39,6 +39,7 @@ class CustomPassField extends StatelessWidget {
             textInputAction: textInputAction,
             validator: validator,
             suffixIcon: CustomAdaptiveTapEffect(
+              isOpacity: true,
               onPressed: () => context.read<SelectBloc<bool>>().add(
                 SelectEvent.select(value: !_getStateVal(state)!),
               ),

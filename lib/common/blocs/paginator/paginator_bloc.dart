@@ -1,6 +1,5 @@
-import 'package:app_tl_land_3212/core/errors/failure.dart';
-import 'package:app_tl_land_3212/core/param/paginator_param.dart';
-import 'package:app_tl_land_3212/core/usecase/usecase.dart';
+
+import 'package:app_tl_land_3212/core/core_module.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -10,10 +9,14 @@ part 'paginator_bloc.freezed.dart';
 
 class PaginatorBloc<T, Param>
     extends Bloc<PaginatorEvent<T, Param>, PaginatorState<T>> {
-  PaginatorBloc() : super(PaginatorState<T>()) {
+  PaginatorBloc() : super(PaginatorState<T>(isLoading: true)) {
     on<LoadInitial<T, Param>>(_onLoadInitial);
     on<LoadMore<T, Param>>(_onLoadMore);
     on<UpdateItems<T, Param>>(_onUpdateItems);
+    on<RemoveItem<T, Param>>(_onRemoveItem);
+    on<RestoreLastRemoved<T, Param>>(_onRestoreLastRemoved);
+    on<RemoveAll<T, Param>>(_onRemoveAll);
+    on<RestoreAll<T, Param>>(_onRestoreAll);
   }
 
   int _currentPage = 1;
@@ -113,4 +116,71 @@ class PaginatorBloc<T, Param>
     Emitter<PaginatorState<T>> emit,
   ) =>
       emit(state.copyWith(items: event.newItems));
+
+  void _onRemoveItem(
+    RemoveItem<T, Param> event,
+    Emitter<PaginatorState<T>> emit,
+  ) {
+    final updated = List<T>.from(state.items);
+    final index = updated.indexWhere(event.where);
+
+    if (index != -1) {
+      final removed = updated.removeAt(index);
+
+      emit(state.copyWith(
+        items: updated,
+        lastRemovedItem: removed,
+        lastRemovedIndex: index,
+      ));
+    }
+  }
+
+  void _onRestoreLastRemoved(
+    RestoreLastRemoved<T, Param> event,
+    Emitter<PaginatorState<T>> emit,
+  ) {
+    if (state.lastRemovedItem == null || state.lastRemovedIndex == null) return;
+
+    final updated = List<T>.from(state.items);
+    final index = state.lastRemovedIndex!;
+
+    // chèn lại đúng vị trí
+    if (index >= 0 && index <= updated.length) {
+      updated.insert(index, state.lastRemovedItem as T);
+    } else {
+      updated.add(state.lastRemovedItem as T);
+    }
+
+    emit(state.copyWith(
+      items: updated,
+      lastRemovedItem: null,
+      lastRemovedIndex: null,
+    ));
+  }
+
+  void _onRemoveAll(
+    RemoveAll<T, Param> event,
+    Emitter<PaginatorState<T>> emit,
+  ) {
+    // Lưu lại tất cả item đang có để có thể restore
+    final removedItems = List<T>.from(state.items);
+
+    emit(state.copyWith(
+      items: [],
+      lastRemovedItems: removedItems,
+    ));
+  }
+
+  void _onRestoreAll(
+    RestoreAll<T, Param> event,
+    Emitter<PaginatorState<T>> emit,
+  ) {
+    if (state.lastRemovedItems == null || state.lastRemovedItems!.isEmpty)
+      return;
+
+    emit(state.copyWith(
+      items: state.lastRemovedItems!,
+      lastRemovedItems: null,
+    ));
+  }
 }

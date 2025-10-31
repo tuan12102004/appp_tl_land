@@ -306,7 +306,6 @@ class TextColors {
   // Tab Bar Text
   static const Color textTabBarSelected = textBrandPrimary;
   static const Color textTabBarUnselected = BasicColors.gray600;
-
 }
 
 class IconColors {
@@ -417,6 +416,7 @@ class StateColors {
   static const Color stateColorsSuccess = Color(0xFF30D158);
   static const Color stateColorsError = Color(0xFFFF453A);
   static const Color stateColorsWarning = Color(0xFFFFD60A);
+  static const Color stateColorsNormal = Color(0xFFFFFFFF);
 }
 
 class AppColors {
@@ -484,6 +484,7 @@ class AppColors {
   static const Color stateColorsInfo = StateColors.stateColorsInfo;
   static const Color stateColorsSuccess = StateColors.stateColorsSuccess;
   static const Color stateColorsWarning = StateColors.stateColorsWarning;
+  static const Color stateColorsNormal = StateColors.stateColorsNormal;
 
   static const Color elementDefaultTertiary = BasicColors.black100;
   static const Color elementDefaultSecondary = BasicColors.black200;

@@ -18,8 +18,8 @@ export 'widgets/login/auth_end_text.dart';
 export 'widgets/login/login_form.dart';
 
 // auth/shared
-export 'widgets/shared/contact_signup_shimmer.dart';
+export 'widgets/shared/contact_shimmer.dart';
 
 // auth/signup
-export 'widgets/signup/contact_signup_list.dart';
+export 'widgets/signup/contact_list.dart';
 

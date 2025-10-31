@@ -11,28 +11,24 @@ class CustomAuthAppbar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return CustomAppbar(
-      automaticallyImplyLeading: false,
-      backgroundColor: Colors.transparent,
       isDivider: true,
-      title: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          CustomAdaptiveTapEffect(
-            isOpacity: true,
-            onPressed: () => Navigator.of(context).maybePop(),
-            child: Row(
-              children: [
-                Icon(
-                  getAdaptiveBackIcon(context),
-                  size: 24.sp,
-                  color: AppColors.iconInputFieldLeadingIcon,
-                ),
-                Text("Quay lại",
-                    style: Theme.of(context).appBarTheme.titleTextStyle)
-              ],
+      leadingWidth: double.infinity,
+      leading: CustomAdaptiveTapEffect(
+        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 11.h),
+        isOpacity: true,
+        onPressed: () => Navigator.of(context).maybePop(),
+        child: Row(
+          spacing: 6.w,
+          children: [
+            Icon(
+              getAdaptiveBackIcon(context),
+              size: 22.sp,
+              color: AppColors.iconInputFieldLeadingIcon,
             ),
-          ),
-        ],
+            Text("Quay lại",
+                style: Theme.of(context).appBarTheme.titleTextStyle)
+          ],
+        ),
       ),
     );
   }

@@ -27,6 +27,7 @@ class LoginForm extends StatelessWidget {
     return Form(
       key: formKey,
       child: Column(
+        spacing: 16.h,
         children: [
           CustomInputField(
             hintText: "Email của bạn",
@@ -38,7 +39,6 @@ class LoginForm extends StatelessWidget {
             keyboardType: TextInputType.emailAddress,
             validator: InputValidators.validateEmail,
           ),
-          SizedBox(height: 16.h),
           CustomPassField(
             hintText: "Mật khẩu",
             controller: passwordCon,
@@ -47,20 +47,22 @@ class LoginForm extends StatelessWidget {
             textInputAction: TextInputAction.next,
             onEditingComplete: onLogin,
           ),
-          SizedBox(height: 16.h),
           CustomAdaptiveButton(
             width: double.infinity,
             onPressed: onLogin,
             text: 'Đăng nhập',
           ),
-          SizedBox(height: 8.h),
           CustomAdaptiveButton(
-            width: double.infinity,
             backgroundColor: Colors.transparent,
-            textColor: TextColors.textButtonPlain,
+            width: double.infinity,
             onPressed: onForgotThePass,
             text: "Quên mật khẩu?",
+            textColor: TextColors.textButtonPlain,
           ),
+          // CustomAdaptiveTapEffect(
+          //   onPressed: onForgotThePass,
+          //   text: "Quên mật khẩu?",
+          // ),
         ],
       ),
     );

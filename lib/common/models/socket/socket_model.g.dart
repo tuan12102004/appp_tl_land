@@ -13,9 +13,9 @@ _SocketModel<T> _$SocketModelFromJson<T>(
     _SocketModel<T>(
       title: json['title'] as String?,
       message: json['message'] as String?,
-      userType: json['userType'] as String?,
+      userType: json['user_type'] as String?,
       type: json['type'] as String?,
-      arrTargetId: (json['arrTargetId'] as List<dynamic>?)
+      arrTargetId: (json['arr_target_id'] as List<dynamic>?)
           ?.map((e) => (e as num).toInt())
           .toList(),
       data: _$nullableGenericFromJson(json['data'], fromJsonT),
@@ -28,9 +28,9 @@ Map<String, dynamic> _$SocketModelToJson<T>(
     <String, dynamic>{
       'title': instance.title,
       'message': instance.message,
-      'userType': instance.userType,
+      'user_type': instance.userType,
       'type': instance.type,
-      'arrTargetId': instance.arrTargetId,
+      'arr_target_id': instance.arrTargetId,
       'data': _$nullableGenericToJson(instance.data, toJsonT),
     };
 

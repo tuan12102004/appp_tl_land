@@ -1,5 +1,6 @@
 import 'package:app_tl_land_3212/common/common_module.dart';
 import 'package:app_tl_land_3212/core/core_module.dart';
+import 'package:app_tl_land_3212/feature/noti/presentation/noti_pre_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -63,28 +64,42 @@ class BottomNav extends StatelessWidget {
               ),
               // Transform.translate(
               //   offset: Offset(-6, 13),
-              Positioned(
-                top: 7,
-                right: 5.5,
-                child: Container(
-                  height: 15.sp,
-                  width: 20.sp,
-                  padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100.sp),
-                      color: BackgroundColors.backgroundBadgeDefault),
-                  child: Text(
-                    "5+",
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                          color: TextColors.textBadgeDefault,
-                          fontSize: 11.sp,
-                          fontWeight: FontWeight.w600,
-                          height: 13.sp / 11.sp,
-                          letterSpacing: 0.06.sp,
+              BlocBuilder<NotificationBloc, NotificationState>(
+                bloc: sl<NotificationBloc>(),
+                builder: (context, notiState) {
+                  if (notiState.isSuccess) {
+                    final unreadCount = notiState.notifications
+                        .where((noti) => noti.status == "Chưa đọc")
+                        .length;
+                    if (unreadCount == 0) return SizedBox();
+                    return Positioned(
+                      top: 7,
+                      right: 5.5,
+                      child: Container(
+                        // height: 15.sp,
+                        // width: 20.sp,
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 2.w, vertical: 1.h),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100.sp),
+                            color: BackgroundColors.backgroundBadgeDefault),
+                        child: Text(
+                          "${unreadCount < 5 ? unreadCount : 5}+",
+                          textAlign: TextAlign.center,
+                          style:
+                              Theme.of(context).textTheme.labelSmall!.copyWith(
+                                    color: TextColors.textBadgeDefault,
+                                    fontSize: 11.sp,
+                                    fontWeight: FontWeight.w600,
+                                    height: 13.sp / 11.sp,
+                                    letterSpacing: 0.06.sp,
+                                  ),
                         ),
-                  ),
-                ),
+                      ),
+                    );
+                  }
+                  return SizedBox();
+                },
               )
             ],
           ),

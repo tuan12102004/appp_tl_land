@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 import '../enums/gender.dart';
-import '../enums/request_status.dart';
+import '../enums/approval_status.dart';
 
 extension NumExtenstion on num {
   // Format currency
@@ -19,16 +19,16 @@ extension NumExtenstion on num {
     }
   }
 
-  RequestStatus toRequestStatus() {
+  ApprovalStatus toRequestStatus() {
     switch (this) {
       case 1:
-        return RequestStatus.pending;
+        return ApprovalStatus.pending;
       case 2:
-        return RequestStatus.approved;
+        return ApprovalStatus.active;
       case 3:
-        return RequestStatus.rejected;
+        return ApprovalStatus.rejected;
       default:
-        return RequestStatus.pending;
+        return ApprovalStatus.pending;
     }
   }
 }

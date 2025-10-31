@@ -5,5 +5,6 @@ enum AuthActionType {
   sendOtp,
   login,
   resetPass,
-  logout
+  logout,
+  profile
 }

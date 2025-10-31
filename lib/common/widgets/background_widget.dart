@@ -51,11 +51,14 @@ class BackgroundWidget extends StatelessWidget {
         ],
       );
     } else {
-      return Column(
-        children: [
-          logo,
-          Expanded(child: child),
-        ],
+      return Padding(
+        padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 40.h),
+        child: Column(
+          children: [
+            logo,
+            Expanded(child: child),
+          ],
+        ),
       );
     }
   }

@@ -54,6 +54,10 @@ extension PaginatorEventPatterns<T, Param> on PaginatorEvent<T, Param> {
     TResult Function(LoadInitial<T, Param> value)? loadInitial,
     TResult Function(LoadMore<T, Param> value)? loadMore,
     TResult Function(UpdateItems<T, Param> value)? updateItems,
+    TResult Function(RemoveItem<T, Param> value)? removeItem,
+    TResult Function(RestoreLastRemoved<T, Param> value)? restoreLastRemoved,
+    TResult Function(RemoveAll<T, Param> value)? removeAll,
+    TResult Function(RestoreAll<T, Param> value)? restoreAll,
     required TResult orElse(),
   }) {
     final _that = this;
@@ -64,6 +68,14 @@ extension PaginatorEventPatterns<T, Param> on PaginatorEvent<T, Param> {
         return loadMore(_that);
       case UpdateItems() when updateItems != null:
         return updateItems(_that);
+      case RemoveItem() when removeItem != null:
+        return removeItem(_that);
+      case RestoreLastRemoved() when restoreLastRemoved != null:
+        return restoreLastRemoved(_that);
+      case RemoveAll() when removeAll != null:
+        return removeAll(_that);
+      case RestoreAll() when restoreAll != null:
+        return restoreAll(_that);
       case _:
         return orElse();
     }
@@ -87,6 +99,11 @@ extension PaginatorEventPatterns<T, Param> on PaginatorEvent<T, Param> {
     required TResult Function(LoadInitial<T, Param> value) loadInitial,
     required TResult Function(LoadMore<T, Param> value) loadMore,
     required TResult Function(UpdateItems<T, Param> value) updateItems,
+    required TResult Function(RemoveItem<T, Param> value) removeItem,
+    required TResult Function(RestoreLastRemoved<T, Param> value)
+        restoreLastRemoved,
+    required TResult Function(RemoveAll<T, Param> value) removeAll,
+    required TResult Function(RestoreAll<T, Param> value) restoreAll,
   }) {
     final _that = this;
     switch (_that) {
@@ -96,6 +113,14 @@ extension PaginatorEventPatterns<T, Param> on PaginatorEvent<T, Param> {
         return loadMore(_that);
       case UpdateItems():
         return updateItems(_that);
+      case RemoveItem():
+        return removeItem(_that);
+      case RestoreLastRemoved():
+        return restoreLastRemoved(_that);
+      case RemoveAll():
+        return removeAll(_that);
+      case RestoreAll():
+        return restoreAll(_that);
     }
   }
 
@@ -116,6 +141,10 @@ extension PaginatorEventPatterns<T, Param> on PaginatorEvent<T, Param> {
     TResult? Function(LoadInitial<T, Param> value)? loadInitial,
     TResult? Function(LoadMore<T, Param> value)? loadMore,
     TResult? Function(UpdateItems<T, Param> value)? updateItems,
+    TResult? Function(RemoveItem<T, Param> value)? removeItem,
+    TResult? Function(RestoreLastRemoved<T, Param> value)? restoreLastRemoved,
+    TResult? Function(RemoveAll<T, Param> value)? removeAll,
+    TResult? Function(RestoreAll<T, Param> value)? restoreAll,
   }) {
     final _that = this;
     switch (_that) {
@@ -125,6 +154,14 @@ extension PaginatorEventPatterns<T, Param> on PaginatorEvent<T, Param> {
         return loadMore(_that);
       case UpdateItems() when updateItems != null:
         return updateItems(_that);
+      case RemoveItem() when removeItem != null:
+        return removeItem(_that);
+      case RestoreLastRemoved() when restoreLastRemoved != null:
+        return restoreLastRemoved(_that);
+      case RemoveAll() when removeAll != null:
+        return removeAll(_that);
+      case RestoreAll() when restoreAll != null:
+        return restoreAll(_that);
       case _:
         return null;
     }
@@ -151,6 +188,10 @@ extension PaginatorEventPatterns<T, Param> on PaginatorEvent<T, Param> {
             Param? param)?
         loadMore,
     TResult Function(List<T> newItems)? updateItems,
+    TResult Function(bool Function(T item) where)? removeItem,
+    TResult Function()? restoreLastRemoved,
+    TResult Function()? removeAll,
+    TResult Function()? restoreAll,
     required TResult orElse(),
   }) {
     final _that = this;
@@ -161,6 +202,14 @@ extension PaginatorEventPatterns<T, Param> on PaginatorEvent<T, Param> {
         return loadMore(_that.usecase, _that.limit, _that.param);
       case UpdateItems() when updateItems != null:
         return updateItems(_that.newItems);
+      case RemoveItem() when removeItem != null:
+        return removeItem(_that.where);
+      case RestoreLastRemoved() when restoreLastRemoved != null:
+        return restoreLastRemoved();
+      case RemoveAll() when removeAll != null:
+        return removeAll();
+      case RestoreAll() when restoreAll != null:
+        return restoreAll();
       case _:
         return orElse();
     }
@@ -188,6 +237,10 @@ extension PaginatorEventPatterns<T, Param> on PaginatorEvent<T, Param> {
             int limit, Param? param)
         loadMore,
     required TResult Function(List<T> newItems) updateItems,
+    required TResult Function(bool Function(T item) where) removeItem,
+    required TResult Function() restoreLastRemoved,
+    required TResult Function() removeAll,
+    required TResult Function() restoreAll,
   }) {
     final _that = this;
     switch (_that) {
@@ -197,6 +250,14 @@ extension PaginatorEventPatterns<T, Param> on PaginatorEvent<T, Param> {
         return loadMore(_that.usecase, _that.limit, _that.param);
       case UpdateItems():
         return updateItems(_that.newItems);
+      case RemoveItem():
+        return removeItem(_that.where);
+      case RestoreLastRemoved():
+        return restoreLastRemoved();
+      case RemoveAll():
+        return removeAll();
+      case RestoreAll():
+        return restoreAll();
     }
   }
 
@@ -221,6 +282,10 @@ extension PaginatorEventPatterns<T, Param> on PaginatorEvent<T, Param> {
             int limit, Param? param)?
         loadMore,
     TResult? Function(List<T> newItems)? updateItems,
+    TResult? Function(bool Function(T item) where)? removeItem,
+    TResult? Function()? restoreLastRemoved,
+    TResult? Function()? removeAll,
+    TResult? Function()? restoreAll,
   }) {
     final _that = this;
     switch (_that) {
@@ -230,6 +295,14 @@ extension PaginatorEventPatterns<T, Param> on PaginatorEvent<T, Param> {
         return loadMore(_that.usecase, _that.limit, _that.param);
       case UpdateItems() when updateItems != null:
         return updateItems(_that.newItems);
+      case RemoveItem() when removeItem != null:
+        return removeItem(_that.where);
+      case RestoreLastRemoved() when restoreLastRemoved != null:
+        return restoreLastRemoved();
+      case RemoveAll() when removeAll != null:
+        return removeAll();
+      case RestoreAll() when restoreAll != null:
+        return restoreAll();
       case _:
         return null;
     }
@@ -473,6 +546,131 @@ class _$UpdateItemsCopyWithImpl<T, Param, $Res>
 }
 
 /// @nodoc
+
+class RemoveItem<T, Param> implements PaginatorEvent<T, Param> {
+  const RemoveItem({required this.where});
+
+  final bool Function(T item) where;
+
+  /// Create a copy of PaginatorEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $RemoveItemCopyWith<T, Param, RemoveItem<T, Param>> get copyWith =>
+      _$RemoveItemCopyWithImpl<T, Param, RemoveItem<T, Param>>(
+          this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is RemoveItem<T, Param> &&
+            (identical(other.where, where) || other.where == where));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, where);
+
+  @override
+  String toString() {
+    return 'PaginatorEvent<$T, $Param>.removeItem(where: $where)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $RemoveItemCopyWith<T, Param, $Res>
+    implements $PaginatorEventCopyWith<T, Param, $Res> {
+  factory $RemoveItemCopyWith(RemoveItem<T, Param> value,
+      $Res Function(RemoveItem<T, Param>) _then) = _$RemoveItemCopyWithImpl;
+  @useResult
+  $Res call({bool Function(T item) where});
+}
+
+/// @nodoc
+class _$RemoveItemCopyWithImpl<T, Param, $Res>
+    implements $RemoveItemCopyWith<T, Param, $Res> {
+  _$RemoveItemCopyWithImpl(this._self, this._then);
+
+  final RemoveItem<T, Param> _self;
+  final $Res Function(RemoveItem<T, Param>) _then;
+
+  /// Create a copy of PaginatorEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? where = null,
+  }) {
+    return _then(RemoveItem<T, Param>(
+      where: null == where
+          ? _self.where
+          : where // ignore: cast_nullable_to_non_nullable
+              as bool Function(T item),
+    ));
+  }
+}
+
+/// @nodoc
+
+class RestoreLastRemoved<T, Param> implements PaginatorEvent<T, Param> {
+  const RestoreLastRemoved();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is RestoreLastRemoved<T, Param>);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'PaginatorEvent<$T, $Param>.restoreLastRemoved()';
+  }
+}
+
+/// @nodoc
+
+class RemoveAll<T, Param> implements PaginatorEvent<T, Param> {
+  const RemoveAll();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is RemoveAll<T, Param>);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'PaginatorEvent<$T, $Param>.removeAll()';
+  }
+}
+
+/// @nodoc
+
+class RestoreAll<T, Param> implements PaginatorEvent<T, Param> {
+  const RestoreAll();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is RestoreAll<T, Param>);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'PaginatorEvent<$T, $Param>.restoreAll()';
+  }
+}
+
+/// @nodoc
 mixin _$PaginatorState<T> {
   bool get isLastPage;
   bool get isLoading;
@@ -480,6 +678,9 @@ mixin _$PaginatorState<T> {
   bool get isLoaded;
   List<T> get items;
   Failure? get failure;
+  T? get lastRemovedItem;
+  List<T>? get lastRemovedItems;
+  int? get lastRemovedIndex;
 
   /// Create a copy of PaginatorState
   /// with the given fields replaced by the non-null parameter values.
@@ -503,7 +704,13 @@ mixin _$PaginatorState<T> {
             (identical(other.isLoaded, isLoaded) ||
                 other.isLoaded == isLoaded) &&
             const DeepCollectionEquality().equals(other.items, items) &&
-            (identical(other.failure, failure) || other.failure == failure));
+            (identical(other.failure, failure) || other.failure == failure) &&
+            const DeepCollectionEquality()
+                .equals(other.lastRemovedItem, lastRemovedItem) &&
+            const DeepCollectionEquality()
+                .equals(other.lastRemovedItems, lastRemovedItems) &&
+            (identical(other.lastRemovedIndex, lastRemovedIndex) ||
+                other.lastRemovedIndex == lastRemovedIndex));
   }
 
   @override
@@ -514,11 +721,14 @@ mixin _$PaginatorState<T> {
       isLoadMore,
       isLoaded,
       const DeepCollectionEquality().hash(items),
-      failure);
+      failure,
+      const DeepCollectionEquality().hash(lastRemovedItem),
+      const DeepCollectionEquality().hash(lastRemovedItems),
+      lastRemovedIndex);
 
   @override
   String toString() {
-    return 'PaginatorState<$T>(isLastPage: $isLastPage, isLoading: $isLoading, isLoadMore: $isLoadMore, isLoaded: $isLoaded, items: $items, failure: $failure)';
+    return 'PaginatorState<$T>(isLastPage: $isLastPage, isLoading: $isLoading, isLoadMore: $isLoadMore, isLoaded: $isLoaded, items: $items, failure: $failure, lastRemovedItem: $lastRemovedItem, lastRemovedItems: $lastRemovedItems, lastRemovedIndex: $lastRemovedIndex)';
   }
 }
 
@@ -534,7 +744,10 @@ abstract mixin class $PaginatorStateCopyWith<T, $Res> {
       bool isLoadMore,
       bool isLoaded,
       List<T> items,
-      Failure? failure});
+      Failure? failure,
+      T? lastRemovedItem,
+      List<T>? lastRemovedItems,
+      int? lastRemovedIndex});
 }
 
 /// @nodoc
@@ -556,6 +769,9 @@ class _$PaginatorStateCopyWithImpl<T, $Res>
     Object? isLoaded = null,
     Object? items = null,
     Object? failure = freezed,
+    Object? lastRemovedItem = freezed,
+    Object? lastRemovedItems = freezed,
+    Object? lastRemovedIndex = freezed,
   }) {
     return _then(_self.copyWith(
       isLastPage: null == isLastPage
@@ -582,6 +798,18 @@ class _$PaginatorStateCopyWithImpl<T, $Res>
           ? _self.failure
           : failure // ignore: cast_nullable_to_non_nullable
               as Failure?,
+      lastRemovedItem: freezed == lastRemovedItem
+          ? _self.lastRemovedItem
+          : lastRemovedItem // ignore: cast_nullable_to_non_nullable
+              as T?,
+      lastRemovedItems: freezed == lastRemovedItems
+          ? _self.lastRemovedItems
+          : lastRemovedItems // ignore: cast_nullable_to_non_nullable
+              as List<T>?,
+      lastRemovedIndex: freezed == lastRemovedIndex
+          ? _self.lastRemovedIndex
+          : lastRemovedIndex // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -677,16 +905,32 @@ extension PaginatorStatePatterns<T> on PaginatorState<T> {
 
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(bool isLastPage, bool isLoading, bool isLoadMore,
-            bool isLoaded, List<T> items, Failure? failure)?
+    TResult Function(
+            bool isLastPage,
+            bool isLoading,
+            bool isLoadMore,
+            bool isLoaded,
+            List<T> items,
+            Failure? failure,
+            T? lastRemovedItem,
+            List<T>? lastRemovedItems,
+            int? lastRemovedIndex)?
         $default, {
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
       case _PaginatorState() when $default != null:
-        return $default(_that.isLastPage, _that.isLoading, _that.isLoadMore,
-            _that.isLoaded, _that.items, _that.failure);
+        return $default(
+            _that.isLastPage,
+            _that.isLoading,
+            _that.isLoadMore,
+            _that.isLoaded,
+            _that.items,
+            _that.failure,
+            _that.lastRemovedItem,
+            _that.lastRemovedItems,
+            _that.lastRemovedIndex);
       case _:
         return orElse();
     }
@@ -707,15 +951,31 @@ extension PaginatorStatePatterns<T> on PaginatorState<T> {
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(bool isLastPage, bool isLoading, bool isLoadMore,
-            bool isLoaded, List<T> items, Failure? failure)
+    TResult Function(
+            bool isLastPage,
+            bool isLoading,
+            bool isLoadMore,
+            bool isLoaded,
+            List<T> items,
+            Failure? failure,
+            T? lastRemovedItem,
+            List<T>? lastRemovedItems,
+            int? lastRemovedIndex)
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _PaginatorState():
-        return $default(_that.isLastPage, _that.isLoading, _that.isLoadMore,
-            _that.isLoaded, _that.items, _that.failure);
+        return $default(
+            _that.isLastPage,
+            _that.isLoading,
+            _that.isLoadMore,
+            _that.isLoaded,
+            _that.items,
+            _that.failure,
+            _that.lastRemovedItem,
+            _that.lastRemovedItems,
+            _that.lastRemovedIndex);
     }
   }
 
@@ -733,15 +993,31 @@ extension PaginatorStatePatterns<T> on PaginatorState<T> {
 
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(bool isLastPage, bool isLoading, bool isLoadMore,
-            bool isLoaded, List<T> items, Failure? failure)?
+    TResult? Function(
+            bool isLastPage,
+            bool isLoading,
+            bool isLoadMore,
+            bool isLoaded,
+            List<T> items,
+            Failure? failure,
+            T? lastRemovedItem,
+            List<T>? lastRemovedItems,
+            int? lastRemovedIndex)?
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _PaginatorState() when $default != null:
-        return $default(_that.isLastPage, _that.isLoading, _that.isLoadMore,
-            _that.isLoaded, _that.items, _that.failure);
+        return $default(
+            _that.isLastPage,
+            _that.isLoading,
+            _that.isLoadMore,
+            _that.isLoaded,
+            _that.items,
+            _that.failure,
+            _that.lastRemovedItem,
+            _that.lastRemovedItems,
+            _that.lastRemovedIndex);
       case _:
         return null;
     }
@@ -757,8 +1033,12 @@ class _PaginatorState<T> implements PaginatorState<T> {
       this.isLoadMore = false,
       this.isLoaded = false,
       final List<T> items = const [],
-      this.failure})
-      : _items = items;
+      this.failure,
+      this.lastRemovedItem,
+      final List<T>? lastRemovedItems,
+      this.lastRemovedIndex})
+      : _items = items,
+        _lastRemovedItems = lastRemovedItems;
 
   @override
   @JsonKey()
@@ -783,6 +1063,21 @@ class _PaginatorState<T> implements PaginatorState<T> {
 
   @override
   final Failure? failure;
+  @override
+  final T? lastRemovedItem;
+  final List<T>? _lastRemovedItems;
+  @override
+  List<T>? get lastRemovedItems {
+    final value = _lastRemovedItems;
+    if (value == null) return null;
+    if (_lastRemovedItems is EqualUnmodifiableListView)
+      return _lastRemovedItems;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  @override
+  final int? lastRemovedIndex;
 
   /// Create a copy of PaginatorState
   /// with the given fields replaced by the non-null parameter values.
@@ -806,7 +1101,13 @@ class _PaginatorState<T> implements PaginatorState<T> {
             (identical(other.isLoaded, isLoaded) ||
                 other.isLoaded == isLoaded) &&
             const DeepCollectionEquality().equals(other._items, _items) &&
-            (identical(other.failure, failure) || other.failure == failure));
+            (identical(other.failure, failure) || other.failure == failure) &&
+            const DeepCollectionEquality()
+                .equals(other.lastRemovedItem, lastRemovedItem) &&
+            const DeepCollectionEquality()
+                .equals(other._lastRemovedItems, _lastRemovedItems) &&
+            (identical(other.lastRemovedIndex, lastRemovedIndex) ||
+                other.lastRemovedIndex == lastRemovedIndex));
   }
 
   @override
@@ -817,11 +1118,14 @@ class _PaginatorState<T> implements PaginatorState<T> {
       isLoadMore,
       isLoaded,
       const DeepCollectionEquality().hash(_items),
-      failure);
+      failure,
+      const DeepCollectionEquality().hash(lastRemovedItem),
+      const DeepCollectionEquality().hash(_lastRemovedItems),
+      lastRemovedIndex);
 
   @override
   String toString() {
-    return 'PaginatorState<$T>(isLastPage: $isLastPage, isLoading: $isLoading, isLoadMore: $isLoadMore, isLoaded: $isLoaded, items: $items, failure: $failure)';
+    return 'PaginatorState<$T>(isLastPage: $isLastPage, isLoading: $isLoading, isLoadMore: $isLoadMore, isLoaded: $isLoaded, items: $items, failure: $failure, lastRemovedItem: $lastRemovedItem, lastRemovedItems: $lastRemovedItems, lastRemovedIndex: $lastRemovedIndex)';
   }
 }
 
@@ -839,7 +1143,10 @@ abstract mixin class _$PaginatorStateCopyWith<T, $Res>
       bool isLoadMore,
       bool isLoaded,
       List<T> items,
-      Failure? failure});
+      Failure? failure,
+      T? lastRemovedItem,
+      List<T>? lastRemovedItems,
+      int? lastRemovedIndex});
 }
 
 /// @nodoc
@@ -861,6 +1168,9 @@ class __$PaginatorStateCopyWithImpl<T, $Res>
     Object? isLoaded = null,
     Object? items = null,
     Object? failure = freezed,
+    Object? lastRemovedItem = freezed,
+    Object? lastRemovedItems = freezed,
+    Object? lastRemovedIndex = freezed,
   }) {
     return _then(_PaginatorState<T>(
       isLastPage: null == isLastPage
@@ -887,6 +1197,18 @@ class __$PaginatorStateCopyWithImpl<T, $Res>
           ? _self.failure
           : failure // ignore: cast_nullable_to_non_nullable
               as Failure?,
+      lastRemovedItem: freezed == lastRemovedItem
+          ? _self.lastRemovedItem
+          : lastRemovedItem // ignore: cast_nullable_to_non_nullable
+              as T?,
+      lastRemovedItems: freezed == lastRemovedItems
+          ? _self._lastRemovedItems
+          : lastRemovedItems // ignore: cast_nullable_to_non_nullable
+              as List<T>?,
+      lastRemovedIndex: freezed == lastRemovedIndex
+          ? _self.lastRemovedIndex
+          : lastRemovedIndex // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }

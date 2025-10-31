@@ -1,21 +1,21 @@
 import 'package:app_tl_land_3212/core/constants/app_colors.dart';
-import 'package:app_tl_land_3212/feature/noti/presentation/pages/notification_page.dart';
+import 'package:app_tl_land_3212/feature/noti/domain/noti_domain_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class NotificationCard extends StatelessWidget {
-  final NotificationEntity notificationEntity;
+  final NotificationEntity notiCard;
   final VoidCallback onTap;
-  const NotificationCard({super.key, required this.notificationEntity, required this.onTap});
+  const NotificationCard({super.key, required this.notiCard, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    final noti = notificationEntity;
+    final bool isRead = notiCard.status == 'Đã đọc';
     return GestureDetector(
       onTap: onTap,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: noti.isRead ? Color(0xffE1F1FD) : Colors.white,
+          color: !isRead ? Color(0xffE1F1FD) : Colors.white,
           border: Border(bottom: BorderSide(color: Colors.grey, width: 1.w)),
         ),
         child: Padding(
@@ -26,41 +26,43 @@ class NotificationCard extends StatelessWidget {
               Row(
                 children: [
                   Icon(
-                    noti.isRead ? Icons.notifications_active : Icons.notifications,
+                    !isRead ? Icons.notifications_active : Icons.notifications,
                     color: IconColors.iconBrandPrimary,
                     size: 20.sp,
                   ),
                   SizedBox(width: 3.w),
                   Text(
-                    "${noti.createdAt.hour}:${noti.createdAt.minute}, ${noti.createdAt.day}/${noti.createdAt.month}/${noti.createdAt.year}",
+                    "${notiCard.createdAt.hour}:${notiCard.createdAt.minute}, ${notiCard.createdAt.day}/${notiCard.createdAt.month}/${notiCard.createdAt.year}",
                     style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                      fontWeight: FontWeight.w400, 
-                      fontStyle: FontStyle.italic,
-                      fontSize: 13.sp, 
-                      color: TextColors.textDefaultSecondary.withValues(alpha: 0.5),
-                    ),
+                          fontWeight: FontWeight.w400,
+                          fontStyle: FontStyle.italic,
+                          fontSize: 13.sp,
+                          color: TextColors.textDefaultSecondary
+                              .withValues(alpha: 0.5),
+                        ),
                   ),
                 ],
               ),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 2.h),
                 child: Text(
-                  noti.title,
+                  notiCard.title ?? '',
                   style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                    fontWeight: FontWeight.w600, 
-                    fontSize: 13.sp, 
-                    color: TextColors.textDefaultPrimary,
-                  ),
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13.sp,
+                        color: TextColors.textDefaultPrimary,
+                      ),
                 ),
               ),
               SizedBox(height: 2.h),
               Text(
-                notificationEntity.content,
+                notiCard.message ?? '',
                 style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                  fontWeight: FontWeight.w400, 
-                  fontSize: 13.sp, 
-                  color: TextColors.textDefaultSecondary.withValues(alpha: 0.5),
-                ),
+                      fontWeight: FontWeight.w400,
+                      fontSize: 13.sp,
+                      color: TextColors.textDefaultSecondary
+                          .withValues(alpha: 0.5),
+                    ),
               )
             ],
           ),

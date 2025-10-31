@@ -16,4 +16,12 @@ sealed class PaginatorEvent<T, Param> with _$PaginatorEvent<T, Param> {
 
   const factory PaginatorEvent.updateItems({required List<T> newItems}) =
       UpdateItems<T, Param>;
+
+  const factory PaginatorEvent.removeItem({
+    required bool Function(T item) where,
+  }) = RemoveItem<T, Param>;
+  const factory PaginatorEvent.restoreLastRemoved() =
+      RestoreLastRemoved<T, Param>;
+  const factory PaginatorEvent.removeAll() = RemoveAll<T, Param>;
+  const factory PaginatorEvent.restoreAll() = RestoreAll<T, Param>;
 }

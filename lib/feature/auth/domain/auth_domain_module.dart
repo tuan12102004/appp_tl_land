@@ -1,4 +1,3 @@
-export 'entities/contact_signup_entity.dart';
 export 'entities/user_entity.dart';
 
 export 'repos/auth_repo.dart';

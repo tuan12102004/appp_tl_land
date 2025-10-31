@@ -1,5 +1,6 @@
 import 'package:app_tl_land_3212/core/core_module.dart';
 import 'package:app_tl_land_3212/feature/auth/domain/auth_domain_module.dart';
+import 'package:app_tl_land_3212/feature/profile/domain/profile_domain_module.dart';
 import 'package:dartz/dartz.dart';
 
 abstract interface class AuthRepo {
@@ -10,7 +11,7 @@ abstract interface class AuthRepo {
 
   Future<Either<Failure, UserEntity>> profile();
 
-  Future<Either<Failure, List<ContactSignupEntity>>> signup();
+  Future<Either<Failure, List<ContactEntity>>> signup();
 
   Future<Either<Failure, String>> forgotPass({
     required String email,

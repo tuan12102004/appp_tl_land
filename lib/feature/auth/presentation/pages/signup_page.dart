@@ -60,7 +60,7 @@ class _SignupPageState extends State<SignupPage> {
                     state.contactToSignup.isEmpty && state.failure == null) {
                   return const ContactSignupShimmer();
                 }
-                return ContactSignupList(contacts: state.contactToSignup);
+                return ContactList(contacts: state.contactToSignup);
               },
             ),
           ],

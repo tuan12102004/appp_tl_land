@@ -1,5 +1,4 @@
-import 'package:app_tl_land_3212/common/widgets/custom_adaptive_button.dart';
-import 'package:app_tl_land_3212/common/widgets/custom_appbar.dart';
+import 'package:app_tl_land_3212/common/common_module.dart';
 import 'package:app_tl_land_3212/core/constants/app_colors.dart';
 import 'package:app_tl_land_3212/core/utils/get_adaptive_back_icon.dart';
 import 'package:flutter/material.dart';
@@ -15,13 +14,13 @@ class CustomAppbarSub extends StatelessWidget implements PreferredSizeWidget {
   final bool? isAction;
   final bool? isDivider;
   const CustomAppbarSub({
-    super.key, 
-    this.iconLeading, 
-    this.titleLeading, 
-    this.titleAction, 
-    this.onLeading, 
-    this.onAction, 
-    this.isAction = false, 
+    super.key,
+    this.iconLeading,
+    this.titleLeading,
+    this.titleAction,
+    this.onLeading,
+    this.onAction,
+    this.isAction = false,
     this.isDivider = true,
   });
 
@@ -31,54 +30,51 @@ class CustomAppbarSub extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return CustomAppbar(
-      automaticallyImplyLeading: false,
-      titleSpacing: 0,
-      title: Row(
-        children: [
-          SizedBox(width: 8.w),
-          GestureDetector(
-            onTap: () {
-              if (onLeading != null) {
-                onLeading!();
-              } else {
-                context.pop();
-              }
-            },
-            child: Icon(
-              iconLeading ?? getAdaptiveBackIcon(context,),
-              color: IconColors.iconNavigationBarEnabled,
-              size: 22.sp,
-            ),
+        automaticallyImplyLeading: false,
+        leadingWidth: double.infinity,
+        leading: CustomAdaptiveTapEffect(
+          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 11.h),
+          isOpacity: true,
+          onPressed: () {
+            if (onLeading != null) {
+              onLeading!();
+            } else {
+              context.pop();
+            }
+          },
+          child: Row(
+            spacing: 6.w,
+            children: [
+              Icon(
+                iconLeading ??
+                    getAdaptiveBackIcon(
+                      context,
+                    ),
+                size: 22.sp,
+                color: AppColors.iconInputFieldLeadingIcon,
+              ),
+              Text(titleLeading ?? '',
+                  style: Theme.of(context).appBarTheme.titleTextStyle)
+            ],
           ),
-          SizedBox(width: 8.w),
-          Text(
-            titleLeading ?? '',
-            style: Theme.of(context).textTheme.titleMedium!.copyWith(
-              fontWeight: FontWeight.w400,
-              fontSize: 17.sp,
-              color: TextColors.textNavigationBarEnabled
-            ),
-          ),
+        ),
+        actions: [
+          if (isAction == true) ...[
+            CustomAdaptiveButton(
+              isOpacity: true,
+              backgroundColor: BackgroundColors.backgroundDefaultPrimary,
+              textColor: TextColors.textBrandPrimary,
+              text: titleAction ?? '',
+              onPressed: () {
+                // TODO: Save images
+                if (onAction != null) {
+                  onAction!();
+                }
+              },
+            )
+          ]
         ],
-      ),
-      actions: [
-        if(isAction == true) ...[
-          CustomAdaptiveButton(
-            isOpacity: true,
-            backgroundColor: BackgroundColors.backgroundDefaultPrimary,
-            textColor: TextColors.textBrandPrimary,
-            text: titleAction ?? '',
-            onPressed:(){
-              // TODO: Save images
-              if (onAction != null) {
-                onAction!();
-              }
-            },
-          )
-        ]
-      ],
-      centerTitle: false,
-      isDivider: isDivider
-    );
+        centerTitle: false,
+        isDivider: isDivider);
   }
 }

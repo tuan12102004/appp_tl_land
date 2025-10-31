@@ -1,10 +1,10 @@
-import 'package:app_tl_land_3212/common/widgets/custom_adaptive_button.dart';
-import 'package:app_tl_land_3212/common/widgets/custom_pass_field.dart';
-import 'package:app_tl_land_3212/core/constants/app_colors.dart';
-import 'package:app_tl_land_3212/core/utils/input_validators.dart';
+import 'package:app_tl_land_3212/common/common_module.dart';
+import 'package:app_tl_land_3212/core/core_module.dart';
 import 'package:app_tl_land_3212/feature/floating_add/presentation/widgets/shared/custom_appbar_sub.dart';
+import 'package:app_tl_land_3212/feature/profile/presentation/profile_module.dart';
+import 'package:app_tl_land_3212/feature/profile/presentation/widget/change_info/change_pass_form.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class ChangePasswordPage extends StatefulWidget {
@@ -24,6 +24,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   final _confirmPasswordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+  final ChangePasswordBloc _bloc = sl<ChangePasswordBloc>();
 
   @override
   void dispose() {
@@ -40,87 +41,77 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     if (_formKey.currentState?.validate() ?? false) {
       FocusScope.of(context).unfocus();
       // TODO: Event update password
-      context.pop();
+      _bloc.add(Submit(
+        oldPassword: _oldPasswordController.text,
+        newPassword: _newPasswordController.text,
+        confirmPassword: _confirmPasswordController.text,
+      ));
     }
+  }
+
+  void _onChangePasswordListener(
+      BuildContext context, ChangePasswordState state) async {
+    if (state.isLoading) {
+      showAppLoading(
+        context,
+        riveAnimationPath: AppRiveAnimations.multiLoadingState,
+        onInit: sl<MultiLoadingStateService>().init,
+      );
+    } else if (state.isSuccess) {
+      sl<MultiLoadingStateService>().fireCheck();
+      await _popAnimation(context);
+      if (context.mounted) {
+        showAppSnackbar(context,
+            content: 'Đổi mật khẩu thành công',
+            snackbarType: SnackbarType.success);
+        await _backLogin(context);
+      }
+    } else if (state.failure != null) {
+      sl<MultiLoadingStateService>().fireError();
+      await _popAnimation(context);
+      if (context.mounted) {
+        showAppDialog(context,
+            content: state.failure!.err, type: DialogType.ok, title: 'Lỗi');
+      }
+    }
+  }
+
+  Future<void> _popAnimation(BuildContext context) async {
+    await Future.delayed(const Duration(seconds: 2), () {
+      if (context.mounted) {
+        context.pop();
+      }
+    });
+  }
+
+  Future<void> _backLogin(BuildContext context) async {
+    await Future.delayed(const Duration(seconds: 2), () {
+      if (context.mounted) {
+        onLogout(context);
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: BackgroundColors.backgroundDefaultPrimary,
-      appBar: CustomAppbarSub(
-        titleLeading: "Đổi mật khẩu",
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.r),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              CustomPassField(
-                hintText: 'Nhập mật khẩu cũ',
-                controller: _oldPasswordController,
-                focusNode: _oldPasswordNode,
-                textInputAction: TextInputAction.next,
-                onEditingComplete: () =>
-                    FocusScope.of(context).requestFocus(_newPasswordNode),
-                validator: (value) => InputValidators.validate(
-                  value: value,
-                  hintText: 'Mật khẩu',
-                  keyboardType: TextInputType.visiblePassword,
-                ),
-              ),
-              SizedBox(height: 16.h),
-              CustomPassField(
-                hintText: 'Nhập mật khẩu mới',
-                controller: _newPasswordController,
-                focusNode: _newPasswordNode,
-                textInputAction: TextInputAction.next,
-                onEditingComplete: () => FocusScope.of(context)
-                    .requestFocus(_confirmPasswordNode),
-                validator: (value) => InputValidators.validatePassword(value),
-              ),
-              SizedBox(height: 16.h),
-              CustomPassField(
-                hintText: 'Nhập lại mật khẩu mới',
-                controller: _confirmPasswordController,
-                focusNode: _confirmPasswordNode,
-                textInputAction: TextInputAction.done,
-                onEditingComplete: () =>
-                    FocusScope.of(context).unfocus(),
-                validator: (value) =>  InputValidators.validateConfirmPassword( value, _newPasswordController.text),
-              ),
-              SizedBox(height: 16.h),
-              Row(
-                children: [
-                  Icon(
-                    Icons.info,
-                    size: 18.sp,
-                    color: IconColors.iconDefaultSecondary.withValues(alpha: 0.5),  
-                  ),
-                  SizedBox(width: 6.w),
-                  Expanded(
-                    child: Text(
-                      "Lưu ý: Bạn sẽ phải đăng nhập lại sau khi đổi mật khẩu",
-                      softWrap: true,
-                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        fontWeight: FontWeight.w400, 
-                        fontSize: 13.sp, 
-                        color: TextColors.textDefaultPrimary,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(height: 16.h),
-              CustomAdaptiveButton(
-                width: double.infinity,
-                onPressed: _onUpdatePass,
-                text: 'Cập nhật',
-              ),
-            ],
-          ),
-        ),
+    return BlocProvider.value(
+      value: _bloc,
+      child: BlocListener<ChangePasswordBloc, ChangePasswordState>(
+        listener: _onChangePasswordListener,
+        child: Scaffold(
+            backgroundColor: BackgroundColors.backgroundDefaultPrimary,
+            appBar: CustomAppbarSub(
+              titleLeading: "Đổi mật khẩu",
+            ),
+            body: ChangePassForm(
+                formKey: _formKey,
+                oldPasswordController: _oldPasswordController,
+                newPasswordController: _newPasswordController,
+                confirmPasswordController: _confirmPasswordController,
+                oldPasswordNode: _oldPasswordNode,
+                newPasswordNode: _newPasswordNode,
+                confirmPasswordNode: _confirmPasswordNode,
+                onUpdatePass: _onUpdatePass)),
       ),
     );
   }

@@ -18,6 +18,7 @@ sealed class UserModel with _$UserModel {
     @JsonKey(name: 'created_at') required DateTime? createdAt,
     required String? ward,
     required String? province,
+    required String? email,
   }) = _UserModel;
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
@@ -36,6 +37,7 @@ extension UserModelX on UserModel {
         address: address,
         createdAt: createdAt,
         ward: ward,
-        province: province
+        province: province,
+        email: email
       );
 }

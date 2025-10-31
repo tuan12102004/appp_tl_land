@@ -20,6 +20,7 @@ class BottomNavButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomAdaptiveTapEffect(
+      isOpacity: true,
       onPressed: onPressed,
       child: Column(
         spacing: 4.h,

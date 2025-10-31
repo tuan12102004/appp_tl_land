@@ -11,7 +11,7 @@ class AppInterceptor extends Interceptor {
   // Apis don't need authenticity
   final Set<String> _noAuthUrls = {
     ApiUrls.login,
-    ApiUrls.signup,
+    ApiUrls.contact,
     ApiUrls.forgotPassword,
     ApiUrls.resendOtp,
     ApiUrls.verifyOtp,

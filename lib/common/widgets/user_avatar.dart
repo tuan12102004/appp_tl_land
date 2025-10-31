@@ -1,23 +1,27 @@
-import 'dart:io';
 import 'package:app_tl_land_3212/common/common_module.dart';
 import 'package:app_tl_land_3212/core/core_module.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UserAvatar extends StatelessWidget {
-  final AvatarType type;
   final String? imageURL;
+  final AvatarType type;
 
-  const UserAvatar({super.key, required this.type, this.imageURL});
+  const UserAvatar({
+    super.key,
+    required this.type,
+    this.imageURL,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final hasImage = imageURL != null && imageURL!.isNotEmpty;
+    final hasImage = imageURL != null &&
+        imageURL!.isNotEmpty &&
+        imageURL != AppImages.defaultAvatar;
 
     return Container(
       width: type.getSizeByType.width,
       height: type.getSizeByType.height,
-      padding: EdgeInsets.all(hasImage ? 0.r : type.getPaddingByType),
+      padding: EdgeInsets.zero,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: BackgroundColors.backgroundDefaultTertiary,
@@ -25,28 +29,16 @@ class UserAvatar extends StatelessWidget {
       child: ClipOval(
         child: hasImage
             ? _buildImage(imageURL!)
-            : Image.asset(AppImages.logo),
+            : Image.asset(AppImages.defaultAvatar, fit: BoxFit.cover),
       ),
     );
   }
 
   Widget _buildImage(String path) {
-    if (isImageUrl(path)) {
-      return CustomCachedImage(
-        imagePath: path,
-        fit: BoxFit.cover,
-      );
-    }
-    else if (path.startsWith('/')) {
-      return Image.file(
-        File(path), 
-        fit: BoxFit.cover,
-      );
-    } else {
-      return Image.asset(
-        path,
-        fit: BoxFit.cover,
-      );
-    }
+    final String imagePath = path.startsWith('/') ? ApiUrls.imageUrl + path : path;
+    return CustomCachedImage(
+      imagePath: imagePath,
+      fit: BoxFit.cover,
+    );
   }
 }

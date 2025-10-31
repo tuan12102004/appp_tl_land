@@ -51,6 +51,7 @@ extension AuthEventPatterns on AuthEvent {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Login value)? login,
+    TResult Function(_Profile value)? profile,
     TResult Function(_CheckAuth value)? checkAuth,
     TResult Function(_ResetState value)? resetState,
     TResult Function(_TokenExpired value)? tokenExpired,
@@ -66,6 +67,8 @@ extension AuthEventPatterns on AuthEvent {
     switch (_that) {
       case _Login() when login != null:
         return login(_that);
+      case _Profile() when profile != null:
+        return profile(_that);
       case _CheckAuth() when checkAuth != null:
         return checkAuth(_that);
       case _ResetState() when resetState != null:
@@ -105,6 +108,7 @@ extension AuthEventPatterns on AuthEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Login value) login,
+    required TResult Function(_Profile value) profile,
     required TResult Function(_CheckAuth value) checkAuth,
     required TResult Function(_ResetState value) resetState,
     required TResult Function(_TokenExpired value) tokenExpired,
@@ -119,6 +123,8 @@ extension AuthEventPatterns on AuthEvent {
     switch (_that) {
       case _Login():
         return login(_that);
+      case _Profile():
+        return profile(_that);
       case _CheckAuth():
         return checkAuth(_that);
       case _ResetState():
@@ -155,6 +161,7 @@ extension AuthEventPatterns on AuthEvent {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Login value)? login,
+    TResult? Function(_Profile value)? profile,
     TResult? Function(_CheckAuth value)? checkAuth,
     TResult? Function(_ResetState value)? resetState,
     TResult? Function(_TokenExpired value)? tokenExpired,
@@ -169,6 +176,8 @@ extension AuthEventPatterns on AuthEvent {
     switch (_that) {
       case _Login() when login != null:
         return login(_that);
+      case _Profile() when profile != null:
+        return profile(_that);
       case _CheckAuth() when checkAuth != null:
         return checkAuth(_that);
       case _ResetState() when resetState != null:
@@ -207,6 +216,7 @@ extension AuthEventPatterns on AuthEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String email, String pass)? login,
+    TResult Function()? profile,
     TResult Function()? checkAuth,
     TResult Function()? resetState,
     TResult Function()? tokenExpired,
@@ -222,6 +232,8 @@ extension AuthEventPatterns on AuthEvent {
     switch (_that) {
       case _Login() when login != null:
         return login(_that.email, _that.pass);
+      case _Profile() when profile != null:
+        return profile();
       case _CheckAuth() when checkAuth != null:
         return checkAuth();
       case _ResetState() when resetState != null:
@@ -261,6 +273,7 @@ extension AuthEventPatterns on AuthEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String email, String pass) login,
+    required TResult Function() profile,
     required TResult Function() checkAuth,
     required TResult Function() resetState,
     required TResult Function() tokenExpired,
@@ -276,6 +289,8 @@ extension AuthEventPatterns on AuthEvent {
     switch (_that) {
       case _Login():
         return login(_that.email, _that.pass);
+      case _Profile():
+        return profile();
       case _CheckAuth():
         return checkAuth();
       case _ResetState():
@@ -312,6 +327,7 @@ extension AuthEventPatterns on AuthEvent {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String email, String pass)? login,
+    TResult? Function()? profile,
     TResult? Function()? checkAuth,
     TResult? Function()? resetState,
     TResult? Function()? tokenExpired,
@@ -327,6 +343,8 @@ extension AuthEventPatterns on AuthEvent {
     switch (_that) {
       case _Login() when login != null:
         return login(_that.email, _that.pass);
+      case _Profile() when profile != null:
+        return profile();
       case _CheckAuth() when checkAuth != null:
         return checkAuth();
       case _ResetState() when resetState != null:
@@ -416,6 +434,26 @@ class __$LoginCopyWithImpl<$Res> implements _$LoginCopyWith<$Res> {
           : pass // ignore: cast_nullable_to_non_nullable
               as String,
     ));
+  }
+}
+
+/// @nodoc
+
+class _Profile implements AuthEvent {
+  const _Profile();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _Profile);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'AuthEvent.profile()';
   }
 }
 
@@ -805,7 +843,7 @@ mixin _$AuthState {
   bool? get otpResent;
   bool? get otpSend;
   UserEntity? get userModel;
-  List<ContactSignupEntity> get contactToSignup;
+  List<ContactEntity> get contactToSignup;
 
   /// Create a copy of AuthState
   /// with the given fields replaced by the non-null parameter values.
@@ -874,7 +912,7 @@ abstract mixin class $AuthStateCopyWith<$Res> {
       bool? otpResent,
       bool? otpSend,
       UserEntity? userModel,
-      List<ContactSignupEntity> contactToSignup});
+      List<ContactEntity> contactToSignup});
 }
 
 /// @nodoc
@@ -940,7 +978,7 @@ class _$AuthStateCopyWithImpl<$Res> implements $AuthStateCopyWith<$Res> {
       contactToSignup: null == contactToSignup
           ? _self.contactToSignup
           : contactToSignup // ignore: cast_nullable_to_non_nullable
-              as List<ContactSignupEntity>,
+              as List<ContactEntity>,
     ));
   }
 }
@@ -1046,7 +1084,7 @@ extension AuthStatePatterns on AuthState {
             bool? otpResent,
             bool? otpSend,
             UserEntity? userModel,
-            List<ContactSignupEntity> contactToSignup)?
+            List<ContactEntity> contactToSignup)?
         $default, {
     required TResult orElse(),
   }) {
@@ -1094,7 +1132,7 @@ extension AuthStatePatterns on AuthState {
             bool? otpResent,
             bool? otpSend,
             UserEntity? userModel,
-            List<ContactSignupEntity> contactToSignup)
+            List<ContactEntity> contactToSignup)
         $default,
   ) {
     final _that = this;
@@ -1138,7 +1176,7 @@ extension AuthStatePatterns on AuthState {
             bool? otpResent,
             bool? otpSend,
             UserEntity? userModel,
-            List<ContactSignupEntity> contactToSignup)?
+            List<ContactEntity> contactToSignup)?
         $default,
   ) {
     final _that = this;
@@ -1174,7 +1212,7 @@ class _AuthState implements AuthState {
       this.otpResent,
       this.otpSend,
       this.userModel,
-      final List<ContactSignupEntity> contactToSignup = const []})
+      final List<ContactEntity> contactToSignup = const []})
       : _contactToSignup = contactToSignup;
 
   @override
@@ -1199,10 +1237,10 @@ class _AuthState implements AuthState {
   final bool? otpSend;
   @override
   final UserEntity? userModel;
-  final List<ContactSignupEntity> _contactToSignup;
+  final List<ContactEntity> _contactToSignup;
   @override
   @JsonKey()
-  List<ContactSignupEntity> get contactToSignup {
+  List<ContactEntity> get contactToSignup {
     if (_contactToSignup is EqualUnmodifiableListView) return _contactToSignup;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_contactToSignup);
@@ -1279,7 +1317,7 @@ abstract mixin class _$AuthStateCopyWith<$Res>
       bool? otpResent,
       bool? otpSend,
       UserEntity? userModel,
-      List<ContactSignupEntity> contactToSignup});
+      List<ContactEntity> contactToSignup});
 }
 
 /// @nodoc
@@ -1345,7 +1383,7 @@ class __$AuthStateCopyWithImpl<$Res> implements _$AuthStateCopyWith<$Res> {
       contactToSignup: null == contactToSignup
           ? _self._contactToSignup
           : contactToSignup // ignore: cast_nullable_to_non_nullable
-              as List<ContactSignupEntity>,
+              as List<ContactEntity>,
     ));
   }
 }

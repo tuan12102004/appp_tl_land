@@ -12,6 +12,6 @@
       bool? otpResent,
       bool? otpSend,
       UserEntity? userModel,
-      @Default([]) List<ContactSignupEntity> contactToSignup,
+      @Default([]) List<ContactEntity> contactToSignup,
     }) = _AuthState;
   }

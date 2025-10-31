@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:app_tl_land_3212/common/common_module.dart';
 import 'package:app_tl_land_3212/core/core_module.dart';
 import 'package:app_tl_land_3212/feature/auth/domain/auth_domain_module.dart';
+import 'package:app_tl_land_3212/feature/profile/domain/profile_domain_module.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -42,6 +43,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         _verificationOtpUsecase = verificationOtp,
         super(const AuthState()) {
     on<_Login>(_onLogin);
+    on<_Profile>(_onProfile);
     on<_Signup>(_onSignup);
     on<_ForgotPass>(_onForgotPass);
     on<_Logout>(_onLogout);
@@ -224,6 +226,36 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
+  Future<void> _onProfile(_Profile event, Emitter<AuthState> emit) async {
+    emit(state.copyWith(
+      isLoading: true,
+      failure: null,
+      actionType: AuthActionType.profile,
+    ));
+
+    final result = await _profileUsecase.call(NoParam());
+
+    result.fold(
+      (failure) {
+        emit(state.copyWith(
+          isLoading: false,
+          failure: failure,
+          actionType: AuthActionType.profile,
+        ));
+      },
+      (user) {
+        sl<SharedPrefsService>().saveUserEntity(SharedPrefsKey.user, user);
+        emit(state.copyWith(
+          isLoading: false,
+          isSuccess: true,
+          isAuthenticated: true,
+          userModel: user,
+          actionType: AuthActionType.profile,
+        ));
+      },
+    );
+  }
+
   // Signup
   void _onSignup(_Signup event, Emitter<AuthState> emit) async {
     emit(state.copyWith(isLoading: true, failure: null));
@@ -373,5 +405,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(state.copyWith(
           isLoading: false, isSuccess: true, isAuthenticated: false));
     });
+  }
+
+  @override
+  Future<void> close() {
+    _cancelTokenMonitor();
+    return super.close();
   }
 }

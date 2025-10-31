@@ -1,6 +1,8 @@
 import 'package:app_tl_land_3212/core/core_module.dart';
 import 'package:app_tl_land_3212/feature/auth/data/auth_data_module.dart';
 import 'package:app_tl_land_3212/feature/auth/domain/auth_domain_module.dart';
+import 'package:app_tl_land_3212/feature/profile/data/profile_data_module.dart';
+import 'package:app_tl_land_3212/feature/profile/domain/profile_domain_module.dart';
 import 'package:dartz/dartz.dart';
 
 class AuthRepoImpl implements AuthRepo {
@@ -35,11 +37,11 @@ class AuthRepoImpl implements AuthRepo {
   }
 
   @override
-  Future<Either<Failure, List<ContactSignupEntity>>> signup() async {
+  Future<Either<Failure, List<ContactEntity>>> signup() async {
     try {
       final contactToSignup = await _authRemoteDatasource.signup();
-      final contactToSignupEntities = List<ContactSignupEntity>.from(
-          contactToSignup.map((e) => e.toEntity()));
+      final contactToSignupEntities = List<ContactEntity>.from(
+          contactToSignup.map((e) => e.toEntity));
 
       return Right(contactToSignupEntities);
     } on ServerException catch (e) {

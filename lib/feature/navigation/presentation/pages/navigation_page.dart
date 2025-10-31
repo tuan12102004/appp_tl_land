@@ -4,7 +4,7 @@ import 'package:app_tl_land_3212/core/di/service_locator.dart';
 import 'package:app_tl_land_3212/feature/floating_add/presentation/pages/post_real_estate_new_page.dart';
 import 'package:app_tl_land_3212/feature/home/presentation/pages/home_page.dart';
 import 'package:app_tl_land_3212/feature/noti/presentation/pages/notification_page.dart';
-import 'package:app_tl_land_3212/feature/profile/presentation/pages/profile_page.dart';
+import 'package:app_tl_land_3212/feature/profile/presentation/pages/profile/profile_page.dart';
 import 'package:app_tl_land_3212/feature/search/presentation/pages/search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

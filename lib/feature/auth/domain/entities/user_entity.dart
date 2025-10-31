@@ -10,6 +10,7 @@ class UserEntity {
   final DateTime? createdAt;
   final String? ward;
   final String? province;
+  final String? email;
 
   UserEntity({
     required this.id,
@@ -23,6 +24,7 @@ class UserEntity {
     required this.createdAt,
     required this.ward,
     required this.province,
+    required this.email,
   });
 
   UserEntity copyWith({
@@ -37,6 +39,7 @@ class UserEntity {
     DateTime? createdAt,
     String? ward,
     String? province,
+    String? email,
   }) {
     return UserEntity(
         id: id ?? this.id,
@@ -49,7 +52,8 @@ class UserEntity {
         address: address ?? this.address,
         createdAt: createdAt ?? this.createdAt,
         ward: ward ?? this.ward,
-        province: province ?? this.province);
+        province: province ?? this.province,
+        email: email ?? this.email);
   }
 
   /// Convert entity -> Map để lưu SharedPreferences
@@ -66,6 +70,7 @@ class UserEntity {
       'createdAt': createdAt?.toIso8601String(),
       'ward': ward,
       'province': province,
+      'email': email,
     };
   }
 
@@ -76,13 +81,18 @@ class UserEntity {
       fullname: map['fullname'] as String?,
       phone: map['phone'] as String?,
       gender: map['gender'] as int?,
-      birthday: map['birthday'] != null ? DateTime.parse(map['birthday'] as String) : null,
+      birthday: map['birthday'] != null
+          ? DateTime.parse(map['birthday'] as String)
+          : null,
       avatar: map['avatar'] as String?,
       status: map['status'] as int?,
       address: map['address'] as String?,
-      createdAt: map['createdAt'] != null ? DateTime.parse(map['createdAt'] as String) : null,
+      createdAt: map['createdAt'] != null
+          ? DateTime.parse(map['createdAt'] as String)
+          : null,
       ward: map['ward'] as String?,
       province: map['province'] as String?,
+      email: map['email'] as String?,
     );
   }
 }

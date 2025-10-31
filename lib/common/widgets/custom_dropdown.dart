@@ -159,7 +159,7 @@ class _CustomizeDropdownState<T> extends State<CustomDropdown<T>> {
                                   color: isSelected
                                       ? BasicColors.blueZodiac500
                                       : TextColors.textButtonPrimary,
-                                  minSize: 0,
+                                  minimumSize: Size.zero,
                                   borderRadius: BorderRadius.zero,
                                   padding: widget.paddingDropdownItems ??
                                       EdgeInsets.symmetric(

@@ -170,10 +170,9 @@ class _SearchPageState extends State<SearchPage>
         child: Scaffold(
           appBar: CustomAppbar(
             title: Text('Tìm kiếm',
-                style: Theme.of(context)
-                    .textTheme
-                    .titleMedium
-                    ?.copyWith(fontWeight: FontWeight.w600)),
+                style: Theme.of(context).appBarTheme.titleTextStyle?.copyWith(
+                    color: TextColors.textDefaultPrimary,
+                    fontWeight: FontWeight.w600)),
             automaticallyImplyLeading: true,
             isDivider: false,
           ),

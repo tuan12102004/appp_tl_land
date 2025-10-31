@@ -22,9 +22,10 @@ class AppTheme {
     filled: true,
     fillColor: AppColors.backgroundInputFieldDefault,
     hintStyle: _textStyle(
-      fontSize: 16.sp,
+      fontSize: 17.sp,
       fontWeight: FontWeight.w400,
-      letterSpacing: 0.5,
+      height: 1.29,
+      letterSpacing: -0.43.sp,
       textColor: AppColors.textDefaultTertiary,
     ),
     labelStyle: const TextStyle(color: Colors.black87),
@@ -58,6 +59,7 @@ class AppTheme {
         fontWeight: fontWeight,
         height: height,
         letterSpacing: letterSpacing,
+        fontFamily: 'Inter',
       );
 
   // Text theme
@@ -185,8 +187,8 @@ class AppTheme {
     titleTextStyle: _textStyle(
       fontSize: 17.sp,
       fontWeight: FontWeight.w400,
-      height: 22 / 14,
-      letterSpacing: -0.43,
+      height: 1.29,
+      letterSpacing: -.43.sp,
       textColor: TextColors.textNavigationBarEnabled,
     ),
     centerTitle: true,

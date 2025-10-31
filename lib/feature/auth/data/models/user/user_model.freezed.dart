@@ -26,6 +26,7 @@ mixin _$UserModel {
   DateTime? get createdAt;
   String? get ward;
   String? get province;
+  String? get email;
 
   /// Create a copy of UserModel
   /// with the given fields replaced by the non-null parameter values.
@@ -56,17 +57,18 @@ mixin _$UserModel {
                 other.createdAt == createdAt) &&
             (identical(other.ward, ward) || other.ward == ward) &&
             (identical(other.province, province) ||
-                other.province == province));
+                other.province == province) &&
+            (identical(other.email, email) || other.email == email));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, fullname, phone, gender,
-      birthday, avatar, status, address, createdAt, ward, province);
+      birthday, avatar, status, address, createdAt, ward, province, email);
 
   @override
   String toString() {
-    return 'UserModel(id: $id, fullname: $fullname, phone: $phone, gender: $gender, birthday: $birthday, avatar: $avatar, status: $status, address: $address, createdAt: $createdAt, ward: $ward, province: $province)';
+    return 'UserModel(id: $id, fullname: $fullname, phone: $phone, gender: $gender, birthday: $birthday, avatar: $avatar, status: $status, address: $address, createdAt: $createdAt, ward: $ward, province: $province, email: $email)';
   }
 }
 
@@ -86,7 +88,8 @@ abstract mixin class $UserModelCopyWith<$Res> {
       String? address,
       @JsonKey(name: 'created_at') DateTime? createdAt,
       String? ward,
-      String? province});
+      String? province,
+      String? email});
 }
 
 /// @nodoc
@@ -112,6 +115,7 @@ class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
     Object? createdAt = freezed,
     Object? ward = freezed,
     Object? province = freezed,
+    Object? email = freezed,
   }) {
     return _then(_self.copyWith(
       id: freezed == id
@@ -157,6 +161,10 @@ class _$UserModelCopyWithImpl<$Res> implements $UserModelCopyWith<$Res> {
       province: freezed == province
           ? _self.province
           : province // ignore: cast_nullable_to_non_nullable
+              as String?,
+      email: freezed == email
+          ? _self.email
+          : email // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -264,7 +272,8 @@ extension UserModelPatterns on UserModel {
             String? address,
             @JsonKey(name: 'created_at') DateTime? createdAt,
             String? ward,
-            String? province)?
+            String? province,
+            String? email)?
         $default, {
     required TResult orElse(),
   }) {
@@ -282,7 +291,8 @@ extension UserModelPatterns on UserModel {
             _that.address,
             _that.createdAt,
             _that.ward,
-            _that.province);
+            _that.province,
+            _that.email);
       case _:
         return orElse();
     }
@@ -314,7 +324,8 @@ extension UserModelPatterns on UserModel {
             String? address,
             @JsonKey(name: 'created_at') DateTime? createdAt,
             String? ward,
-            String? province)
+            String? province,
+            String? email)
         $default,
   ) {
     final _that = this;
@@ -331,7 +342,8 @@ extension UserModelPatterns on UserModel {
             _that.address,
             _that.createdAt,
             _that.ward,
-            _that.province);
+            _that.province,
+            _that.email);
     }
   }
 
@@ -360,7 +372,8 @@ extension UserModelPatterns on UserModel {
             String? address,
             @JsonKey(name: 'created_at') DateTime? createdAt,
             String? ward,
-            String? province)?
+            String? province,
+            String? email)?
         $default,
   ) {
     final _that = this;
@@ -377,7 +390,8 @@ extension UserModelPatterns on UserModel {
             _that.address,
             _that.createdAt,
             _that.ward,
-            _that.province);
+            _that.province,
+            _that.email);
       case _:
         return null;
     }
@@ -398,7 +412,8 @@ class _UserModel implements UserModel {
       required this.address,
       @JsonKey(name: 'created_at') required this.createdAt,
       required this.ward,
-      required this.province});
+      required this.province,
+      required this.email});
   factory _UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);
 
@@ -425,6 +440,8 @@ class _UserModel implements UserModel {
   final String? ward;
   @override
   final String? province;
+  @override
+  final String? email;
 
   /// Create a copy of UserModel
   /// with the given fields replaced by the non-null parameter values.
@@ -460,17 +477,18 @@ class _UserModel implements UserModel {
                 other.createdAt == createdAt) &&
             (identical(other.ward, ward) || other.ward == ward) &&
             (identical(other.province, province) ||
-                other.province == province));
+                other.province == province) &&
+            (identical(other.email, email) || other.email == email));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, fullname, phone, gender,
-      birthday, avatar, status, address, createdAt, ward, province);
+      birthday, avatar, status, address, createdAt, ward, province, email);
 
   @override
   String toString() {
-    return 'UserModel(id: $id, fullname: $fullname, phone: $phone, gender: $gender, birthday: $birthday, avatar: $avatar, status: $status, address: $address, createdAt: $createdAt, ward: $ward, province: $province)';
+    return 'UserModel(id: $id, fullname: $fullname, phone: $phone, gender: $gender, birthday: $birthday, avatar: $avatar, status: $status, address: $address, createdAt: $createdAt, ward: $ward, province: $province, email: $email)';
   }
 }
 
@@ -493,7 +511,8 @@ abstract mixin class _$UserModelCopyWith<$Res>
       String? address,
       @JsonKey(name: 'created_at') DateTime? createdAt,
       String? ward,
-      String? province});
+      String? province,
+      String? email});
 }
 
 /// @nodoc
@@ -519,6 +538,7 @@ class __$UserModelCopyWithImpl<$Res> implements _$UserModelCopyWith<$Res> {
     Object? createdAt = freezed,
     Object? ward = freezed,
     Object? province = freezed,
+    Object? email = freezed,
   }) {
     return _then(_UserModel(
       id: freezed == id
@@ -564,6 +584,10 @@ class __$UserModelCopyWithImpl<$Res> implements _$UserModelCopyWith<$Res> {
       province: freezed == province
           ? _self.province
           : province // ignore: cast_nullable_to_non_nullable
+              as String?,
+      email: freezed == email
+          ? _self.email
+          : email // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }

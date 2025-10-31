@@ -22,9 +22,9 @@ _RealEstateModel _$RealEstateModelFromJson(Map<String, dynamic> json) =>
       address: json['address'] as String?,
       price: (json['price'] as num?)?.toDouble(),
       status: json['status'] as String?,
-      createdAt: json['createdAt'] == null
+      createdAt: json['created_at'] == null
           ? null
-          : DateTime.parse(json['createdAt'] as String),
+          : DateTime.parse(json['created_at'] as String),
     );
 
 Map<String, dynamic> _$RealEstateModelToJson(_RealEstateModel instance) =>
@@ -37,5 +37,5 @@ Map<String, dynamic> _$RealEstateModelToJson(_RealEstateModel instance) =>
       'address': instance.address,
       'price': instance.price,
       'status': instance.status,
-      'createdAt': instance.createdAt?.toIso8601String(),
+      'created_at': instance.createdAt?.toIso8601String(),
     };

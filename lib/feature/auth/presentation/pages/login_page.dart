@@ -109,78 +109,74 @@ class _LoginPageState extends State<LoginPage> {
       child: UnfocusWidget(
         child: BackgroundWidget(
           appBar: null,
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                return SingleChildScrollView(
-                  physics: deviceHeight <= 670
-                      ? const AlwaysScrollableScrollPhysics()
-                      : const NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.only(bottom: 16.h),
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minHeight: constraints.maxHeight,
-                    ),
-                    child: IntrinsicHeight(
-                      child: BlocListener<AuthBloc, AuthState>(
-                        bloc: sl<AuthBloc>(),
-                        listener: _onLoginListener,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding:
-                                  EdgeInsets.fromLTRB(8.w, 16.h, 8.w, 24.h),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    'Đăng nhập',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineMedium!
-                                        .copyWith(
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                  ),
-                                  SizedBox(height: 10.h),
-                                  Text(
-                                    'Đăng nhập để có trải nghiệm tốt nhất',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleLarge!
-                                        .copyWith(
-                                            fontSize: 20.sp,
-                                            color: TextColors
-                                                .textDefaultSecondary),
-                                  )
-                                ],
-                              ),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                physics: deviceHeight <= 670
+                    ? const AlwaysScrollableScrollPhysics()
+                    : const NeverScrollableScrollPhysics(),
+                padding: EdgeInsets.only(bottom: 16.h),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: constraints.maxHeight,
+                  ),
+                  child: IntrinsicHeight(
+                    child: BlocListener<AuthBloc, AuthState>(
+                      bloc: sl<AuthBloc>(),
+                      listener: _onLoginListener,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding:
+                                EdgeInsets.fromLTRB(8.w, 16.h, 8.w, 24.h),
+                            child: Column(
+                              children: [
+                                Text(
+                                  'Đăng nhập',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium!
+                                      .copyWith(
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                ),
+                                SizedBox(height: 10.h),
+                                Text(
+                                  'Đăng nhập để có trải nghiệm tốt nhất',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleLarge!
+                                      .copyWith(
+                                          fontSize: 20.sp,
+                                          color: TextColors
+                                              .textDefaultSecondary),
+                                )
+                              ],
                             ),
-                            LoginForm(
-                              formKey: _formKey,
-                              usernameCon: _usernameCon,
-                              usernameNode: _usernameNode,
-                              passwordNode: _passwordNode,
-                              passwordCon: _passwordCon,
-                              onLogin: _onLogin,
-                              onForgotThePass: _onForgot,
-                            ),
-                            const Spacer(),
-                            AuthEndText(
-                              onPressed: _onRegister,
-                              firstText: 'Không có tài khoản? ',
-                              secondText: 'Đăng kí',
-                            ),
-                            SizedBox(height: 24.h),
-                          ],
-                        ),
+                          ),
+                          LoginForm(
+                            formKey: _formKey,
+                            usernameCon: _usernameCon,
+                            usernameNode: _usernameNode,
+                            passwordNode: _passwordNode,
+                            passwordCon: _passwordCon,
+                            onLogin: _onLogin,
+                            onForgotThePass: _onForgot,
+                          ),
+                          const Spacer(),
+                          AuthEndText(
+                            onPressed: _onRegister,
+                            firstText: 'Không có tài khoản? ',
+                            secondText: 'Đăng kí',
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
         ),
       ),

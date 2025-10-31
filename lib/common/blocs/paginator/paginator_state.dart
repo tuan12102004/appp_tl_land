@@ -9,5 +9,8 @@ sealed class PaginatorState<T> with _$PaginatorState<T> {
     @Default(false) bool isLoaded,
     @Default([]) List<T> items,
     Failure? failure,
+    T? lastRemovedItem,
+    List<T>? lastRemovedItems,
+    int? lastRemovedIndex,
   }) = _PaginatorState<T>;
 }
