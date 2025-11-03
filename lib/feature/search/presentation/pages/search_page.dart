@@ -1,5 +1,6 @@
 import 'package:app_tl_land_3212/common/common_module.dart';
 import 'package:app_tl_land_3212/core/core_module.dart';
+import 'package:app_tl_land_3212/feature/profile/presentation/profile_module.dart';
 import 'package:app_tl_land_3212/feature/search/domain/search_domain_module.dart';
 import 'package:app_tl_land_3212/feature/search/presentation/blocs/search_filter_bloc.dart';
 import 'package:app_tl_land_3212/feature/search/presentation/widgets/search_widget_module.dart';
@@ -287,11 +288,7 @@ class _SearchPageState extends State<SearchPage>
       return const Center(child: CircularProgressIndicator());
     }
     if (state.isLoaded && state.items.isEmpty) {
-      return Center(
-          child: Text('Không có thông tin nào.',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: TextColors.textDefaultSecondary,
-                  )));
+      return InfoEmpty(text: 'bất động sản');
     }
     return SearchList(
         searchRealEstates: state.items,

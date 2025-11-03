@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:app_tl_land_3212/common/common_module.dart';
 import 'package:app_tl_land_3212/core/core_module.dart';
@@ -24,11 +23,12 @@ class _NotificationPageState extends State<NotificationPage>
   late final PaginatorBloc<NotificationEntity, int?> _notificationPaginatorBloc;
   late final ScrollController _notiScrollCon;
   final int _limit = 10;
+  bool _isDeleteUndoActive = false;
 
   // ktra có tb nào chưa đọc không
   bool get hasUnreadNoti {
     final items = _notificationPaginatorBloc.state.items;
-    return items.any((n) => (n.status ?? "") == "Chưa đọc");
+    return items.any((n) => (n.status) == 1);
   }
 
   // ktra có dstb không
@@ -39,14 +39,6 @@ class _NotificationPageState extends State<NotificationPage>
   @override
   void initState() {
     super.initState();
-    // đọc trạng thái
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // đợi đến khi frame đầu tiên hoàn thành
-      if (mounted) {
-        setState(() {});
-      }
-    });
-
     // Notification list - hiện trang đầu tiên
     _loadInitialData();
     _notiScrollCon = ScrollController()
@@ -122,25 +114,17 @@ class _NotificationPageState extends State<NotificationPage>
     } else if (state.failure != null) {
       sl<MultiLoadingStateService>().fireError();
       await _popAnimation(context);
-      final dialogObserver = sl<DialogObserverBloc>();
 
-      if (context.mounted &&
-          state.failure?.type != null &&
-          !dialogObserver.state.isDialogOpen) {
+      if (context.mounted && state.failure?.type != null) {
         DisplayError.handle(
             context: context,
             errerrType: state.failure!.type,
             apiMessage: state.failure!.err);
       }
-    } else if (state.isSuccess) {
+    } else if (state.isSuccess && state.apiAction != ApiActionType.delete) {
       sl<MultiLoadingStateService>().fireCheck();
       await _popAnimation(context);
     }
-  }
-
-  Future<void> _onRefreshNotifications() async {
-    _notificationPaginatorBloc.add(LoadInitial<NotificationEntity, int?>(
-        usecase: sl<GetNotificationsUsecase>(), limit: _limit));
   }
 
   @override
@@ -153,13 +137,23 @@ class _NotificationPageState extends State<NotificationPage>
             PaginatorState<NotificationEntity>>(
           bloc: _notificationPaginatorBloc,
           listener: (context, notiState) {
-            // Kiểm tra xem dữ liệu đã chiếm hết toàn bộ màn hình chưa
-            if (notiState.isLoaded) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                if (mounted) {
-                  _onLoadMoreWhenNotScrollable();
-                }
-              });
+            final dialogObserver = sl<DialogObserverBloc>();
+
+            if (notiState.failure?.type != null &&
+                !dialogObserver.state.isDialogOpen) {
+              DisplayError.handle(
+                context: context,
+                errerrType: notiState.failure!.type,
+                apiMessage: notiState.failure!.err,
+              );
+
+              if (notiState.isLoaded) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (mounted) {
+                    _onLoadMoreWhenNotScrollable();
+                  }
+                });
+              }
             }
           },
           builder: (context, notiState) {
@@ -171,12 +165,11 @@ class _NotificationPageState extends State<NotificationPage>
                   automaticallyImplyLeading: false,
                   title: Text(
                     'Thông báo',
-                    style: Theme.of(context)
-                        .appBarTheme
-                        .titleTextStyle
-                        ?.copyWith(
-                            color: TextColors.textDefaultPrimary,
-                            fontWeight: FontWeight.w600),
+                    style:
+                        Theme.of(context).appBarTheme.titleTextStyle?.copyWith(
+                              color: TextColors.textDefaultPrimary,
+                              fontWeight: FontWeight.w600,
+                            ),
                   ),
                   actions: [
                     PopupMenuButton<String>(
@@ -189,8 +182,7 @@ class _NotificationPageState extends State<NotificationPage>
                         itemBuilder: (context) {
                           return _buildPopup(
                             context,
-                            notiState.items
-                                .any((n) => (n.status ?? "") == "Chưa đọc"),
+                            notiState.items.any((n) => (n.status) == 1),
                             notiState.items.isNotEmpty,
                           );
                         })
@@ -205,39 +197,7 @@ class _NotificationPageState extends State<NotificationPage>
     );
   }
 
-  // Read all noti
-  void _onMarkAllAsReadPressed() {
-    // TODO: Api đã đọc tất cả
-    sl<NotificationBloc>().add(ReadAllNotification());
-  }
-
-  // del all noti
-  void _onDeleteAllPressed(
-    BuildContext context,
-  ) {
-    String title = 'Xóa tất cả thông báo';
-    showNotiDialog(
-      context,
-      title: title,
-      content: 'Bạn có muốn chắc $title?',
-      onCancel: () => context.pop(),
-      onConfirmSub: () {
-        // TODO: Xóa UI trước
-        _notificationPaginatorBloc.add(
-          RemoveAll(),
-        );
-      },
-      onUndo: () {
-        // TODO: Hoàn tác UI
-        _notificationPaginatorBloc.add(const RestoreAll());
-      },
-      onConfirm: () {
-        // TODO: Xóa tất cả event
-        sl<NotificationBloc>().add(DeleteAllNotifications());
-      },
-    );
-  }
-
+// TODO: popup menu
   List<PopupMenuEntry<String>> _buildPopup(
     BuildContext context,
     bool hasUnreadNotifications,
@@ -245,16 +205,13 @@ class _NotificationPageState extends State<NotificationPage>
   ) {
     return [
       PopupMenuItem(
-        enabled: hasUnreadNotifications,
-        onTap: () {
-          Navigator.of(context).pop();
-          _onMarkAllAsReadPressed();
-        },
+        enabled: hasUnreadNotifications, // Chỉ bật khi có thông báo chưa đọc
+        onTap: hasUnreadNotifications ? _onMarkAllAsReadPressed : null,
         child: CustomAdaptiveTapEffect(
           text: 'Đã đọc tất cả',
           textColor: hasUnreadNotifications
-              ? IconColors.iconDefaultPrimary
-              : IconColors.iconButtonDisabled,
+              ? TextColors.textDefaultPrimary
+              : TextColors.textButtonDisabled,
           isOpacity: true,
           fontSize: 16.sp,
           preffixWidget: Icon(Icons.mark_chat_read_sharp,
@@ -262,16 +219,13 @@ class _NotificationPageState extends State<NotificationPage>
         ),
       ),
       PopupMenuItem(
-          enabled: hasUnreadNotifications,
-          onTap: () {
-            Navigator.of(context).pop();
-            _onDeleteAllPressed(context);
-          },
+          enabled: hasNotifications, // Chỉ bật khi có ít nhất một thông báo
+          onTap: hasNotifications ? () => _onDeleteAllPressed(context) : null,
           child: CustomAdaptiveTapEffect(
             text: 'Xóa tất cả',
-            textColor: hasUnreadNotifications
-                ? IconColors.iconDefaultPrimary
-                : IconColors.iconButtonDisabled,
+            textColor: hasNotifications
+                ? TextColors.textDefaultPrimary
+                : TextColors.textButtonDisabled,
             isOpacity: true,
             fontSize: 16.sp,
             preffixWidget: Icon(Icons.delete,
@@ -280,6 +234,60 @@ class _NotificationPageState extends State<NotificationPage>
     ];
   }
 
+  // TODO: Api đã đọc tất cả
+  void _onMarkAllAsReadPressed() {
+    // Gọi API để đánh dấu tất cả là đã đọc
+    sl<NotificationBloc>().add(ReadAllNotification());
+
+    _notificationPaginatorBloc.add(
+      UpdateAllItems(
+        update: (item) => item.copyWith(status: 2),
+      ),
+    );
+  }
+
+// TODO: del all noti
+  void _onDeleteAllPressed(
+    BuildContext context,
+  ) {
+    String title = 'Xóa tất cả thông báo';
+    setState(() {
+      _isDeleteUndoActive = true;
+    });
+    showNotiDialog(
+      context,
+      title: title,
+      content: 'Bạn có chắc chắn muốn $title không?',
+      onCancel: () {
+        context.pop();
+        setState(() {
+          _isDeleteUndoActive = false;
+        });
+      },
+      onConfirmSub: () {
+        // Cập nhật giao diện người dùng trước
+        _notificationPaginatorBloc.add(
+          RemoveAll(),
+        );
+      },
+      onUndo: () {
+        // Hoàn tác
+        _notificationPaginatorBloc.add(const RestoreAll());
+        setState(() {
+          _isDeleteUndoActive = false;
+        });
+      },
+      onConfirm: () {
+        // Gọi API để xóa tất cả thông báo sau khi xác nhận
+        sl<NotificationBloc>().add(DeleteAllNotifications());
+        setState(() {
+          _isDeleteUndoActive = false;
+        });
+      },
+    );
+  }
+
+  // TODO: delete by id
   Future<bool> _deleteNotification(int id) async {
     final completer = Completer<bool>();
     final subscription = sl<NotificationBloc>().stream.listen((state) {
@@ -302,28 +310,35 @@ class _NotificationPageState extends State<NotificationPage>
       builder: (_) => CustomOkCancelDialog(
         title: 'Xóa thông báo',
         content: 'Bạn có chắc muốn xóa thông báo này?',
-        onCancel: () => context.pop(false),
         onConfirm: () => context.pop(true),
       ),
     );
 
-    if (confirm == true) {
-      final success = await _deleteNotification(notification.id);
-      if (success && mounted) {
-        _notificationPaginatorBloc.add(
-          RemoveItem(where: (item) => item.id == notification.id),
-        );
-        return true;
-      }
+    if (confirm != true) {
       return false;
     }
-    return false;
+
+    _notificationPaginatorBloc.add(
+      RemoveItem(where: (item) => item.id == notification.id),
+    );
+
+    final success = await _deleteNotification(notification.id);
+
+    if (!success && mounted) {
+      // Nếu xóa trên server thất bại, khôi phục lại item trên giao diện
+      _notificationPaginatorBloc.add(const RestoreLastRemoved());
+
+      showAppDialog(context,
+          title: 'Thông báo',
+          content: 'Không thể xóa thông báo. Vui lòng thử lại.',
+          type: DialogType.ok);
+      return false;
+    }
+    return true;
   }
 
   Widget _buildBody(PaginatorState<NotificationEntity> notiState) {
-    if (notiState.isLoading ||
-        (!notiState.isLoaded && notiState.items.isEmpty)) {
-      // return const Center(child: CircularProgressIndicator());
+    if (notiState.isLoading && notiState.items.isEmpty) {
       return const CardShimmer();
     }
     return NotificationList(
@@ -331,8 +346,32 @@ class _NotificationPageState extends State<NotificationPage>
       notiList: notiState.items,
       isLoadMore: notiState.isLoadMore,
       onItemDismissed: _onItemDismissed,
+      onItemTapped: _onNotificationTapped,
       onRefresh: _onRefreshNotifications,
     );
+  }
+
+  // TODO: _onRefreshNotifications
+  Future<void> _onRefreshNotifications() async {
+    if (_isDeleteUndoActive) {
+      return;
+    }
+    _notificationPaginatorBloc.add(LoadInitial<NotificationEntity, int?>(
+        usecase: sl<GetNotificationsUsecase>(), limit: _limit));
+  }
+
+  //TODO: _onNotificationTapped
+  void _onNotificationTapped(NotificationEntity notification) async {
+    final result = await context.push<NotificationEntity>(
+      '/notification/detail',
+      extra: notification,
+    );
+    if (result != null && mounted) {
+      _notificationPaginatorBloc.add(UpdateItem(
+        where: (item) => item.id == result.id,
+        newItem: result,
+      ));
+    }
   }
 
   @override

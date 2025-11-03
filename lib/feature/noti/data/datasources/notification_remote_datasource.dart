@@ -35,12 +35,16 @@ class NotificationRemoteDatasourceImpl implements NotificationRemoteDatasource {
         DioMethod.get,
         param: {"limit": limit, "page": page},
       );
-      if (res.statusCode != 200) _throwIfError(res);
       final apiRes = ApiResModel<Map<String, dynamic>>.fromJson(
         res.data,
         (json) => json as Map<String, dynamic>,
-      );
-      final notiList = apiRes.data?['notification'] as List<dynamic>? ?? [];
+      ); // "data":{}
+
+      if (res.statusCode != 200) _throwIfError(res);
+
+      // Lấy danh sách từ key 'notification' bên trong data
+      final notiList = apiRes.data?['notification'] as List<dynamic>? ??
+          []; // "data":{"products":[{}]}
 
       final models =
           notiList.map((el) => NotificationModel.fromJson(el)).toList();
@@ -89,7 +93,7 @@ class NotificationRemoteDatasourceImpl implements NotificationRemoteDatasource {
     try {
       final res = await _dioClient.request(
         ApiUrls.notificationDeleteAll,
-        DioMethod.delete,
+        DioMethod.post,
       );
       if (res.statusCode != 200) _throwIfError(res);
     } catch (e) {

@@ -53,8 +53,8 @@ class CustomOkCancelDialog extends StatelessWidget {
               // cancelText ?? AppLocalizations.of(context)!.cancel,
               cancelText ?? 'Hủy',
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                color: cancelColor ?? AppColors.stateColorsError,
-              ),
+                    color: cancelColor ?? AppColors.stateColorsError,
+                  ),
             ),
           ),
         ),
@@ -62,9 +62,10 @@ class CustomOkCancelDialog extends StatelessWidget {
         // Confirm
         CustomAdaptiveTapEffect(
           onPressed: () {
-            Navigator.pop(context);
             if (onConfirm != null) {
               onConfirm!();
+            } else {
+              Navigator.pop(context);
             }
           },
           child: Padding(
@@ -73,9 +74,9 @@ class CustomOkCancelDialog extends StatelessWidget {
               // confirmText ?? AppLocalizations.of(context)!.confirm,
               confirmText ?? 'Xác nhận',
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                fontWeight: FontWeight.w700,
-                color: confirmColor ?? AppColors.primary,
-              ),
+                    fontWeight: FontWeight.w700,
+                    color: confirmColor ?? AppColors.primary,
+                  ),
             ),
           ),
         ),

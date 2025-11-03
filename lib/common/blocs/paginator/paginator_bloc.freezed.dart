@@ -53,7 +53,8 @@ extension PaginatorEventPatterns<T, Param> on PaginatorEvent<T, Param> {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(LoadInitial<T, Param> value)? loadInitial,
     TResult Function(LoadMore<T, Param> value)? loadMore,
-    TResult Function(UpdateItems<T, Param> value)? updateItems,
+    TResult Function(UpdateItem<T, Param> value)? updateItem,
+    TResult Function(UpdateAllItems<T, Param> value)? updateAllItems,
     TResult Function(RemoveItem<T, Param> value)? removeItem,
     TResult Function(RestoreLastRemoved<T, Param> value)? restoreLastRemoved,
     TResult Function(RemoveAll<T, Param> value)? removeAll,
@@ -66,8 +67,10 @@ extension PaginatorEventPatterns<T, Param> on PaginatorEvent<T, Param> {
         return loadInitial(_that);
       case LoadMore() when loadMore != null:
         return loadMore(_that);
-      case UpdateItems() when updateItems != null:
-        return updateItems(_that);
+      case UpdateItem() when updateItem != null:
+        return updateItem(_that);
+      case UpdateAllItems() when updateAllItems != null:
+        return updateAllItems(_that);
       case RemoveItem() when removeItem != null:
         return removeItem(_that);
       case RestoreLastRemoved() when restoreLastRemoved != null:
@@ -98,7 +101,8 @@ extension PaginatorEventPatterns<T, Param> on PaginatorEvent<T, Param> {
   TResult map<TResult extends Object?>({
     required TResult Function(LoadInitial<T, Param> value) loadInitial,
     required TResult Function(LoadMore<T, Param> value) loadMore,
-    required TResult Function(UpdateItems<T, Param> value) updateItems,
+    required TResult Function(UpdateItem<T, Param> value) updateItem,
+    required TResult Function(UpdateAllItems<T, Param> value) updateAllItems,
     required TResult Function(RemoveItem<T, Param> value) removeItem,
     required TResult Function(RestoreLastRemoved<T, Param> value)
         restoreLastRemoved,
@@ -111,8 +115,10 @@ extension PaginatorEventPatterns<T, Param> on PaginatorEvent<T, Param> {
         return loadInitial(_that);
       case LoadMore():
         return loadMore(_that);
-      case UpdateItems():
-        return updateItems(_that);
+      case UpdateItem():
+        return updateItem(_that);
+      case UpdateAllItems():
+        return updateAllItems(_that);
       case RemoveItem():
         return removeItem(_that);
       case RestoreLastRemoved():
@@ -140,7 +146,8 @@ extension PaginatorEventPatterns<T, Param> on PaginatorEvent<T, Param> {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(LoadInitial<T, Param> value)? loadInitial,
     TResult? Function(LoadMore<T, Param> value)? loadMore,
-    TResult? Function(UpdateItems<T, Param> value)? updateItems,
+    TResult? Function(UpdateItem<T, Param> value)? updateItem,
+    TResult? Function(UpdateAllItems<T, Param> value)? updateAllItems,
     TResult? Function(RemoveItem<T, Param> value)? removeItem,
     TResult? Function(RestoreLastRemoved<T, Param> value)? restoreLastRemoved,
     TResult? Function(RemoveAll<T, Param> value)? removeAll,
@@ -152,8 +159,10 @@ extension PaginatorEventPatterns<T, Param> on PaginatorEvent<T, Param> {
         return loadInitial(_that);
       case LoadMore() when loadMore != null:
         return loadMore(_that);
-      case UpdateItems() when updateItems != null:
-        return updateItems(_that);
+      case UpdateItem() when updateItem != null:
+        return updateItem(_that);
+      case UpdateAllItems() when updateAllItems != null:
+        return updateAllItems(_that);
       case RemoveItem() when removeItem != null:
         return removeItem(_that);
       case RestoreLastRemoved() when restoreLastRemoved != null:
@@ -187,7 +196,8 @@ extension PaginatorEventPatterns<T, Param> on PaginatorEvent<T, Param> {
     TResult Function(Usecase<List<T>, PaginatorParam<Param>> usecase, int limit,
             Param? param)?
         loadMore,
-    TResult Function(List<T> newItems)? updateItems,
+    TResult Function(bool Function(T item) where, T newItem)? updateItem,
+    TResult Function(T Function(T item) update)? updateAllItems,
     TResult Function(bool Function(T item) where)? removeItem,
     TResult Function()? restoreLastRemoved,
     TResult Function()? removeAll,
@@ -200,8 +210,10 @@ extension PaginatorEventPatterns<T, Param> on PaginatorEvent<T, Param> {
         return loadInitial(_that.usecase, _that.limit, _that.param);
       case LoadMore() when loadMore != null:
         return loadMore(_that.usecase, _that.limit, _that.param);
-      case UpdateItems() when updateItems != null:
-        return updateItems(_that.newItems);
+      case UpdateItem() when updateItem != null:
+        return updateItem(_that.where, _that.newItem);
+      case UpdateAllItems() when updateAllItems != null:
+        return updateAllItems(_that.update);
       case RemoveItem() when removeItem != null:
         return removeItem(_that.where);
       case RestoreLastRemoved() when restoreLastRemoved != null:
@@ -236,7 +248,9 @@ extension PaginatorEventPatterns<T, Param> on PaginatorEvent<T, Param> {
     required TResult Function(Usecase<List<T>, PaginatorParam<Param>> usecase,
             int limit, Param? param)
         loadMore,
-    required TResult Function(List<T> newItems) updateItems,
+    required TResult Function(bool Function(T item) where, T newItem)
+        updateItem,
+    required TResult Function(T Function(T item) update) updateAllItems,
     required TResult Function(bool Function(T item) where) removeItem,
     required TResult Function() restoreLastRemoved,
     required TResult Function() removeAll,
@@ -248,8 +262,10 @@ extension PaginatorEventPatterns<T, Param> on PaginatorEvent<T, Param> {
         return loadInitial(_that.usecase, _that.limit, _that.param);
       case LoadMore():
         return loadMore(_that.usecase, _that.limit, _that.param);
-      case UpdateItems():
-        return updateItems(_that.newItems);
+      case UpdateItem():
+        return updateItem(_that.where, _that.newItem);
+      case UpdateAllItems():
+        return updateAllItems(_that.update);
       case RemoveItem():
         return removeItem(_that.where);
       case RestoreLastRemoved():
@@ -281,7 +297,8 @@ extension PaginatorEventPatterns<T, Param> on PaginatorEvent<T, Param> {
     TResult? Function(Usecase<List<T>, PaginatorParam<Param>> usecase,
             int limit, Param? param)?
         loadMore,
-    TResult? Function(List<T> newItems)? updateItems,
+    TResult? Function(bool Function(T item) where, T newItem)? updateItem,
+    TResult? Function(T Function(T item) update)? updateAllItems,
     TResult? Function(bool Function(T item) where)? removeItem,
     TResult? Function()? restoreLastRemoved,
     TResult? Function()? removeAll,
@@ -293,8 +310,10 @@ extension PaginatorEventPatterns<T, Param> on PaginatorEvent<T, Param> {
         return loadInitial(_that.usecase, _that.limit, _that.param);
       case LoadMore() when loadMore != null:
         return loadMore(_that.usecase, _that.limit, _that.param);
-      case UpdateItems() when updateItems != null:
-        return updateItems(_that.newItems);
+      case UpdateItem() when updateItem != null:
+        return updateItem(_that.where, _that.newItem);
+      case UpdateAllItems() when updateAllItems != null:
+        return updateAllItems(_that.update);
       case RemoveItem() when removeItem != null:
         return removeItem(_that.where);
       case RestoreLastRemoved() when restoreLastRemoved != null:
@@ -477,70 +496,137 @@ class _$LoadMoreCopyWithImpl<T, Param, $Res>
 
 /// @nodoc
 
-class UpdateItems<T, Param> implements PaginatorEvent<T, Param> {
-  const UpdateItems({required final List<T> newItems}) : _newItems = newItems;
+class UpdateItem<T, Param> implements PaginatorEvent<T, Param> {
+  const UpdateItem({required this.where, required this.newItem});
 
-  final List<T> _newItems;
-  List<T> get newItems {
-    if (_newItems is EqualUnmodifiableListView) return _newItems;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_newItems);
-  }
+  final bool Function(T item) where;
+  final T newItem;
 
   /// Create a copy of PaginatorEvent
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
-  $UpdateItemsCopyWith<T, Param, UpdateItems<T, Param>> get copyWith =>
-      _$UpdateItemsCopyWithImpl<T, Param, UpdateItems<T, Param>>(
+  $UpdateItemCopyWith<T, Param, UpdateItem<T, Param>> get copyWith =>
+      _$UpdateItemCopyWithImpl<T, Param, UpdateItem<T, Param>>(
           this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is UpdateItems<T, Param> &&
-            const DeepCollectionEquality().equals(other._newItems, _newItems));
+            other is UpdateItem<T, Param> &&
+            (identical(other.where, where) || other.where == where) &&
+            const DeepCollectionEquality().equals(other.newItem, newItem));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_newItems));
+  int get hashCode => Object.hash(
+      runtimeType, where, const DeepCollectionEquality().hash(newItem));
 
   @override
   String toString() {
-    return 'PaginatorEvent<$T, $Param>.updateItems(newItems: $newItems)';
+    return 'PaginatorEvent<$T, $Param>.updateItem(where: $where, newItem: $newItem)';
   }
 }
 
 /// @nodoc
-abstract mixin class $UpdateItemsCopyWith<T, Param, $Res>
+abstract mixin class $UpdateItemCopyWith<T, Param, $Res>
     implements $PaginatorEventCopyWith<T, Param, $Res> {
-  factory $UpdateItemsCopyWith(UpdateItems<T, Param> value,
-      $Res Function(UpdateItems<T, Param>) _then) = _$UpdateItemsCopyWithImpl;
+  factory $UpdateItemCopyWith(UpdateItem<T, Param> value,
+      $Res Function(UpdateItem<T, Param>) _then) = _$UpdateItemCopyWithImpl;
   @useResult
-  $Res call({List<T> newItems});
+  $Res call({bool Function(T item) where, T newItem});
 }
 
 /// @nodoc
-class _$UpdateItemsCopyWithImpl<T, Param, $Res>
-    implements $UpdateItemsCopyWith<T, Param, $Res> {
-  _$UpdateItemsCopyWithImpl(this._self, this._then);
+class _$UpdateItemCopyWithImpl<T, Param, $Res>
+    implements $UpdateItemCopyWith<T, Param, $Res> {
+  _$UpdateItemCopyWithImpl(this._self, this._then);
 
-  final UpdateItems<T, Param> _self;
-  final $Res Function(UpdateItems<T, Param>) _then;
+  final UpdateItem<T, Param> _self;
+  final $Res Function(UpdateItem<T, Param>) _then;
 
   /// Create a copy of PaginatorEvent
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   $Res call({
-    Object? newItems = null,
+    Object? where = null,
+    Object? newItem = freezed,
   }) {
-    return _then(UpdateItems<T, Param>(
-      newItems: null == newItems
-          ? _self._newItems
-          : newItems // ignore: cast_nullable_to_non_nullable
-              as List<T>,
+    return _then(UpdateItem<T, Param>(
+      where: null == where
+          ? _self.where
+          : where // ignore: cast_nullable_to_non_nullable
+              as bool Function(T item),
+      newItem: freezed == newItem
+          ? _self.newItem
+          : newItem // ignore: cast_nullable_to_non_nullable
+              as T,
+    ));
+  }
+}
+
+/// @nodoc
+
+class UpdateAllItems<T, Param> implements PaginatorEvent<T, Param> {
+  const UpdateAllItems({required this.update});
+
+  final T Function(T item) update;
+
+  /// Create a copy of PaginatorEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $UpdateAllItemsCopyWith<T, Param, UpdateAllItems<T, Param>> get copyWith =>
+      _$UpdateAllItemsCopyWithImpl<T, Param, UpdateAllItems<T, Param>>(
+          this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is UpdateAllItems<T, Param> &&
+            (identical(other.update, update) || other.update == update));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, update);
+
+  @override
+  String toString() {
+    return 'PaginatorEvent<$T, $Param>.updateAllItems(update: $update)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $UpdateAllItemsCopyWith<T, Param, $Res>
+    implements $PaginatorEventCopyWith<T, Param, $Res> {
+  factory $UpdateAllItemsCopyWith(UpdateAllItems<T, Param> value,
+          $Res Function(UpdateAllItems<T, Param>) _then) =
+      _$UpdateAllItemsCopyWithImpl;
+  @useResult
+  $Res call({T Function(T item) update});
+}
+
+/// @nodoc
+class _$UpdateAllItemsCopyWithImpl<T, Param, $Res>
+    implements $UpdateAllItemsCopyWith<T, Param, $Res> {
+  _$UpdateAllItemsCopyWithImpl(this._self, this._then);
+
+  final UpdateAllItems<T, Param> _self;
+  final $Res Function(UpdateAllItems<T, Param>) _then;
+
+  /// Create a copy of PaginatorEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? update = null,
+  }) {
+    return _then(UpdateAllItems<T, Param>(
+      update: null == update
+          ? _self.update
+          : update // ignore: cast_nullable_to_non_nullable
+              as T Function(T item),
     ));
   }
 }

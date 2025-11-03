@@ -16,11 +16,10 @@ T _$identity<T>(T value) => value;
 mixin _$NotificationModel {
   int get id;
   String? get title;
-  String? get shortMessage;
   String? get message;
-  String? get avatar;
-  String? get status;
-  DateTime get createdAt;
+  int? get status;
+  @JsonKey(name: 'created_at', fromJson: _dateTimeFromJson)
+  DateTime? get createdAt;
 
   /// Create a copy of NotificationModel
   /// with the given fields replaced by the non-null parameter values.
@@ -40,10 +39,7 @@ mixin _$NotificationModel {
             other is NotificationModel &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
-            (identical(other.shortMessage, shortMessage) ||
-                other.shortMessage == shortMessage) &&
             (identical(other.message, message) || other.message == message) &&
-            (identical(other.avatar, avatar) || other.avatar == avatar) &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt));
@@ -51,12 +47,12 @@ mixin _$NotificationModel {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, title, shortMessage, message, avatar, status, createdAt);
+  int get hashCode =>
+      Object.hash(runtimeType, id, title, message, status, createdAt);
 
   @override
   String toString() {
-    return 'NotificationModel(id: $id, title: $title, shortMessage: $shortMessage, message: $message, avatar: $avatar, status: $status, createdAt: $createdAt)';
+    return 'NotificationModel(id: $id, title: $title, message: $message, status: $status, createdAt: $createdAt)';
   }
 }
 
@@ -69,11 +65,10 @@ abstract mixin class $NotificationModelCopyWith<$Res> {
   $Res call(
       {int id,
       String? title,
-      String? shortMessage,
       String? message,
-      String? avatar,
-      String? status,
-      DateTime createdAt});
+      int? status,
+      @JsonKey(name: 'created_at', fromJson: _dateTimeFromJson)
+      DateTime? createdAt});
 }
 
 /// @nodoc
@@ -91,11 +86,9 @@ class _$NotificationModelCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? title = freezed,
-    Object? shortMessage = freezed,
     Object? message = freezed,
-    Object? avatar = freezed,
     Object? status = freezed,
-    Object? createdAt = null,
+    Object? createdAt = freezed,
   }) {
     return _then(_self.copyWith(
       id: null == id
@@ -106,26 +99,18 @@ class _$NotificationModelCopyWithImpl<$Res>
           ? _self.title
           : title // ignore: cast_nullable_to_non_nullable
               as String?,
-      shortMessage: freezed == shortMessage
-          ? _self.shortMessage
-          : shortMessage // ignore: cast_nullable_to_non_nullable
-              as String?,
       message: freezed == message
           ? _self.message
           : message // ignore: cast_nullable_to_non_nullable
               as String?,
-      avatar: freezed == avatar
-          ? _self.avatar
-          : avatar // ignore: cast_nullable_to_non_nullable
-              as String?,
       status: freezed == status
           ? _self.status
           : status // ignore: cast_nullable_to_non_nullable
-              as String?,
-      createdAt: null == createdAt
+              as int?,
+      createdAt: freezed == createdAt
           ? _self.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
     ));
   }
 }
@@ -224,19 +209,18 @@ extension NotificationModelPatterns on NotificationModel {
     TResult Function(
             int id,
             String? title,
-            String? shortMessage,
             String? message,
-            String? avatar,
-            String? status,
-            DateTime createdAt)?
+            int? status,
+            @JsonKey(name: 'created_at', fromJson: _dateTimeFromJson)
+            DateTime? createdAt)?
         $default, {
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
       case _NotificationModel() when $default != null:
-        return $default(_that.id, _that.title, _that.shortMessage,
-            _that.message, _that.avatar, _that.status, _that.createdAt);
+        return $default(_that.id, _that.title, _that.message, _that.status,
+            _that.createdAt);
       case _:
         return orElse();
     }
@@ -257,15 +241,20 @@ extension NotificationModelPatterns on NotificationModel {
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(int id, String? title, String? shortMessage,
-            String? message, String? avatar, String? status, DateTime createdAt)
+    TResult Function(
+            int id,
+            String? title,
+            String? message,
+            int? status,
+            @JsonKey(name: 'created_at', fromJson: _dateTimeFromJson)
+            DateTime? createdAt)
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _NotificationModel():
-        return $default(_that.id, _that.title, _that.shortMessage,
-            _that.message, _that.avatar, _that.status, _that.createdAt);
+        return $default(_that.id, _that.title, _that.message, _that.status,
+            _that.createdAt);
     }
   }
 
@@ -286,18 +275,17 @@ extension NotificationModelPatterns on NotificationModel {
     TResult? Function(
             int id,
             String? title,
-            String? shortMessage,
             String? message,
-            String? avatar,
-            String? status,
-            DateTime createdAt)?
+            int? status,
+            @JsonKey(name: 'created_at', fromJson: _dateTimeFromJson)
+            DateTime? createdAt)?
         $default,
   ) {
     final _that = this;
     switch (_that) {
       case _NotificationModel() when $default != null:
-        return $default(_that.id, _that.title, _that.shortMessage,
-            _that.message, _that.avatar, _that.status, _that.createdAt);
+        return $default(_that.id, _that.title, _that.message, _that.status,
+            _that.createdAt);
       case _:
         return null;
     }
@@ -310,10 +298,9 @@ class _NotificationModel implements NotificationModel {
   _NotificationModel(
       {required this.id,
       this.title,
-      this.shortMessage,
       this.message,
-      this.avatar,
       this.status,
+      @JsonKey(name: 'created_at', fromJson: _dateTimeFromJson)
       required this.createdAt});
   factory _NotificationModel.fromJson(Map<String, dynamic> json) =>
       _$NotificationModelFromJson(json);
@@ -323,15 +310,12 @@ class _NotificationModel implements NotificationModel {
   @override
   final String? title;
   @override
-  final String? shortMessage;
-  @override
   final String? message;
   @override
-  final String? avatar;
+  final int? status;
   @override
-  final String? status;
-  @override
-  final DateTime createdAt;
+  @JsonKey(name: 'created_at', fromJson: _dateTimeFromJson)
+  final DateTime? createdAt;
 
   /// Create a copy of NotificationModel
   /// with the given fields replaced by the non-null parameter values.
@@ -355,10 +339,7 @@ class _NotificationModel implements NotificationModel {
             other is _NotificationModel &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
-            (identical(other.shortMessage, shortMessage) ||
-                other.shortMessage == shortMessage) &&
             (identical(other.message, message) || other.message == message) &&
-            (identical(other.avatar, avatar) || other.avatar == avatar) &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt));
@@ -366,12 +347,12 @@ class _NotificationModel implements NotificationModel {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, title, shortMessage, message, avatar, status, createdAt);
+  int get hashCode =>
+      Object.hash(runtimeType, id, title, message, status, createdAt);
 
   @override
   String toString() {
-    return 'NotificationModel(id: $id, title: $title, shortMessage: $shortMessage, message: $message, avatar: $avatar, status: $status, createdAt: $createdAt)';
+    return 'NotificationModel(id: $id, title: $title, message: $message, status: $status, createdAt: $createdAt)';
   }
 }
 
@@ -386,11 +367,10 @@ abstract mixin class _$NotificationModelCopyWith<$Res>
   $Res call(
       {int id,
       String? title,
-      String? shortMessage,
       String? message,
-      String? avatar,
-      String? status,
-      DateTime createdAt});
+      int? status,
+      @JsonKey(name: 'created_at', fromJson: _dateTimeFromJson)
+      DateTime? createdAt});
 }
 
 /// @nodoc
@@ -408,11 +388,9 @@ class __$NotificationModelCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? title = freezed,
-    Object? shortMessage = freezed,
     Object? message = freezed,
-    Object? avatar = freezed,
     Object? status = freezed,
-    Object? createdAt = null,
+    Object? createdAt = freezed,
   }) {
     return _then(_NotificationModel(
       id: null == id
@@ -423,26 +401,18 @@ class __$NotificationModelCopyWithImpl<$Res>
           ? _self.title
           : title // ignore: cast_nullable_to_non_nullable
               as String?,
-      shortMessage: freezed == shortMessage
-          ? _self.shortMessage
-          : shortMessage // ignore: cast_nullable_to_non_nullable
-              as String?,
       message: freezed == message
           ? _self.message
           : message // ignore: cast_nullable_to_non_nullable
               as String?,
-      avatar: freezed == avatar
-          ? _self.avatar
-          : avatar // ignore: cast_nullable_to_non_nullable
-              as String?,
       status: freezed == status
           ? _self.status
           : status // ignore: cast_nullable_to_non_nullable
-              as String?,
-      createdAt: null == createdAt
+              as int?,
+      createdAt: freezed == createdAt
           ? _self.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
     ));
   }
 }

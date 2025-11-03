@@ -19,7 +19,7 @@ class NotificationRepoImpl implements NotificationRepo {
         limit: limit,
         page: page,
       );
-      final notificationEntities = notifications.map((e) => e.toEntity()).toList();
+      final notificationEntities = notifications.map((e) => e.toEntity).toList();
       return Right(notificationEntities);
     } on ServerException catch (e) {
       return Left(Failure(err: e.err, type: e.type));
@@ -31,7 +31,7 @@ class NotificationRepoImpl implements NotificationRepo {
   Future<Either<Failure, NotificationEntity>> getNotificationDetail({required int id}) async {
     try {
       final notification = await _notificationRemoteDatasource.getNotificationDetail(id: id);
-      return Right(notification.toEntity());
+      return Right(notification.toEntity);
     } on ServerException catch (e) {
       return Left(Failure(err: e.err, type: e.type));
     }

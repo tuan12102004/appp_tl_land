@@ -14,8 +14,14 @@ sealed class PaginatorEvent<T, Param> with _$PaginatorEvent<T, Param> {
     Param? param,
   }) = LoadMore<T, Param>;
 
-  const factory PaginatorEvent.updateItems({required List<T> newItems}) =
-      UpdateItems<T, Param>;
+  const factory PaginatorEvent.updateItem({
+    required bool Function(T item) where,
+    required T newItem,
+  }) = UpdateItem<T, Param>;
+
+  const factory PaginatorEvent.updateAllItems({
+    required T Function(T item) update,
+  }) = UpdateAllItems<T, Param>;
 
   const factory PaginatorEvent.removeItem({
     required bool Function(T item) where,

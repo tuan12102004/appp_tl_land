@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:app_tl_land_3212/common/common_module.dart';
 import 'package:app_tl_land_3212/core/core_module.dart';
 import 'package:flutter/material.dart';
@@ -35,10 +37,26 @@ class UserAvatar extends StatelessWidget {
   }
 
   Widget _buildImage(String path) {
-    final String imagePath = path.startsWith('/') ? ApiUrls.imageUrl + path : path;
-    return CustomCachedImage(
-      imagePath: imagePath,
-      fit: BoxFit.cover,
-    );
+    if (path.isEmpty || path == AppImages.defaultAvatar) {
+      return Image.asset(AppImages.defaultAvatar, fit: BoxFit.cover);
+    }
+
+    if (path.startsWith('http')) {
+      return CustomCachedImage(imagePath: path, fit: BoxFit.cover);
+    }
+
+    // Ưu tiên hiển thị dưới dạng file cục bộ trước.
+    if (path.startsWith('/')) {
+      return Image.file(
+        File(path),
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          final String imageUrl = ApiUrls.imageUrl + path;
+          return CustomCachedImage(imagePath: imageUrl, fit: BoxFit.cover);
+        },
+      );
+    }
+
+    return Image.asset(path, fit: BoxFit.cover);
   }
 }

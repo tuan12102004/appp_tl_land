@@ -12,6 +12,7 @@ class NotificationList extends StatelessWidget {
   final List<NotificationEntity> notiList;
   final bool isLoadMore;
   final Future<bool> Function(NotificationEntity notiList) onItemDismissed;
+  final Function(NotificationEntity) onItemTapped;
   final VoidCallback onRefresh;
 
   const NotificationList(
@@ -20,13 +21,15 @@ class NotificationList extends StatelessWidget {
       required this.notiList,
       required this.isLoadMore,
       required this.onItemDismissed,
-      required this.onRefresh});
+      required this.onRefresh,
+      required this.onItemTapped});
 
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator.adaptive(
       onRefresh: () async => onRefresh(),
       child: CustomScrollView(
+        controller: notiScrollCon,
         physics: AlwaysScrollableScrollPhysics(),
         slivers: [
           if (notiList.isEmpty)
@@ -39,8 +42,9 @@ class NotificationList extends StatelessWidget {
               ),
             )
           else
-            SliverList.separated(
+            SliverList.builder(
               key: ValueKey('noti-list'),
+              itemCount: notiList.length + (isLoadMore ? 1 : 0),
               itemBuilder: (context, index) {
                 if (index >= notiList.length) {
                   // Hiển thị một widget loading ở cuối danh sách
@@ -71,26 +75,10 @@ class NotificationList extends StatelessWidget {
                         return await onItemDismissed(noti);
                       },
                       child: NotificationCard(
-                        key: ValueKey('noti_item_$index'),
-                        notiCard: noti,
-                        onTap: () {
-                          // TODO: QUA TRANG CHI TIẾT
-                          context.push(
-                            '/notification/detail',
-                            extra: noti,
-                          );
-                        },
-                      ))
+                          key: ValueKey('noti_item_$index'),
+                          notiCard: noti,
+                          onTap: () => onItemTapped(noti)))
                 ]);
-              },
-              separatorBuilder: (_, index) {
-                if (index >= notiList.length - 1) return SizedBox.shrink();
-                return Divider(
-                  height: 1.h,
-                  thickness: 0.3.w,
-                  color:
-                      BorderColors.borderDefaultDefault.withValues(alpha: 0.2),
-                );
               },
             )
         ],

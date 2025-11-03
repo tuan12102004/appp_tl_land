@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:app_tl_land_3212/common/common_module.dart';
@@ -7,12 +6,11 @@ import 'package:app_tl_land_3212/feature/noti/domain/noti_domain_module.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-
 part 'notification_event.dart';
 part 'notification_state.dart';
 part 'notification_bloc.freezed.dart';
 
-class NotificationBloc extends Bloc<NotificationEvent, NotificationState>{
+class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   // Khai báo usecase
   final GetNotificationsUsecase _getNotificationsUsecase;
   final GetNotificationDetailUsecase _getNotificationDetailUsecase;
@@ -39,88 +37,109 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState>{
     on<ReadAllNotification>(_onReadAllNotification);
   }
   // Get notification
-  Future<void> _onGetNotifications(GetNotifications event, Emitter<NotificationState> emit) async {
+  Future<void> _onGetNotifications(
+      GetNotifications event, Emitter<NotificationState> emit) async {
     // Lúc đầu
-    emit(state.copyWith(isLoading: true, failure: null, apiAction: ApiActionType.none));
+    emit(state.copyWith(
+        isLoading: true, failure: null, apiAction: ApiActionType.none));
     // Gọi api
-    final res = await _getNotificationsUsecase.call(
-      PaginatorParam(limit: 10, page: 1)
-    );
+    final res =
+        await _getNotificationsUsecase.call(PaginatorParam(limit: 10, page: 1));
     res.fold(
-      (failure) => emit(state.copyWith(isLoading: false, failure: failure, apiAction: ApiActionType.getAll)), 
-      (notifications) {
-        final hasUnread = notifications.any((e) => e.status == "Chưa đọc");
-        emit(
-          state.copyWith(
-            isLoading: false, 
-            isSuccess: true,
-            notifications: notifications,
-            hasUnread: hasUnread,
-            apiAction: ApiActionType.getAll
-          )
-        );
-      }
-    );
+        (failure) => emit(state.copyWith(
+            isLoading: false,
+            failure: failure,
+            apiAction: ApiActionType.getAll)), (notifications) {
+      final hasUnread = notifications.any((e) => e.status == 1);
+      emit(state.copyWith(
+          isLoading: false,
+          isSuccess: true,
+          notifications: notifications,
+          hasUnread: hasUnread,
+          apiAction: ApiActionType.getAll));
+    });
   }
 
   // Get notification detail
-  Future<void> _onGetNotificationDetail(GetNotificationDetail event, Emitter<NotificationState> emit) async {
-    emit(state.copyWith(isLoading: true, failure: null, apiAction: ApiActionType.none));
-    final res = await _getNotificationDetailUsecase.call(GetNotificationDetailParams(id: event.id));
+  Future<void> _onGetNotificationDetail(
+      GetNotificationDetail event, Emitter<NotificationState> emit) async {
+    emit(state.copyWith(
+        isLoading: true, failure: null, apiAction: ApiActionType.none));
+    final res = await _getNotificationDetailUsecase
+        .call(GetNotificationDetailParams(id: event.id));
     res.fold(
-      (failure) => emit(state.copyWith(isLoading: false, failure: failure, apiAction: ApiActionType.detail)),
-      (notification) => emit(state.copyWith(
-        isLoading: false,
-        isSuccess: true,
-        selectedNotification: notification,
-        apiAction: ApiActionType.detail
-      )),
+      (failure) => emit(state.copyWith(
+          isLoading: false, failure: failure, apiAction: ApiActionType.detail)),
+      (notification) {
+        final updatedList = state.notifications.map((n) {
+          if (n.id == notification.id) {
+            return notification;
+          }
+          return n;
+        }).toList();
+
+        emit(state.copyWith(
+            isLoading: false,
+            isSuccess: true,
+            selectedNotification: notification,
+            notifications: updatedList,
+            hasUnread: updatedList.any((e) => e.status == 1),
+            apiAction: ApiActionType.detail));
+      },
     );
   }
 
-  Future<void> _onDeleteNotification(DeleteNotification event, Emitter<NotificationState> emit) async {
+  Future<void> _onDeleteNotification(
+      DeleteNotification event, Emitter<NotificationState> emit) async {
     emit(state.copyWith(isLoading: false, failure: null));
-    final res = await _deleteNotificationUsecase.call(DeleteNotificationParams(id: event.id));
+    final res = await _deleteNotificationUsecase
+        .call(DeleteNotificationParams(id: event.id));
 
     res.fold(
-      (failure) => emit(state.copyWith(isLoading: false ,failure: failure, apiAction: ApiActionType.delete)),
+      (failure) => emit(state.copyWith(
+          isLoading: false, failure: failure, apiAction: ApiActionType.delete)),
       (_) {
-        final updatedList = List.of(state.notifications)..removeWhere((n) => n.id == event.id);
+        final updatedList = List.of(state.notifications)
+          ..removeWhere((n) => n.id == event.id);
         emit(state.copyWith(
           isLoading: false,
           isSuccess: true,
           notifications: updatedList,
-          hasUnread: updatedList.any((e) => e.status == "Chưa đọc"),
+          hasUnread: updatedList.any((e) => e.status == 1),
           apiAction: ApiActionType.delete,
         ));
       },
     );
   }
 
-   Future<void> _onDeleteAllNotifications(DeleteAllNotifications event, Emitter<NotificationState> emit) async {
-    emit(state.copyWith(isLoading: false, failure: null, apiAction: ApiActionType.none));
+  Future<void> _onDeleteAllNotifications(
+      DeleteAllNotifications event, Emitter<NotificationState> emit) async {
+    emit(state.copyWith(
+        isLoading: false, failure: null, apiAction: ApiActionType.none));
     final res = await _deleteAllNotificationUsecase.call(NoParam());
     res.fold(
-      (failure) => emit(state.copyWith(isLoading: false, failure: failure, apiAction: ApiActionType.delete)),
-      (_) {
-        emit(state.copyWith(
+        (failure) => emit(state.copyWith(
+            isLoading: false,
+            failure: failure,
+            apiAction: ApiActionType.delete)), (_) {
+      emit(state.copyWith(
           isLoading: false,
           isSuccess: true,
           notifications: [],
           hasUnread: false,
-          apiAction: ApiActionType.delete
-        ));
-      }
-    );
+          apiAction: ApiActionType.delete));
+    });
   }
 
-  Future<void> _onReadAllNotification(ReadAllNotification event, Emitter<NotificationState> emit) async{
+  Future<void> _onReadAllNotification(
+      ReadAllNotification event, Emitter<NotificationState> emit) async {
     emit(state.copyWith(isLoading: true, failure: null));
     final res = await _readAllNotificationUsecase.call(NoParam());
     res.fold(
-      (failure) => emit(state.copyWith(isLoading: false, failure: failure)), 
+      (failure) => emit(state.copyWith(isLoading: false, failure: failure)),
       (_) {
-        final updatedList = state.notifications.map((n) => n.copyWith(status: "Đã đọc")).toList();
+        final updatedList =
+            state.notifications.map((n) => n.copyWith(status: 2)).toList();
         emit(state.copyWith(
           isLoading: false,
           isSuccess: true,

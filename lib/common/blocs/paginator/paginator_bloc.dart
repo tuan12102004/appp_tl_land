@@ -1,4 +1,3 @@
-
 import 'package:app_tl_land_3212/core/core_module.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -12,7 +11,8 @@ class PaginatorBloc<T, Param>
   PaginatorBloc() : super(PaginatorState<T>(isLoading: true)) {
     on<LoadInitial<T, Param>>(_onLoadInitial);
     on<LoadMore<T, Param>>(_onLoadMore);
-    on<UpdateItems<T, Param>>(_onUpdateItems);
+    on<UpdateItem<T, Param>>(_onUpdateItem);
+    on<UpdateAllItems<T, Param>>(_onUpdateAllItems);
     on<RemoveItem<T, Param>>(_onRemoveItem);
     on<RestoreLastRemoved<T, Param>>(_onRestoreLastRemoved);
     on<RemoveAll<T, Param>>(_onRemoveAll);
@@ -110,12 +110,28 @@ class PaginatorBloc<T, Param>
     );
   }
 
-  // Update items
-  void _onUpdateItems(
-    UpdateItems<T, Param> event,
+  // Update item
+  void _onUpdateItem(
+    UpdateItem<T, Param> event,
     Emitter<PaginatorState<T>> emit,
-  ) =>
-      emit(state.copyWith(items: event.newItems));
+  ) {
+    final updatedList = List<T>.from(state.items);
+    final index = updatedList.indexWhere(event.where);
+
+    if (index != -1) {
+      updatedList[index] = event.newItem;
+      emit(state.copyWith(items: updatedList));
+    }
+  }
+
+  void _onUpdateAllItems(
+    UpdateAllItems<T, Param> event,
+    Emitter<PaginatorState<T>> emit,
+  ) {
+    final updatedList = state.items.map((item) => event.update(item)).toList();
+
+    emit(state.copyWith(items: updatedList));
+  }
 
   void _onRemoveItem(
     RemoveItem<T, Param> event,
