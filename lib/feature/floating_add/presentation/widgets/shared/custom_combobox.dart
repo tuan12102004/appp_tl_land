@@ -61,7 +61,7 @@ class _CustomComboboxState<T> extends State<CustomCombobox<T>> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      spacing: 8.h,
+      spacing: 4.h,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (widget.label != null) ...[
