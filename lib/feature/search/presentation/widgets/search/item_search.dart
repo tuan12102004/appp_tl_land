@@ -39,18 +39,23 @@ class ItemSearch extends StatelessWidget {
                                   color: TextColors.textBrandPrimary,
                                   fontWeight: FontWeight.w600,
                                 )),
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
-                      decoration: BoxDecoration(
-                        color: BackgroundColors.backgroundBrandPrimary,
-                        borderRadius: BorderRadius.circular(6.r),
-                      ),
-                      child: Text(
-                        item.status ?? 'N/A',
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              color: TextColors.textBrandOnbrand,
-                            ),
+                    Flexible(
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: BackgroundColors.backgroundBrandPrimary,
+                          borderRadius: BorderRadius.circular(6.r),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 8.w, vertical: 3.h),
+                          child: Text(
+                            item.status ?? 'N/A',
+                            style:
+                                Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                      color: TextColors.textBrandOnbrand,
+                                    ),
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -94,20 +99,17 @@ class ItemSearch extends StatelessWidget {
                                 )),
                       ],
                     ),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.location_on_outlined,
-                          size: 21.sp,
-                          color: IconColors.iconDefaultTertiary,
-                        ),
-                        SizedBox(width: 3.w),
-                        Text(item.address ?? 'Không có địa chỉ',
-                            style:
-                                Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                      color: TextColors.textDefaultSecondary,
-                                    )),
-                      ],
+                    ListTile(
+                      leading: Icon(
+                        Icons.location_on_outlined,
+                        size: 21.sp,
+                        color: IconColors.iconDefaultTertiary,
+                      ),
+                      title: Text(item.address ?? 'Không có địa chỉ',
+                          style:
+                              Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    color: TextColors.textDefaultSecondary,
+                                  )),
                     ),
                   ],
                 ),

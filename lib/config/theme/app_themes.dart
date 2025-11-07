@@ -239,5 +239,14 @@ class AppTheme {
 
     // Divider
     dividerColor: AppColors.borderSeparatorOpaque,
+
+    listTileTheme: const ListTileThemeData(
+      minVerticalPadding: 0,
+      minTileHeight: 0,
+      minLeadingWidth: 0,
+      contentPadding: EdgeInsets.zero,
+      visualDensity: VisualDensity.compact,
+      dense: true,
+    ),
   );
 }
